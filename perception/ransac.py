@@ -1,20 +1,14 @@
 import pyransac3d as pyrsc
 import numpy as np
 import matplotlib.pyplot as plt
+import os
+import sys
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from simulation.terrain_generator import generate_terrain
+
+THRESHOLD = 0.05 #cad distance au plan qui considere pt comme inlier
 
 #Génerer nuage de points random:
-def generate_terrain(n_points, n_rocks):
-    n = np.random.uniform(-100, 100, n_points)
-    e = np.random.uniform(-100, 100, n_points)
-    d = np.random.normal(0, 0.1, n_points)
-    points_sol = np.column_stack((n ,e, d))
-
-    n_r = np.random.uniform(-100, 100, n_rocks)
-    e_r = np.random.uniform(-100, 100, n_rocks)
-    d_r = np.random.uniform(-2, 0.1, n_rocks)
-    points_terrain = np.column_stack((n_r, e_r, d_r))
-
-    return np.vstack((points_sol, points_terrain))
 points = generate_terrain(100,50)
 
 #def ransac(points):
@@ -22,7 +16,7 @@ points = generate_terrain(100,50)
 
 #RANSAC:
 plane1 = pyrsc.Plane()
-best_eq, best_inliers = plane1.fit(points, 0.05) #0,05 correspond au threshold-cad distance au plan qui considere pt comme inlier
+best_eq, best_inliers = plane1.fit(points, THRESHOLD) 
 #best_eq = np array (1,4) Avec Ax + By+ Cx + D comme [A,B,C,D]
 
 #Outliers:
