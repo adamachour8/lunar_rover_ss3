@@ -4,3 +4,4 @@ matplotlib.pyplot
 os
 sys
 hello
+sklearn.cluster #doit installer scikit-learn

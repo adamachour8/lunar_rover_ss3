@@ -24,16 +24,17 @@ clusters = {}
 for label in set(labels):
     if label == -1:
         continue  # skip noise points
-    clusters[label] = obstacles[labels == label]
+    clusters[label] = obstacles[labels == label] #clusters est un dictionnaire dont la cle est le numero du clump et la valeur est un np.array de dim (N,3)
 
 #Imprimer en ordre sexy
 # for label, cluster_points in clusters.items():
 #     print(f"Cluster {label}: {len(cluster_points)} points")
 #     print(cluster_points)
 
+#-----------------------------PLOT-------------------------------------
 fig = plt.figure()
 ax = fig.add_subplot(projection='3d')
-ax.scatter(clusters[0][0], clusters[0][1], clusters[0][2])
+ax.scatter(clusters[0][:, 0], clusters[0][:, 1], clusters[0][:, 2])
 ax.set_xlabel('X')
 ax.set_ylabel('Y')
 ax.set_zlabel('Z')
