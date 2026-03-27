@@ -32,22 +32,22 @@ def ransac(points, threshold):
     return outliers 
 
 #--------------------------------------PLOT----------------------------------------
-#Plot nuages de points
-fig = plt.figure()
-ax = fig.add_subplot(projection='3d')
-ax.scatter(points[:,0], points[:,1], points[:,2], zorder =1)
-ax.set_xlabel('X')
-ax.set_ylabel('Y')
-ax.set_zlabel('Z')
+# #Plot nuages de points
+# fig = plt.figure()
+# ax = fig.add_subplot(projection='3d')
+# ax.scatter(points[:,0], points[:,1], points[:,2], zorder =1)
+# ax.set_xlabel('X')
+# ax.set_ylabel('Y')
+# ax.set_zlabel('Z')
 
-#Plot outliers (=obstacles):
-outliers = ransac(points, THRESHOLD)
-ax.scatter(outliers[:,0], outliers[:,1], outliers[:,2], color = "red", zorder = 2)
+# #Plot outliers (=obstacles):
+# outliers = ransac(points, THRESHOLD)
+# ax.scatter(outliers[:,0], outliers[:,1], outliers[:,2], color = "red", zorder = 2)
 
-# #plot plan
-# x = np.linspace(-100,100,100)
-# y = np.linspace(-100,100,100)
-# x, y = np.meshgrid(x, y)
-# z = (- best_eq[0]*x - best_eq[1]*y - best_eq[3])/best_eq[2] #isole z de l'equation
-# ax.plot_surface(x, y, z)
-plt.show()
+# # #plot plan
+# # x = np.linspace(-100,100,100)
+# # y = np.linspace(-100,100,100)
+# # x, y = np.meshgrid(x, y)
+# # z = (- best_eq[0]*x - best_eq[1]*y - best_eq[3])/best_eq[2] #isole z de l'equation
+# # ax.plot_surface(x, y, z)
+# plt.show()
