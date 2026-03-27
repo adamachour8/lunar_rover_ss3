@@ -8,7 +8,7 @@ from simulation.terrain_generator import generate_terrain
 
 THRESHOLD = 0.05
 
-points = generate_terrain(100,50)
+points = generate_terrain(100000,500)
 obstacles = ransac(points, THRESHOLD)
-db = DBSCAN(eps=0.3, min_samples=10).fit(obstacles)
-print(db)
+db = DBSCAN(eps=0.3, min_samples=5).fit(obstacles)
+print(db.labels_)
