@@ -6,29 +6,30 @@ import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from simulation.terrain_generator import generate_terrain
 
-THRESHOLD = 0.05 #cad distance au plan qui considere pt comme inlier
+THRESHOLD = 0.05 #c.a.d distance au plan qui considere pt comme inlier
 
 #Génerer nuage de points random:
 points = generate_terrain(100,50)
 
-#def ransac(points):
-# Points = point cloud as a numpy array (N, 3)
+def ransac(points, threshold):
+    # Points = point cloud as a numpy array (N, 3)
 
-#RANSAC:
-plane1 = pyrsc.Plane()
-best_eq, best_inliers = plane1.fit(points, THRESHOLD) 
-#best_eq = np array (1,4) Avec Ax + By+ Cx + D comme [A,B,C,D]
+    #RANSAC:
+    plane1 = pyrsc.Plane()
+    best_eq, best_inliers = plane1.fit(points, threshold) 
+    #best_eq = np array (1,4) Avec Ax + By+ Cx + D comme [A,B,C,D]
 
-#Outliers:
-x_inlier = []
-y_inlier = []
-z_inlier = []
-outliers_index = [i for i in range(points.shape[0]) if i not in best_inliers]
-for i in outliers_index:
-    x_inlier.append(points[i,0])
-    y_inlier.append(points[i,1])
-    z_inlier.append(points[i,2])
-outliers = np.column_stack((x_inlier, y_inlier, z_inlier)) #un np.array avec 3 colonnes qui représente la coordonnée en x, y, z du pt
+    #Outliers:
+    x_inlier = []
+    y_inlier = []
+    z_inlier = []
+    outliers_index = [i for i in range(points.shape[0]) if i not in best_inliers]
+    for i in outliers_index:
+        x_inlier.append(points[i,0])
+        y_inlier.append(points[i,1])
+        z_inlier.append(points[i,2])
+    outliers = np.column_stack((x_inlier, y_inlier, z_inlier)) #un np.array avec 3 colonnes qui représente la coordonnée en x, y, z du pt
+    return outliers 
 
 #--------------------------------------PLOT----------------------------------------
 #Plot nuages de points
@@ -40,6 +41,7 @@ ax.set_ylabel('Y')
 ax.set_zlabel('Z')
 
 #Plot outliers (=obstacles):
+outliers = ransac(points, THRESHOLD)
 ax.scatter(outliers[:,0], outliers[:,1], outliers[:,2], color = "red", zorder = 2)
 
 # #plot plan
