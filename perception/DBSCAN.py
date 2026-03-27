@@ -1,4 +1,5 @@
 import numpy as np
+from sklearn.cluster import DBSCAN
 import os
 import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -9,4 +10,5 @@ THRESHOLD = 0.05
 
 points = generate_terrain(100,50)
 obstacles = ransac(points, THRESHOLD)
-print(obstacles)
+db = DBSCAN(eps=0.3, min_samples=10).fit(obstacles)
+print(db)
