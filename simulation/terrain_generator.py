@@ -12,6 +12,7 @@ def generate_terrain(n_points, n_rocks):
     points_terrain = np.column_stack((n_r, e_r, d_r))
 
     return np.vstack((points_sol, points_terrain))
+
 def generate_lunar_terrain(n_points=2000):
     np.random.seed(42)
     
