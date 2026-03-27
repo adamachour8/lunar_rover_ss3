@@ -37,3 +37,9 @@ def generate_lunar_terrain(n_points=2000):
         z += dome
 
     return np.column_stack([x, y, z])
+
+def generer_terrain(nom_fichier):
+    data = np.loadtxt(nom_fichier, delimiter=",")
+    points = data[:, :3]
+    return points
+        
