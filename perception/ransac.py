@@ -7,7 +7,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from simulation.terrain_generator import generer_terrain
 
 
-THRESHOLD = 0.025
+THRESHOLD = 0.08
 
 def ransac(points, threshold):
     plane1 = pyrsc.Plane()
