@@ -7,11 +7,6 @@ from perception.ransac import ransac
 from simulation.terrain_generator import generate_lunar_terrain
 import matplotlib.pyplot as plt
 
-# THRESHOLD = 0.05
-
-#Cherche le bon nuage de pts
-# points = generate_lunar_terrain(2000)
-# obstacles = ransac(points, THRESHOLD)
 
 #DBSCAN
 def dbscan(obstacles, epsilon, min_echantillons):
