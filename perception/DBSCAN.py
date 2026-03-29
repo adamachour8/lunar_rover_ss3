@@ -3,7 +3,7 @@ from sklearn.cluster import DBSCAN
 import os
 import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from perception.RANSAC import ransac
+from perception.ransac import ransac
 from simulation.terrain_generator import generate_lunar_terrain
 import matplotlib.pyplot as plt
 

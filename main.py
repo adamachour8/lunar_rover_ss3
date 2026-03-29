@@ -5,23 +5,24 @@ import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from simulation.terrain_generator import *
-from perception.RANSAC import ransac
+from perception.ransac import ransac
 from perception.DBSCAN import dbscan
+from perception.filtration import filtrer
 
 import numpy as np
 import matplotlib.pyplot as plt
 
 # VARIABLES -----------------------------------------------------------------
 
-THRESHOLD = 0.1 # Distance du plan pour que le point soit considéré comme en faisant partie ou non
+THRESHOLD = 0.15 # Distance du plan pour que le point soit considéré comme en faisant partie ou non
 NOM_FICHIER = "NuagePtsTest1-6.csv" # Nom du fichier du nuage de points (dans "simulation")
-EPS = 0.3 # Distance d'un point à un autre pour considérer qu'il s'agit du même cluster
-MIN_SAMPLES = 6 # Minimum de points pour être considéré comme un cluster
+EPS = 0.25 # Distance d'un point à un autre pour considérer qu'il s'agit du même cluster
+MIN_SAMPLES = 8 # Minimum de points pour être considéré comme un cluster
 
 # PROGRAMME -----------------------------------------------------------------
 
 points = generer_terrain("simulation/" + NOM_FICHIER)
-obstacles = ransac(points, THRESHOLD)
+obstacles, sol, irregulier, _ = ransac(points, THRESHOLD)
 clusters = dbscan(obstacles, EPS, MIN_SAMPLES)
 
 
@@ -48,3 +49,11 @@ ax.set_ylabel('Y')
 ax.set_zlabel('Z')
 ax.set_box_aspect(ranges)
 plt.show()
+
+# après dbscan :
+objets_interet, obstacles = filtrer(clusters)
+
+for obj in objets_interet:
+    print(obj)
+for obj in obstacles:
+    print(obj)
