@@ -17,8 +17,8 @@ def ransac(points, threshold):
     norm = np.sqrt(A**2 + B**2 + C**2)
     distances = np.abs(A*points[:,0] + B*points[:,1] + C*points[:,2] + D) / norm
 
-    sol                   = points[distances <= 0.08]
-    terrain_non_navigable = points[distances > 0.08]
+    sol                   = points[distances <= THRESHOLD]
+    terrain_non_navigable = points[distances > THRESHOLD]
 
     return terrain_non_navigable, sol, best_eq
 
