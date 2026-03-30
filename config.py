@@ -18,5 +18,12 @@ TRIANG_LONGUEUR_MAX  = 0.3    # Longueur max (m) d'un côté de triangle — fil
 TRIANG_OUTLIER_VOISINS   = 10    # nombre de voisins à considérer
 TRIANG_OUTLIER_DIST_MAX  = 0.2   # si le voisin le plus proche est à plus de 20cm, c'est un outlier
 
+# --- A* PATHFINDING ---
+ASTAR_RESOLUTION     = 0.10   # Taille cellule grille (m) — descendre = plus précis mais plus lent
+ASTAR_RAYON_ROVER    = 0.20   # Rayon du rover (m) — À AJUSTER selon specs réelles
+ASTAR_RAYON_INFLATION= 0.35   # Doit toujours être >= ASTAR_RAYON_ROVER
+ASTAR_SCAN_DISTANCE  = 0.50   # Distance à laquelle le rover s'arrête pour scanner (m)
+ASTAR_Z_SOL          = 3.10   # Hauteur Z du sol (m) — pour filtrer les points hors-sol
+
 # --- FICHIERS ---
 NOM_FICHIER          = "NuagePtsTest1-6.csv"
