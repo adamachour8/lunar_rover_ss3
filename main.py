@@ -4,7 +4,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import numpy as np
 import time
 import serial
-from config import NOM_FICHIER, RANSAC_THRESHOLD, DBSCAN_EPS, DBSCAN_MIN_SAMPLES, VITESSE_MS_PAR_METRE, VITESSE_MS_PAR_DEGRE
+from config import NOM_FICHIER, RANSAC_THRESHOLD, DBSCAN_EPS, DBSCAN_MIN_SAMPLES, NOM_PORT
 
 from simulation.terrain_generator import generer_terrain
 from perception.ransac            import ransac
@@ -47,15 +47,19 @@ chemins, waypoints, ordre = planifier_mission(
 # print(chemins)
 # print(waypoints)
 
-# plot_astar(grille, origine_xy, res,
-#            chemins, objets_interet, obstacles,
-#            waypoints, ordre, position_depart=(0.0, 0.0))
+plot_astar(grille, origine_xy, res,
+           chemins, objets_interet, obstacles,
+           waypoints, ordre, position_depart=(0.0, 0.0))
 
 
-# --- À partir d'ici: boucle de chacun des chemins (1 à la fois, vu qu'on va devoir appeler C2 pour la photogrammétrie) ---
+# --- À partir d'ici: boucle de chacun des chemins (1 séries de coorodonnées (1 chemin) à la fois, 
+#                 vu qu'on va devoir appeler C2 pour la photogrammétrie) ---
 
 
-arduino = serial.Serial('/dev/ttyUSB0', baudrate=9600, timeout=2)
-time.sleep(2)
-
-#executer_chemin(chemin, arduino, VITESSE_MS_PAR_METRE, VITESSE_MS_PAR_DEGRE)
+# arduino = serial.Serial(NOM_PORT, baudrate=9600, timeout=5)
+# print("connexion...")
+# time.sleep(2) # Laisser le temps à l'Arduino de charger
+# arduino.reset_input_buffer() # Efface les vieux messages comme "Systeme pret..."
+# print("prêt!")
+# chemin = [(0,0), (0.4, 0.3), (0.8, 0.65), (1.3, 0.4)]
+# executer_chemin(chemin, arduino)
