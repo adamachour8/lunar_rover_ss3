@@ -49,16 +49,3 @@ def envoyer_commande(arduino, commande):
     reponse = arduino.readline().decode().strip()
     print(f"Envoyé: {commande} → Reçu: {reponse}")
     return reponse
-
-# --- Exemple d'utilisation ---
-# Supposons que D*-Lite retourne ces waypoints en mètres
-chemin = [(0,0), (1.5, 0.5), (3.0, 1.2), (5.0, 1.0)]
-
-arduino = serial.Serial('/dev/ttyUSB0', baudrate=9600, timeout=2)
-time.sleep(2)
-
-# Ces valeurs viennent de la calibration (question 3)
-MS_PAR_METRE = 3000   # à calibrer
-MS_PAR_DEGRE = 25     # à calibrer
-
-executer_chemin(chemin, arduino, MS_PAR_METRE, MS_PAR_DEGRE)

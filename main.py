@@ -12,6 +12,7 @@ from perception.DBSCAN            import dbscan
 from perception.filtration        import filtrer
 from navigation.triangulation     import perform_triangulation
 from navigation.astar             import construire_grille, planifier_mission, plot_astar
+from interfaces.motor_control     import executer_chemin
 
 # PIPELINE ------------------------------------------------------------------
 
@@ -51,15 +52,10 @@ chemins, waypoints, ordre = planifier_mission(
 #            waypoints, ordre, position_depart=(0.0, 0.0))
 
 
+# --- À partir d'ici: boucle de chacun des chemins (1 à la fois, vu qu'on va devoir appeler C2 pour la photogrammétrie) ---
 
-# --- Exemple d'utilisation ---
-# Supposons que D*-Lite retourne ces waypoints en mètres
 
 arduino = serial.Serial('/dev/ttyUSB0', baudrate=9600, timeout=2)
 time.sleep(2)
 
-# Ces valeurs viennent de la calibration (question 3)
-MS_PAR_METRE = 3000   # à calibrer
-MS_PAR_DEGRE = 25     # à calibrer
-
-executer_chemin(chemin, arduino, MS_PAR_METRE, MS_PAR_DEGRE)
+#executer_chemin(chemin, arduino, VITESSE_MS_PAR_METRE, VITESSE_MS_PAR_DEGRE)
