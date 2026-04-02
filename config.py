@@ -27,3 +27,7 @@ ASTAR_Z_SOL          = 3.10   # Hauteur Z du sol (m) — pour filtrer les points
 
 # --- FICHIERS ---
 NOM_FICHIER          = "NuagePtsTest1-6.csv"
+
+# --- SPECS MOTEURS ---
+VITESSE_MS_PAR_METRE = 5.00   # Temps (en ms) que prend le rover pour faire 1 m => estimation à 0.2 m/s
+VITESSE_MS_PAR_DEGRE = 0.025  # Temps (en ms) que prend le rover pour tourner d'un degré => estimation à 40 degrés/s

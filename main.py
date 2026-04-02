@@ -2,7 +2,9 @@ import sys, os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 import numpy as np
-from config import NOM_FICHIER, RANSAC_THRESHOLD, DBSCAN_EPS, DBSCAN_MIN_SAMPLES
+import time
+import serial
+from config import NOM_FICHIER, RANSAC_THRESHOLD, DBSCAN_EPS, DBSCAN_MIN_SAMPLES, VITESSE_MS_PAR_METRE, VITESSE_MS_PAR_DEGRE
 
 from simulation.terrain_generator import generer_terrain
 from perception.ransac            import ransac
@@ -44,6 +46,20 @@ chemins, waypoints, ordre = planifier_mission(
 # print(chemins)
 # print(waypoints)
 
-plot_astar(grille, origine_xy, res,
-           chemins, objets_interet, obstacles,
-           waypoints, ordre, position_depart=(0.0, 0.0))
+# plot_astar(grille, origine_xy, res,
+#            chemins, objets_interet, obstacles,
+#            waypoints, ordre, position_depart=(0.0, 0.0))
+
+
+
+# --- Exemple d'utilisation ---
+# Supposons que D*-Lite retourne ces waypoints en mètres
+
+arduino = serial.Serial('/dev/ttyUSB0', baudrate=9600, timeout=2)
+time.sleep(2)
+
+# Ces valeurs viennent de la calibration (question 3)
+MS_PAR_METRE = 3000   # à calibrer
+MS_PAR_DEGRE = 25     # à calibrer
+
+executer_chemin(chemin, arduino, MS_PAR_METRE, MS_PAR_DEGRE)

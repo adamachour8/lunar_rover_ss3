@@ -7,3 +7,4 @@ hello
 sklearn.cluster #doit installer scikit-learn
 scipy.spatial import Delaunay
 mpl_toolkits.mplot3d import Axes3D
+serial
