@@ -41,6 +41,9 @@ chemins, waypoints, ordre = planifier_mission(
     objets_interet, position_depart=(0.0, 0.0)
 )
 
+# print(chemins)
+# print(waypoints)
+
 plot_astar(grille, origine_xy, res,
            chemins, objets_interet, obstacles,
            waypoints, ordre, position_depart=(0.0, 0.0))
