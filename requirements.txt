@@ -1,17 +1,13 @@
-# requirements.txt — Mission lunaire SS3
-# Installer avec : python -m pip install -r requirements.txt
-
-# Perception & traitement nuage de points
 numpy
 pyransac3d
-scikit-learn      # sklearn : DBSCAN, NearestNeighbors (pip install scikit-learn)
-scipy             # Delaunay triangulation
-
-# Visualisation
+scikit-learn
+scipy
 matplotlib
-
-# Interface hardware
 pyserial          # Communication série avec Arduino (import serial)
+                  # Utilisé dans interfaces/motor_control.py
 
 # Simulation / terrain
-pygame            # Terrain generator (si utilisé)
+pygame            # Terrain generator
+
+# Communication réseau SS2 (caméra)
+# → socket, json, threading, time : stdlib Python — aucun pip requis

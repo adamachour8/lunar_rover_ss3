@@ -8,13 +8,17 @@ Pipeline complet :
   2. Inflation des obstacles (rayon de sécurité >= rayon du rover)
   3. A* pour trouver le chemin entre deux points
   4. Ordre de visite glouton (toujours l'objet le plus proche)
-  5. Orbite autour de chaque objet d'intérêt (rayon ORBIT_RADIUS, ~10 cm)
+  5. Orbite autour de chaque objet d'intérêt (rayon ORBIT_RADIUS)
+     → Signal SS2 envoyé AVANT l'orbite (caméra se prépare)
+     → Orbite complète par A* (rover tourne, SS2 photographie en parallèle)
+     → Confirmation SS2 attendue APRÈS l'orbite
   6. Retour à l'origine (position_depart)
 
 Sorties :
-  - chemins        : liste de chemins bruts (cellules grille) — usage interne
-  - waypoints_monde: liste de dicts {x, y, type} en mètres — pour le Rover / Mission Planner
-  - ordre          : liste d'ObjetDetecte dans l'ordre de visite
+  - chemins         : liste de chemins bruts (cellules grille) — usage interne
+  - waypoints_monde : liste de dicts {x, y, type} en mètres — pour le Rover
+  - ordre           : liste d'ObjetDetecte dans l'ordre de visite
+  - stats           : dict distance + temps de mission
 """
 
 import numpy as np
@@ -51,7 +55,7 @@ def construire_grille(points_navmesh, navigable, tous_les_objets,
 
     Returns:
         grille     : np.array 2D — 0=navigable, 1=obstacle, 2=hors-carte
-        origine_xy : tuple (x_min, y_min)  ← coin bas-gauche du terrain réel
+        origine_xy : tuple (x_min, y_min)
         resolution : float
     """
     assert rayon_inflation >= ASTAR_RAYON_ROVER, \
@@ -67,7 +71,6 @@ def construire_grille(points_navmesh, navigable, tous_les_objets,
 
     grille = np.full((nx, ny), 2, dtype=np.int8)  # 2 = hors-carte
 
-    # Marquer les triangles navigables comme libres (0)
     for simplex in navigable:
         pts = points_navmesh[simplex][:, :2]
         ix  = ((pts[:, 0] - x_min) / resolution).astype(int)
@@ -79,7 +82,6 @@ def construire_grille(points_navmesh, navigable, tous_les_objets,
                 if _point_dans_triangle(np.array([cx, cy]), pts):
                     grille[gx, gy] = 0
 
-    # Gonfler les obstacles (garantit que le rover fit dans les couloirs)
     cellules_inflation = int(np.ceil(rayon_inflation / resolution))
     for obj in tous_les_objets:
         ix_obj = int((obj.centroide[0] - x_min) / resolution)
@@ -91,38 +93,23 @@ def construire_grille(points_navmesh, navigable, tous_les_objets,
                     if 0 <= gx < nx and 0 <= gy < ny:
                         grille[gx, gy] = 1
 
-    # Boucher les trous hors-carte isolés (artefacts de scan LiDAR)
     grille = _boucher_trous_horscarte(grille)
-
     return grille, (x_min, y_min), resolution
 
 
 def _boucher_trous_horscarte(grille, taille_max_ilot=10):
     """
     Remplace les îlots hors-carte (valeur 2) isolés par des cellules navigables (0).
-
-    Un îlot est considéré isolé si sa taille (en cellules connectées) est <= taille_max_ilot
-    ET qu'il est entouré uniquement de cellules navigables (pas de bord de carte).
-    Ces îlots sont des artefacts de scan LiDAR — trous dans le nuage de points.
-
-    Args:
-        grille         : np.array 2D — 0=navigable, 1=obstacle, 2=hors-carte
-        taille_max_ilot: Taille max (cellules) d'un îlot pour être considéré artefact.
-                         Ajuster selon la densité du scan. Défaut=10 (~10x10cm à 0.1m/cell)
-
-    Returns:
-        grille : np.array 2D modifiée (in-place copy)
     """
-    grille = grille.copy()
-    nx, ny = grille.shape
-    visite = np.zeros((nx, ny), dtype=bool)
+    grille  = grille.copy()
+    nx, ny  = grille.shape
+    visite  = np.zeros((nx, ny), dtype=bool)
 
     for ix in range(nx):
         for iy in range(ny):
             if grille[ix, iy] != 2 or visite[ix, iy]:
                 continue
 
-            # BFS pour trouver l'îlot complet de cellules hors-carte connectées
             ilot        = []
             file        = [(ix, iy)]
             visite[ix, iy] = True
@@ -131,11 +118,8 @@ def _boucher_trous_horscarte(grille, taille_max_ilot=10):
             while file:
                 cx, cy = file.pop()
                 ilot.append((cx, cy))
-
-                # Si on touche le bord de la grille, c'est le vrai bord — ne pas boucher
                 if cx == 0 or cx == nx - 1 or cy == 0 or cy == ny - 1:
                     touche_bord = True
-
                 for ddx, ddy in [(-1,0),(1,0),(0,-1),(0,1),
                                   (-1,-1),(-1,1),(1,-1),(1,1)]:
                     nx2, ny2 = cx + ddx, cy + ddy
@@ -144,18 +128,16 @@ def _boucher_trous_horscarte(grille, taille_max_ilot=10):
                             visite[nx2, ny2] = True
                             file.append((nx2, ny2))
 
-            # Boucher seulement si : petit îlot ET n'est pas le bord extérieur
             if not touche_bord and len(ilot) <= taille_max_ilot:
                 for cx, cy in ilot:
                     grille[cx, cy] = 0
 
-    n_bouches = int((grille == 0).sum())
     return grille
 
 
 def _point_dans_triangle(p, triangle):
     """Test si le point p est dans le triangle (3 sommets 2D)."""
-    a, b, c   = triangle
+    a, b, c    = triangle
     v0, v1, v2 = c - a, b - a, p - a
     d00, d01, d02 = np.dot(v0, v0), np.dot(v0, v1), np.dot(v0, v2)
     d11, d12      = np.dot(v1, v1), np.dot(v1, v2)
@@ -227,21 +209,17 @@ def astar(grille, debut, fin):
 # ===========================================================================
 
 def monde_vers_grille(x, y, origine_xy, resolution):
-    """Convertit des coordonnées monde (m) en indices grille."""
     return (int((x - origine_xy[0]) / resolution),
             int((y - origine_xy[1]) / resolution))
 
 def grille_vers_monde(ix, iy, origine_xy, resolution):
-    """Convertit des indices grille en coordonnées monde (m) — centre de cellule."""
     return (origine_xy[0] + (ix + 0.5) * resolution,
             origine_xy[1] + (iy + 0.5) * resolution)
 
 def chemin_vers_monde(chemin, origine_xy, resolution):
-    """Convertit une liste de cellules grille en liste de (x, y) monde (m)."""
     return [grille_vers_monde(ix, iy, origine_xy, resolution) for ix, iy in chemin]
 
 def cellule_libre_proche(grille, ix, iy):
-    """Trouve la cellule libre la plus proche de (ix, iy)."""
     nx, ny = grille.shape
     if 0 <= ix < nx and 0 <= iy < ny and grille[ix, iy] == 0:
         return ix, iy
@@ -255,16 +233,10 @@ def cellule_libre_proche(grille, ix, iy):
 
 
 # ===========================================================================
-# 4. ORBITE AUTOUR D'UN OBJET D'INTÉRÊT — TOUR COMPLET PAR A*
+# 4. ORBITE AUTOUR D'UN OBJET D'INTÉRÊT
 # ===========================================================================
 
 def generer_points_orbite(centroide_xy, rayon=ORBIT_RADIUS, n_points=ORBIT_N_POINTS):
-    """
-    Génère n_points régulièrement espacés sur un cercle autour du centroïde.
-
-    Returns:
-        points : list of (x, y) en mètres, dans l'ordre trigonométrique (CCW)
-    """
     cx, cy = centroide_xy
     angles = np.linspace(0, 2 * np.pi, n_points, endpoint=False)
     return [(cx + rayon * np.cos(a), cy + rayon * np.sin(a)) for a in angles]
@@ -274,48 +246,33 @@ def orbite_complete_astar(grille, origine_xy, resolution,
                           centroide_xy, pos_rover_xy,
                           rayon=ORBIT_RADIUS, n_points=ORBIT_N_POINTS):
     """
-    Planifie un tour COMPLET autour d'un objet en utilisant A* entre chaque
-    point consécutif du cercle d'orbite.
-
-    Stratégie :
-      1. Générer n_points sur le cercle (sens CCW)
-      2. Trouver le point d'entrée le plus proche du rover
-      3. Réordonner depuis ce point d'entrée
-      4. Pour chaque paire de points consécutifs : A* pour trouver le chemin
-         navigable entre eux — garantit que le rover longe vraiment l'objet
-      5. Bouclage : retour au point d'entrée pour fermer le cercle
+    Planifie un tour COMPLET autour d'un objet via A* entre chaque point du cercle.
 
     Returns:
-        chemins_orbite : liste de chemins A* (cellules grille) — un par segment
-        pts_orbite_ordonnes : liste de (x,y) monde dans l'ordre de visite
-        n_segments_ok : nombre de segments réussis (pour stats)
+        chemins_orbite      : liste de chemins A* (cellules grille)
+        pts_orbite_ordonnes : liste de (x, y) monde dans l'ordre de visite
+        n_segments_ok       : nombre de segments réussis
     """
     candidats = generer_points_orbite(centroide_xy, rayon, n_points)
 
-    # Identifier les points dont la cellule est navigable ou très proche d'une cellule libre
     pts_valides = []
     for pt in candidats:
         ix, iy = monde_vers_grille(*pt, origine_xy, resolution)
-        cell = cellule_libre_proche(grille, ix, iy)
+        cell   = cellule_libre_proche(grille, ix, iy)
         if cell is not None:
             dist_snap = np.linalg.norm(
                 np.array(grille_vers_monde(*cell, origine_xy, resolution)) - np.array(pt)
             )
-            if dist_snap <= resolution * 4:   # tolérance : 4 cellules max
+            if dist_snap <= resolution * 4:
                 pts_valides.append(pt)
 
     if len(pts_valides) < 2:
         print(f"  [Orbite] Pas assez de points navigables ({len(pts_valides)}) — orbite impossible")
         return [], [], 0
 
-    # Trouver le point d'entrée le plus proche du rover parmi les valides
-    dists = [np.linalg.norm(np.array(pt) - np.array(pos_rover_xy)) for pt in pts_valides]
+    dists      = [np.linalg.norm(np.array(pt) - np.array(pos_rover_xy)) for pt in pts_valides]
     idx_entree = int(np.argmin(dists))
-
-    # Réordonner depuis le point d'entrée (sens CCW conservé)
-    pts_ordonnes = pts_valides[idx_entree:] + pts_valides[:idx_entree]
-
-    # Fermer la boucle : revenir au point de départ de l'orbite
+    pts_ordonnes       = pts_valides[idx_entree:] + pts_valides[:idx_entree]
     pts_ordonnes_boucle = pts_ordonnes + [pts_ordonnes[0]]
 
     chemins_orbite = []
@@ -330,10 +287,8 @@ def orbite_complete_astar(grille, origine_xy, resolution,
         cell_b = cellule_libre_proche(grille, *monde_vers_grille(*pt_b, origine_xy, resolution))
 
         if cell_a is None or cell_b is None:
-            continue  # segment impossible, on saute
-
+            continue
         if cell_a == cell_b:
-            # Même cellule — pas besoin de A*, on note juste le point
             pts_confirmes.append(pt_b)
             n_ok += 1
             continue
@@ -341,11 +296,9 @@ def orbite_complete_astar(grille, origine_xy, resolution,
         ch = astar(grille, cell_a, cell_b)
         if ch:
             chemins_orbite.append(ch)
-            # Ajouter les waypoints monde de ce segment (sans le premier, déjà dans liste)
             for wx, wy in chemin_vers_monde(ch, origine_xy, resolution)[1:]:
                 pts_confirmes.append((wx, wy))
             n_ok += 1
-        # Si A* échoue sur un segment, on continue avec le suivant (dégradé gracieux)
 
     return chemins_orbite, pts_confirmes, n_ok
 
@@ -355,9 +308,6 @@ def orbite_complete_astar(grille, origine_xy, resolution,
 # ===========================================================================
 
 def ordre_visite_glouton(position_depart, objets):
-    """
-    Nearest-neighbor TSP : toujours visiter l'objet d'intérêt le plus proche.
-    """
     restants = list(objets)
     ordre    = []
     pos      = np.array(position_depart)
@@ -376,16 +326,8 @@ def calculer_stats_mission(waypoints_monde, vitesse=ORBIT_VITESSE_ROVER):
     """
     Calcule la distance totale parcourue et le temps estimé de la mission.
 
-    Args:
-        waypoints_monde : liste de dicts {x, y, ...}
-        vitesse         : vitesse du rover en m/s
-
     Returns:
-        dict {
-            distance_totale_m : float — distance en mètres
-            temps_s           : float — temps en secondes
-            temps_str         : str   — format lisible "Xmin Ys"
-        }
+        dict {distance_totale_m, temps_s, temps_str, vitesse_ms}
     """
     dist = 0.0
     for i in range(1, len(waypoints_monde)):
@@ -393,14 +335,10 @@ def calculer_stats_mission(waypoints_monde, vitesse=ORBIT_VITESSE_ROVER):
         dy = waypoints_monde[i]["y"] - waypoints_monde[i-1]["y"]
         dist += np.sqrt(dx**2 + dy**2)
 
-    temps_s = dist / vitesse if vitesse > 0 else 0.0
-    minutes = int(temps_s // 60)
+    temps_s  = dist / vitesse if vitesse > 0 else 0.0
+    minutes  = int(temps_s // 60)
     secondes = temps_s % 60
-
-    if minutes > 0:
-        temps_str = f"{minutes}min {secondes:.1f}s"
-    else:
-        temps_str = f"{secondes:.1f}s"
+    temps_str = f"{minutes}min {secondes:.1f}s" if minutes > 0 else f"{secondes:.1f}s"
 
     return {
         "distance_totale_m": round(dist, 3),
@@ -410,33 +348,68 @@ def calculer_stats_mission(waypoints_monde, vitesse=ORBIT_VITESSE_ROVER):
     }
 
 
+def _estimer_duree_orbite(pts_orbite, vitesse=ORBIT_VITESSE_ROVER):
+    """
+    Calcule la durée estimée (s) d'une orbite à partir de ses waypoints.
+    Utilisé pour informer SS2 du temps disponible pour prendre les photos.
+    """
+    dist = 0.0
+    for i in range(1, len(pts_orbite)):
+        dx = pts_orbite[i][0] - pts_orbite[i-1][0]
+        dy = pts_orbite[i][1] - pts_orbite[i-1][1]
+        dist += np.sqrt(dx**2 + dy**2)
+    return dist / vitesse if vitesse > 0 else 60.0
+
+
 # ===========================================================================
-# 7. PLANIFICATION COMPLÈTE
+# 7. PLANIFICATION COMPLÈTE — avec intégration signal SS2
 # ===========================================================================
 
 def planifier_mission(grille, origine_xy, resolution,
-                      objets_interet, position_depart=(0.0, 0.0)):
+                      objets_interet, position_depart=(0.0, 0.0),
+                      envoyer_signal_ss2=True):
     """
     Planifie la mission complète :
-        Départ → approche obj1 → TOUR COMPLET obj1 → approche obj2 → ... → retour
+        Départ → approche obj1 → signal SS2 → TOUR COMPLET obj1
+              → attente fin photos → approche obj2 → ... → retour
+
+    Args:
+        grille            : np.array 2D — grille de navigation
+        origine_xy        : tuple (x_min, y_min)
+        resolution        : float — taille cellule (m)
+        objets_interet    : liste d'ObjetDetecte
+        position_depart   : tuple (x, y) en mètres
+        envoyer_signal_ss2: bool — False en mode simulation/debug uniquement
 
     Returns:
-        chemins         : liste de chemins bruts (cellules grille) — usage interne / debug
-        waypoints_monde : liste de dicts {x (m), y (m), type (str), label (str)}
-                          → prêt pour executer_chemin() et Mission Planner
+        chemins         : liste de chemins bruts (cellules grille)
+        waypoints_monde : liste de dicts {x, y, type, label}
         ordre           : liste d'ObjetDetecte dans l'ordre de visite
         stats           : dict distance + temps de mission
     """
+    # Import ici pour éviter les imports circulaires et permettre le mode simulation
+    if envoyer_signal_ss2:
+        from communication.envoyer_roche import envoyer_roche, attendre_fin_photo
+    else:
+        # Mode simulation — on log mais on n'envoie rien
+        def envoyer_roche(objet, position_xy, duree_orbite_s):
+            print(f"  [SIM] Signal SS2 — roche {objet.label} "
+                  f"({objet.hauteur*100:.1f}cm) "
+                  f"orbite {duree_orbite_s:.1f}s")
+            return True
+        def attendre_fin_photo(label):
+            print(f"  [SIM] Attente fin photo roche {label} — ignorée en simulation")
+            return True
+
     ordre           = ordre_visite_glouton(position_depart, objets_interet)
     chemins         = []
     waypoints_monde = []
 
-    # Point de départ
     waypoints_monde.append({
         "x": float(position_depart[0]),
         "y": float(position_depart[1]),
-        "type": "depart",
-        "label": "Départ"
+        "type":  "depart",
+        "label": "Départ",
     })
 
     pos = position_depart
@@ -462,8 +435,8 @@ def planifier_mission(grille, origine_xy, resolution,
             for wx, wy in chemin_vers_monde(ch_approche, origine_xy, resolution)[1:]:
                 waypoints_monde.append({
                     "x": round(wx, 4), "y": round(wy, 4),
-                    "type": "travel",
-                    "label": f"Approche Objet {obj.label}"
+                    "type":  "travel",
+                    "label": f"Approche Objet {obj.label}",
                 })
             pos = pt_entree
             print(f"[A*] Approche Objet {obj.label} ({obj.categorie}) ✓")
@@ -471,26 +444,42 @@ def planifier_mission(grille, origine_xy, resolution,
             print(f"[A*] Objet {obj.label} — aucun chemin d'approche, objet ignoré")
             continue
 
-        # ── Étape B : Tour COMPLET autour de l'objet via A* ───────────────
+        # ── Étape B : Orbite complète — planifiée AVANT d'envoyer le signal ─
+        # On planifie d'abord pour connaître la durée réelle de l'orbite,
+        # puis on envoie cette durée à SS2 pour qu'elle calcule l'intervalle photo.
         chemins_orbite, pts_orbite, n_ok = orbite_complete_astar(
             grille, origine_xy, resolution,
             (cx, cy), pos,
             rayon=ORBIT_RADIUS, n_points=ORBIT_N_POINTS
         )
 
+        # ── Étape C : Signal SS2 (AVANT de démarrer l'orbite physiquement) ──
+        # À ce stade, le rover est arrivé au point d'entrée de l'orbite.
+        # On envoie les infos à SS2 et on attend "READY" avant de bouger.
+        if chemins_orbite:
+            duree_orbite_s = _estimer_duree_orbite(pts_orbite)
+        else:
+            # Fallback : estimation approximative
+            duree_orbite_s = (2 * np.pi * ORBIT_RADIUS) / ORBIT_VITESSE_ROVER
+
+        envoyer_roche(obj, pos, duree_orbite_s)
+        # envoyer_roche() bloque jusqu'à "READY" de SS2 (ou timeout)
+        # → SS2 a réglé sa caméra, le rover peut commencer à tourner
+
+        # ── Étape D : Orbite ─────────────────────────────────────────────
         if chemins_orbite:
             chemins.extend(chemins_orbite)
             for wx, wy in pts_orbite:
                 waypoints_monde.append({
                     "x": round(float(wx), 4), "y": round(float(wy), 4),
-                    "type": "orbit",
-                    "label": f"Orbite Objet {obj.label} (r={ORBIT_RADIUS*100:.0f}cm)"
+                    "type":  "orbit",
+                    "label": f"Orbite Objet {obj.label} (r={ORBIT_RADIUS*100:.0f}cm)",
                 })
             pos = pts_orbite[-1]
             print(f"[A*] Tour Objet {obj.label} ✓ — {n_ok}/{ORBIT_N_POINTS} segments, "
                   f"{len(pts_orbite)} waypoints")
         else:
-            # Fallback : scan simple si l'orbite est bloquée de tous côtés
+            # Fallback scan simple
             print(f"[A*] Objet {obj.label} — orbite impossible, scan simple (fallback)")
             direction = np.array([cx, cy]) - np.array(pos)
             dist      = np.linalg.norm(direction)
@@ -498,9 +487,14 @@ def planifier_mission(grille, origine_xy, resolution,
                 pt_scan = np.array(pos) + (direction / dist) * (dist - ASTAR_SCAN_DISTANCE)
                 waypoints_monde.append({
                     "x": round(float(pt_scan[0]), 4), "y": round(float(pt_scan[1]), 4),
-                    "type": "scan",
-                    "label": f"Scan Objet {obj.label} (fallback)"
+                    "type":  "scan",
+                    "label": f"Scan Objet {obj.label} (fallback)",
                 })
+
+        # ── Étape E : Attendre que SS2 confirme la fin des photos ────────
+        # Appelé APRÈS l'orbite — SS2 a eu toute la durée de l'orbite pour photographier.
+        # Si SS2 prend plus de temps, on attend ici avant de passer à la roche suivante.
+        attendre_fin_photo(obj.label)
 
     # ── Étape finale : Retour à l'origine ─────────────────────────────────
     d_cell = cellule_libre_proche(grille, *monde_vers_grille(*pos,             origine_xy, resolution))
@@ -513,10 +507,10 @@ def planifier_mission(grille, origine_xy, resolution,
             for wx, wy in chemin_vers_monde(ch_retour, origine_xy, resolution)[1:]:
                 waypoints_monde.append({
                     "x": round(wx, 4), "y": round(wy, 4),
-                    "type": "return",
-                    "label": "Retour départ"
+                    "type":  "return",
+                    "label": "Retour départ",
                 })
-            print(f"[A*] Retour origine ✓")
+            print("[A*] Retour origine ✓")
         else:
             print("[A*] Retour origine — aucun chemin trouvé")
     else:
@@ -525,8 +519,8 @@ def planifier_mission(grille, origine_xy, resolution,
     waypoints_monde.append({
         "x": float(position_depart[0]),
         "y": float(position_depart[1]),
-        "type": "arrivee",
-        "label": "Arrivée"
+        "type":  "arrivee",
+        "label": "Arrivée",
     })
 
     stats = calculer_stats_mission(waypoints_monde, vitesse=ORBIT_VITESSE_ROVER)
@@ -534,16 +528,11 @@ def planifier_mission(grille, origine_xy, resolution,
 
 
 # ===========================================================================
-# 8. EXPORT WAYPOINTS POUR ROVER / MISSION PLANNER
+# 8. EXPORT WAYPOINTS
 # ===========================================================================
 
 def exporter_waypoints(waypoints_monde, fichier="mission_waypoints.txt"):
-    """
-    Exporte les waypoints en coordonnées réelles (mètres) dans un fichier texte.
-    Format compatible Mission Planner / ArduPilot (simplifié) et executer_chemin().
-
-    Colonnes : index | x (m) | y (m) | type | label
-    """
+    """Exporte les waypoints en coordonnées réelles (m) dans un fichier texte."""
     with open(fichier, "w", encoding="utf-8") as f:
         f.write("# Mission lunaire SS3 — Waypoints en coordonnées réelles (mètres)\n")
         f.write("# index\tx_m\ty_m\ttype\tlabel\n")
@@ -556,24 +545,18 @@ def waypoints_pour_rover(waypoints_monde):
     """
     Retourne une liste de tuples (x, y) en mètres, prêts pour executer_chemin().
     Filtre les doublons consécutifs et les points trop proches (< 1 cm).
-
-    Returns:
-        liste de (x, y) float — coordonnées réelles en mètres
     """
-    coords = [(wp["x"], wp["y"]) for wp in waypoints_monde]
-
-    # Dédoublonner les points consécutifs trop proches
-    seuil = 0.01  # 1 cm
+    coords  = [(wp["x"], wp["y"]) for wp in waypoints_monde]
+    seuil   = 0.01
     filtres = [coords[0]]
     for pt in coords[1:]:
         if np.linalg.norm(np.array(pt) - np.array(filtres[-1])) > seuil:
             filtres.append(pt)
-
     return filtres
 
 
 # ===========================================================================
-# 9. VISUALISATION (optionnelle — debug local uniquement, pas de sauvegarde PNG)
+# 9. VISUALISATION
 # ===========================================================================
 
 def plot_astar(grille, origine_xy, resolution,
@@ -581,7 +564,6 @@ def plot_astar(grille, origine_xy, resolution,
                waypoints_monde, ordre, position_depart=(0.0, 0.0)):
     """
     Vue 2D du dessus — NavMesh + chemins A* — affichage écran uniquement.
-    Aucune sauvegarde de fichier PNG.
     """
     try:
         import matplotlib.pyplot as plt
@@ -602,7 +584,6 @@ def plot_astar(grille, origine_xy, resolution,
     ax.imshow(grille.T, origin='lower', extent=extent,
               cmap=cmap, vmin=0, vmax=2, alpha=0.8, interpolation='nearest')
 
-    # Chemins A*
     for i, chemin in enumerate(chemins):
         c  = COULEURS[i % len(COULEURS)]
         lb = (f"Segment {i+1} → Objet {ordre[i].label}"
@@ -615,7 +596,6 @@ def plot_astar(grille, origine_xy, resolution,
             ax.annotate('', xy=(xs[j+1], ys[j+1]), xytext=(xs[j], ys[j]),
                         arrowprops=dict(arrowstyle='->', color=c, lw=1.5))
 
-    # Points d'orbite
     orbit_wps = [wp for wp in waypoints_monde if wp["type"] == "orbit"]
     if orbit_wps:
         ox = [wp["x"] for wp in orbit_wps]
@@ -623,7 +603,6 @@ def plot_astar(grille, origine_xy, resolution,
         ax.scatter(ox, oy, s=30, color='#FF6F00', zorder=5, marker='o',
                    label=f"Orbite (r={ORBIT_RADIUS*100:.0f}cm)", alpha=0.7)
 
-    # Objets d'intérêt
     for obj in objets_interet:
         ax.scatter(obj.centroide[0], obj.centroide[1],
                    s=250, color='#1565C0', zorder=6, marker='*',
@@ -638,7 +617,6 @@ def plot_astar(grille, origine_xy, resolution,
                     bbox=dict(boxstyle='round,pad=0.3', fc='white',
                               ec='#1565C0', alpha=0.85))
 
-    # Obstacles
     for obj in obstacles:
         ax.scatter(obj.centroide[0], obj.centroide[1],
                    s=200, color='#B71C1C', zorder=6, marker='X',
@@ -649,17 +627,15 @@ def plot_astar(grille, origine_xy, resolution,
                     bbox=dict(boxstyle='round,pad=0.3', fc='white',
                               ec='#B71C1C', alpha=0.85))
 
-    # Départ
     ax.scatter(*position_depart, s=350, color='#FF6F00',
                zorder=7, marker='D', edgecolors='white', linewidth=1)
     ax.annotate(f' DÉPART\n ({position_depart[0]:.2f}, {position_depart[1]:.2f})',
                 position_depart, fontsize=9, fontweight='bold', color='#E65100',
                 bbox=dict(boxstyle='round,pad=0.3', fc='white', ec='#FF6F00', alpha=0.9))
 
-    # Légende
     handles = [
         mpatches.Patch(color='#C8F5C8', label='Zone navigable'),
-        mpatches.Patch(color='#FFCDD2', label='Obstacle (zone gonflée ≥ rayon rover)'),
+        mpatches.Patch(color='#FFCDD2', label='Obstacle (zone gonflée)'),
         mpatches.Patch(color='#F0F0F0', label='Hors-carte'),
         plt.Line2D([0], [0], marker='*', color='w', markerfacecolor='#1565C0',
                    markersize=13, label="Objet d'intérêt"),
@@ -684,12 +660,7 @@ def plot_astar(grille, origine_xy, resolution,
     ax.grid(True, alpha=0.25, linewidth=0.5)
     plt.tight_layout()
     plt.show()
-    # NOTE : Aucun plt.savefig() — pas de création de fichier PNG
 
-
-# ===========================================================================
-# TEST STANDALONE
-# ===========================================================================
 
 # ===========================================================================
 # 10. TEST STANDALONE
@@ -705,7 +676,7 @@ if __name__ == "__main__":
                         DBSCAN_EPS, DBSCAN_MIN_SAMPLES)
 
     print("=" * 55)
-    print("  Pipeline SS3 — Pathfinding A* + Orbite complète")
+    print("  Pipeline SS3 — Pathfinding A* + Orbite + SS2")
     print("=" * 55)
 
     points_bruts                            = generer_terrain("simulation/" + NOM_FICHIER)
@@ -715,64 +686,26 @@ if __name__ == "__main__":
     points_navmesh                          = np.vstack([sol, terrain_naturel])
     _, points_utilises, navigable, _        = perform_triangulation(points_navmesh)
 
-    print(f"\nObjets d'intérêt : {len(objets_interet)}")
-    print(f"Obstacles        : {len(obstacles)}")
-    for obj in objets_interet + obstacles:
-        print(f"  {obj}")
-
     grille, origine_xy, res = construire_grille(
         points_utilises, navigable, obstacles + objets_interet
     )
-    print(f"\nGrille : {grille.shape[0]}x{grille.shape[1]} cellules "
-          f"({res}m/cellule) — {(grille==0).sum()} cellules navigables")
-    print(f"Coin bas-gauche terrain : ({origine_xy[0]:.3f}m, {origine_xy[1]:.3f}m)")
 
-    # Position de départ : cellule libre la plus proche du coin bas-gauche
-    ix_dep = int(0.5 / res)
-    iy_dep = int(0.5 / res)
-    cell_dep = cellule_libre_proche(grille, ix_dep, iy_dep)
-    if cell_dep:
-        position_depart = grille_vers_monde(*cell_dep, origine_xy, res)
-    else:
-        position_depart = (float(origine_xy[0] + 0.5), float(origine_xy[1] + 0.5))
-    print(f"Position de départ rover : ({position_depart[0]:.3f}m, {position_depart[1]:.3f}m)\n")
-
-    print("── Planification en cours ──")
+    # Mode simulation : envoyer_signal_ss2=False pour ne pas contacter le vrai Raspberry
     chemins, waypoints_monde, ordre, stats = planifier_mission(
-        grille, origine_xy, res, objets_interet, position_depart=position_depart
+        grille, origine_xy, res,
+        objets_interet, position_depart=(0.0, 0.0),
+        envoyer_signal_ss2=False   # ← passer à True en mission réelle
     )
 
-    # ── Résumé mission (sans imprimer tous les waypoints) ──
-    print(f"\n{'=' * 55}")
+    print(f"\n{'='*55}")
     print(f"  RÉSUMÉ MISSION")
-    print(f"{'=' * 55}")
-    print(f"  Objets visités    : {len(ordre)}")
-    print(f"  Total waypoints   : {len(waypoints_monde)}")
-    print(f"  Distance totale   : {stats['distance_totale_m']:.2f} m")
-    print(f"  Vitesse rover     : {stats['vitesse_ms']} m/s")
-    print(f"  Temps estimé      : {stats['temps_str']}")
-    print(f"{'=' * 55}\n")
+    print(f"{'='*55}")
+    print(f"  Objets visités  : {len(ordre)}")
+    print(f"  Total waypoints : {len(waypoints_monde)}")
+    print(f"  Distance totale : {stats['distance_totale_m']:.2f} m")
+    print(f"  Temps estimé    : {stats['temps_str']}")
 
-    # ── Résumé par segment (pas de liste exhaustive) ──
-    types_count = {}
-    for wp in waypoints_monde:
-        types_count[wp["type"]] = types_count.get(wp["type"], 0) + 1
-    for t, n in types_count.items():
-        print(f"  {t:10s} : {n} waypoints")
-
-    # Export fichier texte complet
     exporter_waypoints(waypoints_monde)
-
-    # Liste prête pour executer_chemin()
-    coords_rover = waypoints_pour_rover(waypoints_monde)
-    print(f"\n  {len(coords_rover)} coordonnées exportées pour executer_chemin()")
-    print(f"  Premiers waypoints :")
-    for i, (x, y) in enumerate(coords_rover[:5]):
-        print(f"    WP{i:03d} : ({x:.4f}m, {y:.4f}m)")
-    if len(coords_rover) > 5:
-        print(f"    ... ({len(coords_rover)-5} autres dans mission_waypoints.txt)")
-
-    # Visualisation (affichage écran, pas de PNG)
     plot_astar(grille, origine_xy, res,
                chemins, objets_interet, obstacles,
-               waypoints_monde, ordre, position_depart=position_depart)
+               waypoints_monde, ordre, position_depart=(0.0, 0.0))

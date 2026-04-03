@@ -23,38 +23,39 @@ TRIANG_OUTLIER_VOISINS   = 10    # Nombre de voisins à considérer pour filtre 
 TRIANG_OUTLIER_DIST_MAX  = 0.2   # Distance max au voisin le plus proche (m)
 
 # --- A* PATHFINDING ---
-ASTAR_RESOLUTION     = 0.10   # Taille cellule grille (m) — descendre = plus précis mais plus lent
-ASTAR_RAYON_ROVER    = 0.20   # Rayon du rover (m) — À AJUSTER selon specs réelles
+ASTAR_RESOLUTION     = 0.10   # Taille cellule grille (m)
+ASTAR_RAYON_ROVER    = 0.20   # Rayon du rover (m)
 ASTAR_RAYON_INFLATION= 0.35   # Doit toujours être >= ASTAR_RAYON_ROVER
 ASTAR_SCAN_DISTANCE  = 0.50   # Distance à laquelle le rover s'arrête pour scanner (m)
-ASTAR_Z_SOL          = 3.10   # Hauteur Z du sol (m) — pour filtrer les points hors-sol
+ASTAR_Z_SOL          = 3.10   # Hauteur Z du sol (m)
 
 # --- ORBITE AUTOUR DES OBJETS D'INTÉRÊT ---
-# Le rover fait un tour COMPLET autour de chaque objet d'intérêt détecté.
-# L'orbite est planifiée par A* entre chaque point consécutif du cercle,
-# ce qui garantit un chemin navigable même si certains angles sont bloqués.
+ORBIT_RADIUS         = 0.10   # Rayon d'orbite autour de l'objet (m)
+ORBIT_N_POINTS       = 16     # Nombre de points sur le cercle d'orbite
+ORBIT_VITESSE_ROVER  = 0.10   # Vitesse de déplacement du rover (m/s)
 
-ORBIT_RADIUS         = 0.10   # Rayon d'orbite autour de l'objet (m) — 10 cm
-                               # À ajuster selon la taille des objets attendus.
-                               # Trop petit = risque de collision avec l'objet.
-                               # Trop grand = risque de sortir de la zone navigable.
+# --- GRILLE — POST-TRAITEMENT ---
+ASTAR_TAILLE_MAX_ILOT = 10    # Taille max (cellules) d'un îlot hors-carte à boucher
 
-ORBIT_N_POINTS       = 16     # Nombre de points sur le cercle d'orbite.
-                               # Plus élevé = tour plus lisse mais plus de calcul A*.
-                               # Recommandé : 12–20 selon la résolution de la grille.
-                               # À 0.10m/cellule et r=10cm, 16 points = ~3.9cm entre pts.
+# --- PHOTOGRAMMÉTRIE (orbite caméra) ---
+PHOTO_NB_PHOTOS      = 30     # Nombre de photos à prendre autour de la roche
+                               # SS2 calcule automatiquement l'intervalle angulaire
+                               # entre chaque photo selon ce nombre.
 
-ORBIT_VITESSE_ROVER  = 0.10   # Vitesse de déplacement du rover (m/s).
-                               # Utilisé pour estimer le temps de mission.
-                               # À calibrer avec les tests réels sur le rover physique.
+# --- COMMUNICATION SS2 (Raspberry Pi — Caméra / Photogrammétrie) ---
+SS2_IP      = "192.168.1.20"  # IP Ethernet du Raspberry Pi SS2
+                               # À AJUSTER selon le réseau de la mission.
+SS2_PORT    = 5005             # Port TCP sur lequel SS2 écoute
+SS2_TIMEOUT = 120              # Timeout max (s) pour attendre la fin de la session photo.
+                               # 30 photos × ~2s chacune = ~60s typique.
+                               # Mettre à 120s pour avoir une marge confortable.
 
-# --- GRILLE — POST-TRAITEMENT (bouchage des trous hors-carte) ---
-ASTAR_TAILLE_MAX_ILOT = 10    # Taille max (cellules) d'un îlot hors-carte à boucher.
-                               # Ces îlots sont des artefacts de scan LiDAR (trous isolés).
-                               # À 0.10m/cell, 10 cellules ≈ zone de 10×10cm.
-                               # Augmenter si des trous plus grands doivent être bouchés.
+# --- COMMUNICATION ARDUINO (Contrôle moteurs) ---
+NOM_PORT             = "COM3"  # Port série Arduino — À AJUSTER selon votre système
+                               # Linux/Mac : "/dev/ttyUSB0" ou "/dev/ttyACM0"
+ARDUINO_BAUDRATE     = 9600    # Doit correspondre au Serial.begin() dans le sketch Arduino
+ARDUINO_TIMEOUT      = 5       # Timeout (s) pour readline() sur le port série
 
 # --- FICHIERS ---
 NOM_FICHIER          = "NuagePtsTest1-6.csv"
-NOM_PORT             = "COM3"   # Port série Arduino — À AJUSTER selon votre système
 
