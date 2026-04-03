@@ -27,15 +27,4 @@ ASTAR_Z_SOL          = 3.10   # Hauteur Z du sol (m) — pour filtrer les points
 
 # --- FICHIERS ---
 NOM_FICHIER          = "NuagePtsTest1-6.csv"
-# --- D* LITE ---
-DSTAR_CELL          = 4      # pixels par cellule pour l'affichage Pygame
-DSTAR_MARGIN        = 1      # marge entre cellules (pixels)
-DSTAR_VIEW_RANGE    = 5      # rayon de rescan en cellules (5 × 0.1m = 50cm)
-DSTAR_GRID_SIZE     = 200    # taille de la grille (200×200 cellules)
-# Note : DSTAR_RESOLUTION doit rester identique à ASTAR_RESOLUTION (0.10)
-# --- D* LITE ---
-DSTAR_CELL          = 4      # pixels par cellule pour l'affichage Pygame
-DSTAR_MARGIN        = 1      # marge entre cellules (pixels)
-DSTAR_VIEW_RANGE    = 5      # rayon de rescan en cellules (5 × 0.1m = 50cm)
-DSTAR_GRID_SIZE     = 200    # taille de la grille (200×200 cellules)
-# Note : DSTAR_RESOLUTION doit rester identique à ASTAR_RESOLUTION (0.10)
+
