@@ -14,7 +14,7 @@ from navigation.astar import (
     chemin_vers_monde,
 )
 
-from navigation.envoyer_roche import envoyer_roche
+from communication.envoyer_roche import envoyer_roche
 from config import ORBIT_RADIUS, ORBIT_N_POINTS, ASTAR_SCAN_DISTANCE
 
 
