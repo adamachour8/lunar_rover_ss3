@@ -3,11 +3,5 @@ pyransac3d
 scikit-learn
 scipy
 matplotlib
-pyserial          # Communication série avec Arduino (import serial)
-                  # Utilisé dans interfaces/motor_control.py
-
-# Simulation / terrain
-pygame            # Terrain generator
-
-# Communication réseau SS2 (caméra)
-# → socket, json, threading, time : stdlib Python — aucun pip requis
+pyserial 
+pygame

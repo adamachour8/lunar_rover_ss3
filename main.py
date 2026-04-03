@@ -28,6 +28,9 @@ Flags de débogage :
 import sys, os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
+import serial
+import time
+from config import NOM_PORT
 import numpy as np
 
 from config import (
@@ -44,7 +47,7 @@ from navigation.astar              import (
     construire_grille, planifier_mission,
     plot_astar, exporter_waypoints, waypoints_pour_rover
 )
-from interfaces.motor_control      import connecter_arduino, executer_chemin
+from interfaces.motor_control      import executer_chemin
 
 # ===========================================================================
 # FLAGS — modifier ici pour passer du mode debug au mode mission réelle
@@ -142,10 +145,11 @@ if not SIMULATION_MODE:
         sys.exit(0)
 
     # Connexion Arduino
-    arduino = connecter_arduino()
-    if arduino is None:
-        print("❌ Arduino non disponible — mission annulée")
-        sys.exit(1)
+    arduino = serial.Serial(NOM_PORT, baudrate=9600, timeout=5)
+    print("🔌 Connexion Arduino...")
+    time.sleep(2)
+    arduino.reset_input_buffer()
+    print("✅ Prêt")
 
     # Exécution du chemin complet
     # Note : les signaux SS2 sont déjà intégrés dans planifier_mission()
