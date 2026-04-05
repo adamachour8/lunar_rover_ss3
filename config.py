@@ -39,8 +39,8 @@ ASTAR_TAILLE_MAX_ILOT = 10
 PHOTO_NB_PHOTOS      = 30
 
 # Communication SS2
-SS2_IP      = "192.168.1.20"
-SS2_PORT    = 5005
+SS2_IP   = "10.0.0.2"   # IP du RPI SS2 sur le réseau Ethernet direct
+SS2_PORT = 5005
 SS2_TIMEOUT = 120  # 30 photos × ~2s = ~60s, marge à 120s
 
 # Communication Arduino
