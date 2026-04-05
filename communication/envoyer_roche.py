@@ -1,31 +1,3 @@
-"""
-communication/envoyer_roche.py
--------------------------------
-Envoie un signal TCP à SS2 (Raspberry Pi caméra) lorsque le rover est en
-position devant une roche et prêt pour la session de photogrammétrie.
-
-Ce que SS3 envoie à SS2 :
-    - hauteur_cm         : hauteur de la roche en cm → SS2 règle l'inclinaison de la caméra
-    - rayon_orbite_m     : rayon du cercle que le rover va parcourir autour de la roche
-    - nb_photos          : nombre de photos à prendre (30 selon cahier des charges)
-    - duree_orbite_s     : temps estimé (s) que le rover met à faire LE TOUR COMPLET
-                           → SS2 calcule l'intervalle entre chaque photo :
-                             intervalle_s = duree_orbite_s / nb_photos
-    - position           : coordonnées (x, y) du rover au moment du signal
-    - centroide          : coordonnées (x, y) de la roche détectée
-    - timestamp          : heure Unix du signal
-
-Ce que SS3 reçoit de SS2 en retour :
-    - status "READY"     : SS2 est prête, peut commencer l'orbite
-    - status "OK"        : session photo terminée (30 photos prises)
-    - status "ERROR"     : SS2 a eu un problème (mission continue en mode dégradé)
-
-Protocole en deux temps :
-    1. SS3 envoie le message d'info → SS2 répond "READY" quand la caméra est réglée
-    2. SS3 commence l'orbite → SS2 prend ses 30 photos de manière autonome
-    3. SS2 envoie "OK" quand tout est terminé (SS3 attend avant de passer à la roche suivante)
-"""
-
 import socket
 import json
 import time

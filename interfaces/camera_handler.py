@@ -1,31 +1,3 @@
-"""
-interfaces/camera_handler.py
-------------------------------
-Serveur TCP côté SS2 (Raspberry Pi caméra / photogrammétrie).
-Ce fichier tourne en continu sur le Raspberry de SS2.
-
-Protocole avec SS3 :
-
-  ÉTAPE 1 — Avant l'orbite :
-    SS3 → SS2 : {"type": "ROCHE_DETECTEE", "hauteur_cm": X, "duree_orbite_s": Y,
-                  "nb_photos": 30, "rayon_orbite_m": 0.10, ...}
-    SS2 ajuste la caméra selon la hauteur.
-    SS2 → SS3 : {"status": "READY"}     ← SS3 démarre l'orbite
-
-  ÉTAPE 2 — Pendant l'orbite :
-    SS2 prend les 30 photos de manière autonome, espacées de :
-      intervalle_s = duree_orbite_s / nb_photos
-    SS2 ne bloque pas SS3 — les deux travaillent en parallèle.
-
-  ÉTAPE 3 — Après l'orbite :
-    SS3 → SS2 : {"type": "DEMANDE_STATUT", "label": X}
-    SS2 → SS3 : {"status": "OK", "nb_photos_prises": 30}
-                 ou {"status": "ERROR", "message": "..."}
-
-Lancer ce fichier sur le Raspberry SS2 :
-    python camera_handler.py
-"""
-
 import socket
 import json
 import time
