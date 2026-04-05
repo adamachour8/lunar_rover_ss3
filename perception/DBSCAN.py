@@ -3,45 +3,25 @@ import matplotlib.pyplot as plt
 from sklearn.cluster import DBSCAN
 import sys, os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from config import DBSCAN_EPS, DBSCAN_MIN_SAMPLES
-
+from config import DBSCAN_EPS, DBSCAN_MIN_SAMPLES, NOM_FICHIER, RANSAC_THRESHOLD
 from simulation.terrain_generator import generer_terrain
 from perception.ransac import ransac
-from config import NOM_FICHIER, RANSAC_THRESHOLD
+
 
 def dbscan(obstacles, epsilon=DBSCAN_EPS, min_echantillons=DBSCAN_MIN_SAMPLES):
-    """
-    Regroupe les points obstacles en clusters.
-
-    Args:
-        obstacles        : np.array (N, 3) — points hors du sol (output RANSAC)
-        epsilon          : Distance max entre deux points du même cluster
-        min_echantillons : Nombre minimum de points pour former un cluster
-
-    Returns:
-        clusters : dict {label (int) -> np.array (N, 3)}
-    """
     db     = DBSCAN(eps=epsilon, min_samples=min_echantillons).fit(obstacles)
     labels = db.labels_
 
     clusters = {
         label: obstacles[labels == label]
         for label in set(labels)
-        if label != -1  # -1 = bruit, ignoré
+        if label != -1  # -1 = bruit
     }
 
     return clusters
 
 
 def plot_dbscan(clusters, points_all=None):
-    """
-    Affiche tous les clusters en couleurs différentes en 3D.
-
-    Args:
-        clusters   : dict {label -> np.array (N, 3)} — output de dbscan()
-        points_all : np.array (N, 3) optionnel — tous les points originaux
-                     (affichés en gris en arrière-plan si fourni)
-    """
     fig = plt.figure()
     ax  = fig.add_subplot(projection='3d')
 
@@ -62,9 +42,9 @@ def plot_dbscan(clusters, points_all=None):
 
 
 if __name__ == "__main__":
-    points_bruts                            = generer_terrain("simulation/" + NOM_FICHIER)
-    sol, terrain_naturel, obstacles_pts, _  = ransac(points_bruts, RANSAC_THRESHOLD)
-    clusters                                = dbscan(obstacles_pts)
+    points_bruts                           = generer_terrain("simulation/" + NOM_FICHIER)
+    sol, terrain_naturel, obstacles_pts, _ = ransac(points_bruts, RANSAC_THRESHOLD)
+    clusters                               = dbscan(obstacles_pts)
 
     print(f"Nombre de clusters détectés : {len(clusters)}")
     for label, pts in clusters.items():

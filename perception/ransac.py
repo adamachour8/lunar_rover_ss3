@@ -1,31 +1,22 @@
-import pyransac3d as pyrsc
 import numpy as np
+import matplotlib.pyplot as plt
+import pyransac3d as pyrsc
 import sys, os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from config import RANSAC_THRESHOLD, RANSAC_BOSSEE_MAX
-
-import matplotlib.pyplot as plt
+from config import RANSAC_THRESHOLD, RANSAC_BOSSEE_MAX, NOM_FICHIER
 from simulation.terrain_generator import generer_terrain
-from config import NOM_FICHIER
+
 
 def ransac(points, threshold=RANSAC_THRESHOLD):
-    """
-    Sépare les points en 3 catégories :
-    - sol             : points proches du plan RANSAC (inliers)
-    - terrain_naturel : petites bosses (entre threshold et RANSAC_BOSSEE_MAX)
-    - obstacles       : gros objets (au-dessus de RANSAC_BOSSEE_MAX)
-
-    Retourne: sol, terrain_naturel, obstacles, best_eq
-    """
-    plane    = pyrsc.Plane()
+    plane = pyrsc.Plane()
     best_eq, _ = plane.fit(points, threshold)
 
     A, B, C, D = best_eq
-    norm        = np.sqrt(A**2 + B**2 + C**2)
-    dist        = (A*points[:,0] + B*points[:,1] + C*points[:,2] + D) / norm
+    norm = np.sqrt(A**2 + B**2 + C**2)
+    dist = (A*points[:,0] + B*points[:,1] + C*points[:,2] + D) / norm
 
-    sol         = points[np.abs(dist) <= threshold]
-    au_dessus   = points[np.abs(dist) >  threshold]
+    sol       = points[np.abs(dist) <= threshold]
+    au_dessus = points[np.abs(dist) >  threshold]
 
     dist_au_dessus = np.abs(
         (A*au_dessus[:,0] + B*au_dessus[:,1] + C*au_dessus[:,2] + D) / norm

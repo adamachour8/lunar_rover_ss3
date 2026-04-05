@@ -1,15 +1,34 @@
-# Lunar Rover SS3 — Guidage, Localisation et Communication
+# Rover lunaire SS3 — Guidage, localisation et communication
 
-## Description
+Système de navigation autonome développé dans le cadre de la mission analogique Artémis II à Polytechnique Montréal (AER1110, Hiver 2026). SS3 gère la perception du terrain, le pathfinding et la communication entre les sous-systèmes.
 
-Sous-système 3 (SS3) du module lunaire développé dans le cadre du projet AER1110 
-à Polytechnique Montréal (Hiver 2026), en collaboration avec l'Agence Spatiale Canadienne.
+**Équipe C3** — A. Achour, A. Benelbadaoui, E. Boutin, A. St-Pierre, O. Perreault
 
+---
 
-## Flux d'opération général
+## Architecture de communication
 
-1. **Préscan** — Le LiDAR effectue un scan initial, RANSAC modélise le terrain
-2. **Pathfinding** — Triangulation + D*-Lite génère un chemin vers les objets détectés
-3. **Déplacement** — SS4 exécute le chemin reçu via `motor_control.py`
-4. **Scan détaillé** — SS2 prend des images pour le modèle 3D à 15m de l'objet
-5. **Retour** — Sur signal de batterie faible, D*-Lite recalcule le chemin de retour
+![Architecture](docs/Architecture_communication.png)
+
+---
+
+## Assemblage matériel
+
+![Communications CAD](docs/Communcations_CAD.png)
+![CAD complet](docs/CAD complet.png)
+
+---
+
+## Lancer la simulation
+
+```bash
+python main.py
+```
+
+Par défaut, `SIMULATION_MODE = True` dans `main.py` — aucune connexion Arduino ni SS2 requise. Mettre à `False` pour la mission réelle.
+
+---
+
+## Configuration
+
+Tous les paramètres (seuils RANSAC, DBSCAN, résolution de grille, rayon d'orbite, ports série et réseau) sont centralisés dans `config.py`.

@@ -3,6 +3,7 @@ import sys, os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from config import FILTRE_HAUTEUR_MIN, FILTRE_HAUTEUR_MAX, FILTRE_DISTANCE_MAX
 
+
 class ObjetDetecte:
     def __init__(self, label, points, categorie):
         self.label     = label
