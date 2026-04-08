@@ -22,7 +22,7 @@ from navigation.astar              import (
 )
 from interfaces.motor_control import executer_chemin
 
-SIMULATION_MODE    = True
+SIMULATION_MODE    = False
 AFFICHER_GRAPHES   = True
 EXPORTER_WAYPOINTS = True
 
