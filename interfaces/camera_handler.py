@@ -6,6 +6,8 @@ import threading
 HOST = "0.0.0.0"
 PORT = 5005
 
+_lock = threading.Lock()
+
 _etat = {
     "en_cours":         False,
     "label":            None,
@@ -33,10 +35,10 @@ def ajuster_camera(hauteur_cm):
 
 
 def _thread_prendre_photos(nb_photos, intervalle_s, label):
-    global _etat
-    _etat["nb_photos_prises"] = 0
-    _etat["termine"]          = False
-    _etat["erreur"]           = None
+    with _lock:
+        _etat["nb_photos_prises"] = 0
+        _etat["termine"]          = False
+        _etat["erreur"]           = None
 
     print(f"Debut session photo — roche {label} — {nb_photos} photos x {intervalle_s:.1f}s")
 
@@ -46,14 +48,18 @@ def _thread_prendre_photos(nb_photos, intervalle_s, label):
             # camera.capture(f"roche_{label}_photo_{i:03d}.jpg")
             print(f"Photo {i+1}/{nb_photos} — roche {label}")
             time.sleep(intervalle_s)
-            _etat["nb_photos_prises"] += 1
+            with _lock:
+                _etat["nb_photos_prises"] += 1
         except Exception as e:
-            _etat["erreur"] = str(e)
+            with _lock:
+                _etat["erreur"] = str(e)
             print(f"Erreur photo {i+1} : {e}")
             break
 
-    _etat["termine"] = True
-    print(f"Session terminee — {_etat['nb_photos_prises']}/{nb_photos} photos")
+    with _lock:
+        _etat["termine"] = True
+        nb_prises = _etat["nb_photos_prises"]
+    print(f"Session terminee — {nb_prises}/{nb_photos} photos")
 
 
 def traiter_message(message, conn):
@@ -71,10 +77,11 @@ def traiter_message(message, conn):
 
         reglages = ajuster_camera(hauteur_cm)
 
-        _etat["en_cours"]        = True
-        _etat["label"]           = label
-        _etat["nb_photos_total"] = nb_photos
-        _etat["termine"]         = False
+        with _lock:
+            _etat["en_cours"]        = True
+            _etat["label"]           = label
+            _etat["nb_photos_total"] = nb_photos
+            _etat["termine"]         = False
 
         threading.Thread(
             target=_thread_prendre_photos,
@@ -94,21 +101,25 @@ def traiter_message(message, conn):
     elif type_msg == "DEMANDE_STATUT":
         label = message.get("label")
 
-        if _etat["erreur"]:
-            reponse = {"status": "ERROR", "label": label, "message": _etat["erreur"]}
-        elif _etat["termine"]:
-            reponse = {"status": "OK", "label": label, "nb_photos_prises": _etat["nb_photos_prises"]}
-            _etat["en_cours"] = False
+        with _lock:
+            snapshot = _etat.copy()
+            if snapshot["termine"] and not snapshot["erreur"]:
+                _etat["en_cours"] = False
+
+        if snapshot["erreur"]:
+            reponse = {"status": "ERROR", "label": label, "message": snapshot["erreur"]}
+        elif snapshot["termine"]:
+            reponse = {"status": "OK", "label": label, "nb_photos_prises": snapshot["nb_photos_prises"]}
         else:
             reponse = {
                 "status":           "EN_COURS",
                 "label":            label,
-                "nb_photos_prises": _etat["nb_photos_prises"],
-                "nb_photos_total":  _etat["nb_photos_total"],
+                "nb_photos_prises": snapshot["nb_photos_prises"],
+                "nb_photos_total":  snapshot["nb_photos_total"],
             }
 
         conn.sendall(json.dumps(reponse).encode("utf-8"))
-        print(f"Statut : {reponse['status']} ({_etat['nb_photos_prises']}/{_etat['nb_photos_total']} photos)")
+        print(f"Statut : {reponse['status']} ({snapshot['nb_photos_prises']}/{snapshot['nb_photos_total']} photos)")
 
     else:
         print(f"Type inconnu : {type_msg}")
