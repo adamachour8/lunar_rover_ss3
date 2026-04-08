@@ -55,8 +55,28 @@ _, points_utilises, navigable, non_nav = perform_triangulation(points_navmesh)
 print(f"      Triangles navigables : {len(navigable)} | Non-navigables : {len(non_nav)}")
 
 grille, origine_xy, res = construire_grille(
-    points_utilises, navigable, obstacles + objets_interet
+    points_utilises, navigable, obstacles
 )
+
+# Forcer la zone autour du départ navigable (angle mort du capteur LiDAR)
+_rayon_depart = 0.30  # 30cm autour de (0,0)
+_ix0 = int((0.0 - origine_xy[0]) / res)
+_iy0 = int((0.0 - origine_xy[1]) / res)
+_r_cells = int(np.ceil(_rayon_depart / res))
+for _dx in range(-_r_cells, _r_cells + 1):
+    for _dy in range(-_r_cells, _r_cells + 1):
+        if np.sqrt(_dx**2 + _dy**2) * res <= _rayon_depart:
+            _gx, _gy = _ix0 + _dx, _iy0 + _dy
+            if 0 <= _gx < grille.shape[0] and 0 <= _gy < grille.shape[1]:
+                if grille[_gx, _gy] != 1:
+                    grille[_gx, _gy] = 0
+
+# Dilater la zone navigable pour connecter les îlots isolés
+from scipy import ndimage as _ndi
+_nav_mask = (grille == 0)
+_dilated  = _ndi.binary_dilation(_nav_mask, iterations=3)
+grille    = np.where(_dilated & (grille != 1), 0, grille)
+
 print(f"      Grille : {grille.shape[0]}×{grille.shape[1]} cellules ({res}m/cell) — {(grille==0).sum()} cellules navigables")
 
 chemins, waypoints_monde, ordre, stats = planifier_mission(
