@@ -7,7 +7,7 @@ import numpy as np
 from config import (
     NOM_FICHIER, RANSAC_THRESHOLD,
     DBSCAN_EPS, DBSCAN_MIN_SAMPLES, NOM_PORT,
-    ARDUINO_BAUDRATE, ARDUINO_TIMEOUT,
+    ARDUINO_BAUDRATE, ARDUINO_TIMEOUT, ORBIT_VITESSE_ROVER,
 )
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -83,7 +83,7 @@ chemins, waypoints_monde, ordre, stats = planifier_mission(
     grille, origine_xy, res,
     objets_interet,
     position_depart=(0.0, 0.0),
-    envoyer_signal_ss2=not SIMULATION_MODE,
+    envoyer_signal_ss2=False,  # SS2 appelé pendant l'exécution Arduino, pas ici
 )
 
 print(f"\n{'='*60}")
@@ -111,19 +111,73 @@ if not SIMULATION_MODE:
         sys.exit(0)
 
     import serial
+    from communication.envoyer_roche import envoyer_roche, attendre_fin_photo
+
     arduino = serial.Serial(NOM_PORT, baudrate=ARDUINO_BAUDRATE, timeout=ARDUINO_TIMEOUT)
     print("Connexion Arduino...")
     time.sleep(2)
     arduino.reset_input_buffer()
-    print("Prêt")
 
-    coords = waypoints_pour_rover(waypoints_monde)
-    print(f"Démarrage exécution — {len(coords)} waypoints\n")
+    arduino.write(b"PING\n")
+    reponse_ping = arduino.readline().decode('utf-8').strip()
+    print(f"Connexion ELEGOO : {reponse_ping}")
+    if reponse_ping != "PONG":
+        print("ELEGOO non disponible — vérifier la connexion USB")
+        arduino.close()
+        sys.exit(1)
+    print("Prêt\n")
 
-    succes = executer_chemin(coords, arduino)
+    pos_courante   = (0.0, 0.0)
+    succes_global  = True
+
+    for obj in ordre:
+        label = obj.label
+
+        approche_wps = [wp for wp in waypoints_monde
+                        if wp["type"] == "travel" and f"Objet {label}" in wp.get("label", "")]
+        orbite_wps   = [wp for wp in waypoints_monde
+                        if wp["type"] == "orbit"  and f"Objet {label}" in wp.get("label", "")]
+
+        # 1. Déplacement vers le point d'entrée de l'orbite
+        if approche_wps:
+            coords = [pos_courante] + [(wp["x"], wp["y"]) for wp in approche_wps]
+            print(f"→ Approche Objet {label} ({len(coords)-1} waypoints)")
+            if not executer_chemin(coords, arduino):
+                print(f"Échec approche Objet {label} — mission arrêtée")
+                succes_global = False
+                break
+            pos_courante = (approche_wps[-1]["x"], approche_wps[-1]["y"])
+
+        # 2. Rover devant la roche — signal SS2
+        if len(orbite_wps) > 1:
+            duree_orbite_s = sum(
+                np.linalg.norm(np.array([orbite_wps[i+1]["x"] - orbite_wps[i]["x"],
+                                         orbite_wps[i+1]["y"] - orbite_wps[i]["y"]]))
+                for i in range(len(orbite_wps) - 1)
+            ) / ORBIT_VITESSE_ROVER
+        else:
+            duree_orbite_s = (2 * np.pi * 0.75) / ORBIT_VITESSE_ROVER
+        envoyer_roche(obj, pos_courante, duree_orbite_s)
+
+        # 3. Orbite autour de la roche
+        if orbite_wps:
+            coords = [pos_courante] + [(wp["x"], wp["y"]) for wp in orbite_wps]
+            print(f"→ Orbite Objet {label} ({len(coords)-1} waypoints)")
+            executer_chemin(coords, arduino)
+            pos_courante = (orbite_wps[-1]["x"], orbite_wps[-1]["y"])
+
+        # 4. Attendre confirmation fin de photos SS2
+        attendre_fin_photo(label)
+
+    # 5. Retour au point de départ
+    retour_wps = [wp for wp in waypoints_monde if wp["type"] == "return"]
+    if retour_wps and succes_global:
+        coords = [pos_courante] + [(wp["x"], wp["y"]) for wp in retour_wps]
+        print(f"→ Retour départ ({len(coords)-1} waypoints)")
+        executer_chemin(coords, arduino)
 
     print(f"\n{'='*60}")
-    print(f"  Mission : {'SUCCÈS' if succes else 'ÉCHEC'}")
+    print(f"  Mission : {'SUCCÈS' if succes_global else 'ÉCHEC'}")
     print(f"{'='*60}")
 
     arduino.close()

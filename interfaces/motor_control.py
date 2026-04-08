@@ -60,7 +60,8 @@ def executer_chemin(waypoints, arduino):
             print("Succès.")
         else:
             print("Erreur ou timeout de l'Elegoo !")
-            break
+            return False
+    return True
 
 def envoyer_commande(arduino, commande):
     arduino.write(f"{commande}\n".encode('utf-8'))
