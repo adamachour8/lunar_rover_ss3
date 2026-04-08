@@ -1,5 +1,8 @@
 import math
+import os
+import serial
 import time
+import numpy as np
 
 #===================== Ajouts récents ======================
 
@@ -57,9 +60,7 @@ def executer_chemin(waypoints, arduino):
             print("Succès.")
         else:
             print("Erreur ou timeout de l'Elegoo !")
-            return False
-
-    return True
+            break
 
 def envoyer_commande(arduino, commande):
     arduino.write(f"{commande}\n".encode('utf-8'))
@@ -72,12 +73,16 @@ def envoyer_commande(arduino, commande):
 # ================ Ajout récent ======================
 
 if __name__ == "__main__":
-    import serial
-    import sys, os
-    sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-    from config import NOM_PORT, ARDUINO_BAUDRATE, ARDUINO_TIMEOUT
-    arduino = serial.Serial(NOM_PORT, baudrate=ARDUINO_BAUDRATE, timeout=ARDUINO_TIMEOUT)
+    arduino = serial.Serial('COM3', baudrate=9600, timeout=5)
     time.sleep(2)
+
+    dossier_actuel = os.path.dirname(__file__)
+    chemin_complet = os.path.join(dossier_actuel, '..', 'mission_waypoints.txt')
+    data = np.loadtxt(chemin_complet, delimiter='\t', usecols=(1, 2), skiprows=2)
+    
+    # data est maintenant une matrice (array) NumPy
+    # On peut le convertir en liste de tuples pour ton ancienne fonction :
+    chemin = [tuple(point) for point in data]
 
     # Vider le buffer — lire le "PRET" initial avant d'envoyer PING
     while arduino.in_waiting:
@@ -90,7 +95,6 @@ if __name__ == "__main__":
     print(f"Connexion ELEGOO : {reponse}")
 
     if reponse == "PONG":
-        chemin = [(0,0), (0.4, 0.3), (0.8, 0.65), (1.3, 0.4)]
         executer_chemin(chemin, arduino)
     else:
         print("ELEGOO non disponible — vérifier la connexion USB")
