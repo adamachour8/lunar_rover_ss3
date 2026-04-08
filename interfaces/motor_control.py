@@ -1,5 +1,4 @@
 import math
-import serial
 import time
 
 #===================== Ajouts récents ======================
@@ -58,7 +57,9 @@ def executer_chemin(waypoints, arduino):
             print("Succès.")
         else:
             print("Erreur ou timeout de l'Elegoo !")
-            break
+            return False
+
+    return True
 
 def envoyer_commande(arduino, commande):
     arduino.write(f"{commande}\n".encode('utf-8'))
@@ -71,7 +72,11 @@ def envoyer_commande(arduino, commande):
 # ================ Ajout récent ======================
 
 if __name__ == "__main__":
-    arduino = serial.Serial('COM3', baudrate=9600, timeout=5)
+    import serial
+    import sys, os
+    sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    from config import NOM_PORT, ARDUINO_BAUDRATE, ARDUINO_TIMEOUT
+    arduino = serial.Serial(NOM_PORT, baudrate=ARDUINO_BAUDRATE, timeout=ARDUINO_TIMEOUT)
     time.sleep(2)
 
     # Vider le buffer — lire le "PRET" initial avant d'envoyer PING

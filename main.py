@@ -1,14 +1,16 @@
 import sys, os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-import serial
 import time
 import numpy as np
 
 from config import (
     NOM_FICHIER, RANSAC_THRESHOLD,
     DBSCAN_EPS, DBSCAN_MIN_SAMPLES, NOM_PORT,
+    ARDUINO_BAUDRATE, ARDUINO_TIMEOUT,
 )
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 from simulation.terrain_generator import generer_terrain
 from perception.ransac             import ransac
 from perception.DBSCAN             import dbscan
@@ -29,7 +31,7 @@ print("  Mission lunaire SS3 — Démarrage")
 print("=" * 60)
 
 print("\n[1/5] Chargement nuage de points...")
-points_bruts = generer_terrain("simulation/" + NOM_FICHIER)
+points_bruts = generer_terrain(os.path.join(BASE_DIR, "simulation", NOM_FICHIER))
 print(f"      {len(points_bruts)} points chargés")
 
 print("[2/5] RANSAC — segmentation sol / obstacles...")
@@ -88,7 +90,8 @@ if not SIMULATION_MODE:
         print("Aucun objet d'intérêt détecté — mission terminée")
         sys.exit(0)
 
-    arduino = serial.Serial(NOM_PORT, baudrate=9600, timeout=5)
+    import serial
+    arduino = serial.Serial(NOM_PORT, baudrate=ARDUINO_BAUDRATE, timeout=ARDUINO_TIMEOUT)
     print("Connexion Arduino...")
     time.sleep(2)
     arduino.reset_input_buffer()
