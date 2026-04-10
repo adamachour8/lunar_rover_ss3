@@ -1,13 +1,16 @@
+import random
 import numpy as np
 import matplotlib.pyplot as plt
 import pyransac3d as pyrsc
 import sys, os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from config import RANSAC_THRESHOLD, RANSAC_BOSSEE_MAX, NOM_FICHIER
+from config import RANSAC_THRESHOLD, RANSAC_BOSSEE_MAX, RANSAC_SEED, NOM_FICHIER
 from simulation.terrain_generator import generer_terrain
 
 
 def ransac(points, threshold=RANSAC_THRESHOLD):
+    random.seed(RANSAC_SEED)
+    np.random.seed(RANSAC_SEED)
     plane = pyrsc.Plane()
     best_eq, _ = plane.fit(points, threshold)
 

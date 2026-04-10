@@ -6,7 +6,7 @@ import sys, os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from config import (TRIANG_ANGLE_MAX, TRIANG_MAX_POINTS, TRIANG_LONGUEUR_MAX,
                     TRIANG_OUTLIER_VOISINS, TRIANG_OUTLIER_DIST_MAX,
-                    NOM_FICHIER, RANSAC_THRESHOLD)
+                    RANSAC_SEED, NOM_FICHIER, RANSAC_THRESHOLD)
 from simulation.terrain_generator import generer_terrain
 from perception.ransac import ransac
 
@@ -30,6 +30,7 @@ def perform_triangulation(points, angle_max=TRIANG_ANGLE_MAX):
     print(f"[triangulation] Après filtre outliers : {len(points_3d)} points.")
 
     if len(points_3d) > TRIANG_MAX_POINTS:
+        np.random.seed(RANSAC_SEED)
         idx       = np.random.choice(len(points_3d), TRIANG_MAX_POINTS, replace=False)
         points_3d = points_3d[idx]
         print(f"[triangulation] Sous-échantillonnage : {TRIANG_MAX_POINTS} points utilisés.")

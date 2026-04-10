@@ -3,6 +3,7 @@
 # RANSAC
 RANSAC_THRESHOLD     = 0.08
 RANSAC_BOSSEE_MAX    = 0.05
+RANSAC_SEED          = 42
 
 # DBSCAN
 DBSCAN_EPS           = 0.25
@@ -28,9 +29,10 @@ ASTAR_SCAN_DISTANCE  = 0.50
 ASTAR_Z_SOL          = 3.10
 
 # Orbite
-ORBIT_RADIUS         = 0.75
+ORBIT_RADIUS         = 0.50
 ORBIT_N_POINTS       = 16
 ORBIT_VITESSE_ROVER  = 0.10
+ORBIT_EXCLUSION_RADIUS = ORBIT_RADIUS - ASTAR_RESOLUTION  # zone bloquée autour des objets d'intérêt
 
 # Grille
 ASTAR_TAILLE_MAX_ILOT = 10
@@ -49,5 +51,5 @@ ARDUINO_BAUDRATE = 9600
 ARDUINO_TIMEOUT  = 5
 
 # Fichiers
-NOM_FICHIER = "NuagePtsTest1-6.csv"
+NOM_FICHIER = "Test_reel1.csv"
 

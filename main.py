@@ -55,7 +55,7 @@ _, points_utilises, navigable, non_nav = perform_triangulation(points_navmesh)
 print(f"      Triangles navigables : {len(navigable)} | Non-navigables : {len(non_nav)}")
 
 grille, origine_xy, res = construire_grille(
-    points_utilises, navigable, obstacles
+    points_utilises, navigable, obstacles, objets_interet=objets_interet
 )
 
 # Forcer la zone autour du départ navigable (angle mort du capteur LiDAR)
