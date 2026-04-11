@@ -1,7 +1,7 @@
 import numpy as np
 import sys, os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from config import FILTRE_HAUTEUR_MIN, FILTRE_HAUTEUR_MAX, FILTRE_DISTANCE_MAX
+from config import FILTRE_HAUTEUR_MIN, FILTRE_HAUTEUR_MAX, FILTRE_DISTANCE_MAX, FILTRE_COMPACITE_MAX
 
 
 class ObjetDetecte:
@@ -50,6 +50,11 @@ def filtrer(clusters):
         volume  = hauteur * x_range * y_range
         if volume < 0.0001:
             continue
+
+        if hauteur <= FILTRE_HAUTEUR_MAX:
+            compacite = max(x_range, y_range) / hauteur
+            if compacite > FILTRE_COMPACITE_MAX:
+                continue
 
         categorie = "interet" if hauteur <= FILTRE_HAUTEUR_MAX else "obstacle"
         objet     = ObjetDetecte(label, points, categorie)
