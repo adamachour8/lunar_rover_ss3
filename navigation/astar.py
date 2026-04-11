@@ -14,7 +14,7 @@ def construire_grille(points_navmesh, navigable, tous_les_objets,
                       resolution=ASTAR_RESOLUTION,
                       rayon_inflation=ASTAR_RAYON_INFLATION):
     assert rayon_inflation >= ASTAR_RAYON_ROVER, \
-        f"rayon_inflation ({rayon_inflation}) doit être >= rayon du rover ({ASTAR_RAYON_ROVER})"
+        f"rayon_inflation ({rayon_inflation}) doit etre >= rayon du rover ({ASTAR_RAYON_ROVER})"
 
     x_min = points_navmesh[:, 0].min() - 0.5
     x_max = points_navmesh[:, 0].max() + 0.5
@@ -199,7 +199,7 @@ def orbite_complete_astar(grille, origine_xy, resolution,
                 pts_valides.append(pt)
 
     if len(pts_valides) < 2:
-        print(f"  [Orbite] Pas assez de points navigables ({len(pts_valides)}) — orbite impossible")
+        print(f"  [Orbite] Pas assez de points navigables ({len(pts_valides)}) -- orbite impossible")
         return [], [], 0
 
     dists      = [np.linalg.norm(np.array(pt) - np.array(pos_rover_xy)) for pt in pts_valides]
@@ -282,11 +282,11 @@ def planifier_mission(grille, origine_xy, resolution,
         from communication.envoyer_roche import envoyer_roche, attendre_fin_photo
     else:
         def envoyer_roche(objet, position_xy, duree_orbite_s):
-            print(f"  [SIM] Signal SS2 — roche {objet.label} "
+            print(f"  [SIM] Signal SS2 -- roche {objet.label} "
                   f"({objet.hauteur*100:.1f}cm) orbite {duree_orbite_s:.1f}s")
             return True
         def attendre_fin_photo(label):
-            print(f"  [SIM] Attente fin photo roche {label} — ignorée en simulation")
+            print(f"  [SIM] Attente fin photo roche {label} -- ignoree en simulation")
             return True
 
     ordre           = ordre_visite_glouton(position_depart, objets_interet)
@@ -295,7 +295,7 @@ def planifier_mission(grille, origine_xy, resolution,
 
     waypoints_monde.append({
         "x": float(position_depart[0]), "y": float(position_depart[1]),
-        "type": "depart", "label": "Départ",
+        "type": "depart", "label": "Depart",
     })
 
     pos = position_depart
@@ -311,7 +311,7 @@ def planifier_mission(grille, origine_xy, resolution,
         f_cell = cellule_libre_proche(grille, *monde_vers_grille(*pt_entree, origine_xy, resolution))
 
         if d_cell is None or f_cell is None:
-            print(f"[A*] Objet {obj.label} — cellule d'approche introuvable, objet ignoré")
+            print(f"[A*] Objet {obj.label} -- cellule d'approche introuvable, objet ignore")
             continue
 
         ch_approche = astar(grille, d_cell, f_cell)
@@ -323,9 +323,9 @@ def planifier_mission(grille, origine_xy, resolution,
                     "type": "travel", "label": f"Approche Objet {obj.label}",
                 })
             pos = pt_entree
-            print(f"[A*] Approche Objet {obj.label} ({obj.categorie}) ✓")
+            print(f"[A*] Approche Objet {obj.label} ({obj.categorie}) [OK]")
         else:
-            print(f"[A*] Objet {obj.label} — aucun chemin d'approche, objet ignoré")
+            print(f"[A*] Objet {obj.label} -- aucun chemin d'approche, objet ignore")
             continue
 
         chemins_orbite, pts_orbite, n_ok = orbite_complete_astar(
@@ -345,9 +345,9 @@ def planifier_mission(grille, origine_xy, resolution,
                     "type": "orbit", "label": f"Orbite Objet {obj.label} (r={ORBIT_RADIUS*100:.0f}cm)",
                 })
             pos = pts_orbite[-1]
-            print(f"[A*] Tour Objet {obj.label} ✓ — {n_ok}/{ORBIT_N_POINTS} segments, {len(pts_orbite)} waypoints")
+            print(f"[A*] Tour Objet {obj.label} [OK] -- {n_ok}/{ORBIT_N_POINTS} segments, {len(pts_orbite)} waypoints")
         else:
-            print(f"[A*] Objet {obj.label} — orbite impossible, scan simple (fallback)")
+            print(f"[A*] Objet {obj.label} -- orbite impossible, scan simple (fallback)")
             direction = np.array([cx, cy]) - np.array(pos)
             dist      = np.linalg.norm(direction)
             if dist > ASTAR_SCAN_DISTANCE:
@@ -369,17 +369,17 @@ def planifier_mission(grille, origine_xy, resolution,
             for wx, wy in chemin_vers_monde(ch_retour, origine_xy, resolution)[1:]:
                 waypoints_monde.append({
                     "x": round(wx, 4), "y": round(wy, 4),
-                    "type": "return", "label": "Retour départ",
+                    "type": "return", "label": "Retour depart",
                 })
-            print("[A*] Retour origine ✓")
+            print("[A*] Retour origine [OK]")
         else:
-            print("[A*] Retour origine — aucun chemin trouvé")
+            print("[A*] Retour origine -- aucun chemin trouve")
     else:
-        print("[A*] Retour origine — cellule introuvable")
+        print("[A*] Retour origine -- cellule introuvable")
 
     waypoints_monde.append({
         "x": float(position_depart[0]), "y": float(position_depart[1]),
-        "type": "arrivee", "label": "Arrivée",
+        "type": "arrivee", "label": "Arrivee",
     })
 
     stats = calculer_stats_mission(waypoints_monde, vitesse=ORBIT_VITESSE_ROVER)
@@ -388,11 +388,11 @@ def planifier_mission(grille, origine_xy, resolution,
 
 def exporter_waypoints(waypoints_monde, fichier="mission_waypoints.txt"):
     with open(fichier, "w", encoding="utf-8") as f:
-        f.write("# Mission lunaire SS3 — Waypoints en coordonnées réelles (mètres)\n")
+        f.write("# Mission lunaire SS3 -- Waypoints en coordonnees reelles (metres)\n")
         f.write("# index\tx_m\ty_m\ttype\tlabel\n")
         for i, wp in enumerate(waypoints_monde):
             f.write(f"{i}\t{wp['x']:.4f}\t{wp['y']:.4f}\t{wp['type']}\t{wp['label']}\n")
-    print(f"[Export] {len(waypoints_monde)} waypoints sauvegardés → {fichier}")
+    print(f"[Export] {len(waypoints_monde)} waypoints sauvegardes -> {fichier}")
 
 
 def waypoints_pour_rover(waypoints_monde):
@@ -413,7 +413,7 @@ def plot_astar(grille, origine_xy, resolution,
         import matplotlib.patches as mpatches
         from matplotlib.colors import ListedColormap
     except ImportError:
-        print("[plot] matplotlib non disponible — visualisation ignorée")
+        print("[plot] matplotlib non disponible -- visualisation ignoree")
         return
 
     COULEURS = ['#E63946', '#2196F3', '#FF9800', '#9C27B0', '#00BCD4', '#8BC34A']
@@ -429,7 +429,7 @@ def plot_astar(grille, origine_xy, resolution,
 
     for i, chemin in enumerate(chemins):
         c  = COULEURS[i % len(COULEURS)]
-        lb = (f"Segment {i+1} → Objet {ordre[i].label}"
+        lb = (f"Segment {i+1} -> Objet {ordre[i].label}"
               if i < len(ordre) else "Retour origine")
         xs = [grille_vers_monde(p[0], p[1], origine_xy, resolution)[0] for p in chemin]
         ys = [grille_vers_monde(p[0], p[1], origine_xy, resolution)[1] for p in chemin]
@@ -476,14 +476,14 @@ def plot_astar(grille, origine_xy, resolution,
 
     handles = [
         mpatches.Patch(color='#C8F5C8', label='Zone navigable'),
-        mpatches.Patch(color='#FFCDD2', label='Obstacle (zone gonflée)'),
+        mpatches.Patch(color='#FFCDD2', label='Obstacle (zone gonflee)'),
         mpatches.Patch(color='#F0F0F0', label='Hors-carte'),
         plt.Line2D([0], [0], marker='*', color='w', markerfacecolor='#1565C0',
-                   markersize=13, label="Objet d'intérêt"),
+                   markersize=13, label="Objet d'interet"),
         plt.Line2D([0], [0], marker='X', color='w', markerfacecolor='#B71C1C',
-                   markersize=11, label='Obstacle détecté'),
+                   markersize=11, label='Obstacle detecte'),
         plt.Line2D([0], [0], marker='D', color='w', markerfacecolor='#FF6F00',
-                   markersize=11, label='Départ / Arrivée'),
+                   markersize=11, label='Depart / Arrivee'),
         plt.Line2D([0], [0], marker='o', color='w', markerfacecolor='#FF6F00',
                    markersize=8, label=f"Orbite (r={ORBIT_RADIUS*100:.0f}cm)"),
     ]
@@ -491,9 +491,9 @@ def plot_astar(grille, origine_xy, resolution,
     ax.set_xlabel('X (m)', fontsize=12)
     ax.set_ylabel('Y (m)', fontsize=12)
     ax.set_title(
-        'NavMesh + Pathfinding A* — Mission lunaire SS3\n'
-        f"Départ ({position_depart[0]:.2f}, {position_depart[1]:.2f}) "
-        f"→ Orbite objets (r={ORBIT_RADIUS*100:.0f}cm) → Retour",
+        'NavMesh + Pathfinding A* -- Mission lunaire SS3\n'
+        f"Depart ({position_depart[0]:.2f}, {position_depart[1]:.2f}) "
+        f"-> Orbite objets (r={ORBIT_RADIUS*100:.0f}cm) -> Retour",
         fontsize=14, fontweight='bold', pad=15)
     ax.set_aspect('equal')
     ax.grid(True, alpha=0.25, linewidth=0.5)
@@ -526,10 +526,10 @@ if __name__ == "__main__":
         envoyer_signal_ss2=False
     )
 
-    print(f"\nObjets visités  : {len(ordre)}")
+    print(f"\nObjets visites  : {len(ordre)}")
     print(f"Total waypoints : {len(waypoints_monde)}")
     print(f"Distance totale : {stats['distance_totale_m']:.2f} m")
-    print(f"Temps estimé    : {stats['temps_str']}")
+    print(f"Temps estime    : {stats['temps_str']}")
 
     exporter_waypoints(waypoints_monde)
     plot_astar(grille, origine_xy, res,

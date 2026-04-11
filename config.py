@@ -13,6 +13,7 @@ DBSCAN_MIN_SAMPLES   = 15
 FILTRE_HAUTEUR_MIN   = 0.05
 FILTRE_HAUTEUR_MAX   = 0.50
 FILTRE_DISTANCE_MAX  = 8.0
+FILTRE_COMPACITE_MAX = 5.0   # ratio max(longueur, largeur) / hauteur — filtre les cretes de terrain
 
 # Triangulation
 TRIANG_ANGLE_MAX         = 30
