@@ -2,6 +2,7 @@ import sys, os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 import time
+import serial
 import numpy as np
 
 from config import (
@@ -11,6 +12,7 @@ from config import (
 )
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+from communication.envoyer_roche import envoyer_roche, attendre_fin_photo
 from simulation.terrain_generator import generer_terrain
 from perception.ransac             import ransac
 from perception.DBSCAN             import dbscan
@@ -109,9 +111,6 @@ if not SIMULATION_MODE:
     if not objets_interet:
         print("Aucun objet d'intérêt détecté — mission terminée")
         sys.exit(0)
-
-    import serial
-    from communication.envoyer_roche import envoyer_roche, attendre_fin_photo
 
     arduino = serial.Serial(NOM_PORT, baudrate=ARDUINO_BAUDRATE, timeout=ARDUINO_TIMEOUT)
     print("Connexion Arduino...")
