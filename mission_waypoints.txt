@@ -1,414 +1,355 @@
 # Mission lunaire SS3 — Waypoints en coordonnées réelles (mètres)
 # index	x_m	y_m	type	label
 0	0.0000	0.0000	depart	Départ
-1	-0.0308	-0.1099	travel	Approche Objet 5
-2	-0.0308	-0.2099	travel	Approche Objet 5
-3	-0.1308	-0.3099	travel	Approche Objet 5
-4	-0.1308	-0.4099	travel	Approche Objet 5
-5	-0.2308	-0.5099	travel	Approche Objet 5
-6	-0.2308	-0.6099	travel	Approche Objet 5
-7	-0.2481	-0.5845	orbit	Orbite Objet 5 (r=75cm)
-8	-0.1308	-0.6099	orbit	Orbite Objet 5 (r=75cm)
-9	-0.0308	-0.6099	orbit	Orbite Objet 5 (r=75cm)
-10	0.0692	-0.6099	orbit	Orbite Objet 5 (r=75cm)
-11	0.1692	-0.6099	orbit	Orbite Objet 5 (r=75cm)
-12	0.2692	-0.6099	orbit	Orbite Objet 5 (r=75cm)
-13	0.3692	-0.6099	orbit	Orbite Objet 5 (r=75cm)
-14	0.4692	-0.5099	orbit	Orbite Objet 5 (r=75cm)
-15	0.5692	-0.4099	orbit	Orbite Objet 5 (r=75cm)
-16	0.6692	-0.3099	orbit	Orbite Objet 5 (r=75cm)
-17	0.7692	-0.2099	orbit	Orbite Objet 5 (r=75cm)
-18	0.7692	-0.1099	orbit	Orbite Objet 5 (r=75cm)
-19	0.7692	-0.0099	orbit	Orbite Objet 5 (r=75cm)
-20	0.7692	0.0901	orbit	Orbite Objet 5 (r=75cm)
-21	0.7692	0.1901	orbit	Orbite Objet 5 (r=75cm)
-22	0.7692	0.2901	orbit	Orbite Objet 5 (r=75cm)
-23	0.7692	0.3901	orbit	Orbite Objet 5 (r=75cm)
-24	0.6692	0.4901	orbit	Orbite Objet 5 (r=75cm)
-25	0.5692	0.5901	orbit	Orbite Objet 5 (r=75cm)
-26	0.4692	0.6901	orbit	Orbite Objet 5 (r=75cm)
-27	0.3692	0.7901	orbit	Orbite Objet 5 (r=75cm)
-28	0.2692	0.7901	orbit	Orbite Objet 5 (r=75cm)
-29	0.1692	0.7901	orbit	Orbite Objet 5 (r=75cm)
-30	0.0692	0.8901	orbit	Orbite Objet 5 (r=75cm)
-31	-0.0308	0.8901	orbit	Orbite Objet 5 (r=75cm)
-32	-0.1308	0.7901	orbit	Orbite Objet 5 (r=75cm)
-33	-0.2308	0.7901	orbit	Orbite Objet 5 (r=75cm)
-34	-0.3308	0.6901	orbit	Orbite Objet 5 (r=75cm)
-35	-0.4308	0.6901	orbit	Orbite Objet 5 (r=75cm)
-36	-0.5308	0.5901	orbit	Orbite Objet 5 (r=75cm)
-37	-0.6308	0.4901	orbit	Orbite Objet 5 (r=75cm)
-38	-0.6308	0.3901	orbit	Orbite Objet 5 (r=75cm)
-39	-0.6308	0.2901	orbit	Orbite Objet 5 (r=75cm)
-40	-0.7308	0.1901	orbit	Orbite Objet 5 (r=75cm)
-41	-0.7308	0.0901	orbit	Orbite Objet 5 (r=75cm)
-42	-0.7308	-0.0099	orbit	Orbite Objet 5 (r=75cm)
-43	-0.7308	-0.1099	orbit	Orbite Objet 5 (r=75cm)
-44	-0.6308	-0.2099	orbit	Orbite Objet 5 (r=75cm)
-45	-0.6308	-0.3099	orbit	Orbite Objet 5 (r=75cm)
-46	-0.5308	-0.4099	orbit	Orbite Objet 5 (r=75cm)
-47	-0.4308	-0.5099	orbit	Orbite Objet 5 (r=75cm)
-48	-0.3308	-0.5099	orbit	Orbite Objet 5 (r=75cm)
-49	-0.2308	-0.6099	orbit	Orbite Objet 5 (r=75cm)
-50	-0.3308	-0.7099	travel	Approche Objet 8
-51	-0.4308	-0.8099	travel	Approche Objet 8
-52	-0.5308	-0.9099	travel	Approche Objet 8
-53	-0.6308	-1.0099	travel	Approche Objet 8
-54	-0.7308	-1.1099	travel	Approche Objet 8
-55	-0.8308	-1.2099	travel	Approche Objet 8
-56	-0.9308	-1.2099	travel	Approche Objet 8
-57	-1.0308	-1.2099	travel	Approche Objet 8
-58	-1.1308	-1.2099	travel	Approche Objet 8
-59	-1.2308	-1.2099	travel	Approche Objet 8
-60	-1.3308	-1.1099	travel	Approche Objet 8
-61	-1.4308	-1.1099	travel	Approche Objet 8
-62	-1.5308	-1.0099	travel	Approche Objet 8
-63	-1.4763	-0.7272	orbit	Orbite Objet 8 (r=75cm)
-64	-1.4308	-1.0099	orbit	Orbite Objet 8 (r=75cm)
-65	-1.3308	-1.1099	orbit	Orbite Objet 8 (r=75cm)
-66	-1.2308	-1.2099	orbit	Orbite Objet 8 (r=75cm)
-67	-1.1308	-1.2099	orbit	Orbite Objet 8 (r=75cm)
-68	-1.0308	-1.2099	orbit	Orbite Objet 8 (r=75cm)
-69	-0.9308	-1.2099	orbit	Orbite Objet 8 (r=75cm)
-70	-0.8308	-1.2099	orbit	Orbite Objet 8 (r=75cm)
-71	-0.7308	-1.1099	orbit	Orbite Objet 8 (r=75cm)
-72	-0.6308	-1.0099	orbit	Orbite Objet 8 (r=75cm)
-73	-0.5308	-0.9099	orbit	Orbite Objet 8 (r=75cm)
-74	-0.5308	-0.8099	orbit	Orbite Objet 8 (r=75cm)
-75	-0.5308	-0.7099	orbit	Orbite Objet 8 (r=75cm)
-76	-0.5308	-0.6099	orbit	Orbite Objet 8 (r=75cm)
-77	-0.5308	-0.5099	orbit	Orbite Objet 8 (r=75cm)
-78	-0.6308	-0.4099	orbit	Orbite Objet 8 (r=75cm)
-79	-0.7308	-0.3099	orbit	Orbite Objet 8 (r=75cm)
-80	-0.8308	-0.2099	orbit	Orbite Objet 8 (r=75cm)
-81	-0.9308	-0.1099	orbit	Orbite Objet 8 (r=75cm)
-82	-0.9308	-0.0099	orbit	Orbite Objet 8 (r=75cm)
-83	-0.9308	0.0901	orbit	Orbite Objet 8 (r=75cm)
-84	-0.9308	0.1901	orbit	Orbite Objet 8 (r=75cm)
-85	-1.0308	0.2901	orbit	Orbite Objet 8 (r=75cm)
-86	-1.1308	0.3901	orbit	Orbite Objet 8 (r=75cm)
-87	-1.2308	0.4901	orbit	Orbite Objet 8 (r=75cm)
-88	-1.2308	0.5901	orbit	Orbite Objet 8 (r=75cm)
-89	-1.3308	0.6901	orbit	Orbite Objet 8 (r=75cm)
-90	-1.3308	0.7901	orbit	Orbite Objet 8 (r=75cm)
-91	-1.4308	0.8901	orbit	Orbite Objet 8 (r=75cm)
-92	-1.5308	0.7901	orbit	Orbite Objet 8 (r=75cm)
-93	-1.6308	0.6901	orbit	Orbite Objet 8 (r=75cm)
-94	-1.7308	0.5901	orbit	Orbite Objet 8 (r=75cm)
-95	-1.8308	0.4901	orbit	Orbite Objet 8 (r=75cm)
-96	-1.9308	0.3901	orbit	Orbite Objet 8 (r=75cm)
-97	-2.0308	0.2901	orbit	Orbite Objet 8 (r=75cm)
-98	-2.1308	0.1901	orbit	Orbite Objet 8 (r=75cm)
-99	-2.2308	0.0901	orbit	Orbite Objet 8 (r=75cm)
-100	-2.3308	-0.0099	orbit	Orbite Objet 8 (r=75cm)
-101	-2.4308	0.0901	orbit	Orbite Objet 8 (r=75cm)
-102	-2.3308	0.0901	orbit	Orbite Objet 8 (r=75cm)
-103	-2.2308	0.0901	orbit	Orbite Objet 8 (r=75cm)
-104	-2.1308	0.1901	orbit	Orbite Objet 8 (r=75cm)
-105	-2.0308	0.2901	orbit	Orbite Objet 8 (r=75cm)
-106	-1.9308	0.3901	orbit	Orbite Objet 8 (r=75cm)
-107	-1.8308	0.4901	orbit	Orbite Objet 8 (r=75cm)
-108	-1.7308	0.5901	orbit	Orbite Objet 8 (r=75cm)
-109	-1.6308	0.6901	orbit	Orbite Objet 8 (r=75cm)
-110	-1.5308	0.7901	orbit	Orbite Objet 8 (r=75cm)
-111	-1.4308	0.8901	orbit	Orbite Objet 8 (r=75cm)
-112	-1.3308	0.7901	orbit	Orbite Objet 8 (r=75cm)
-113	-1.3308	0.6901	orbit	Orbite Objet 8 (r=75cm)
-114	-1.2308	0.5901	orbit	Orbite Objet 8 (r=75cm)
-115	-1.2308	0.4901	orbit	Orbite Objet 8 (r=75cm)
-116	-1.1308	0.3901	orbit	Orbite Objet 8 (r=75cm)
-117	-1.0308	0.2901	orbit	Orbite Objet 8 (r=75cm)
-118	-0.9308	0.1901	orbit	Orbite Objet 8 (r=75cm)
-119	-0.9308	0.0901	orbit	Orbite Objet 8 (r=75cm)
-120	-0.9308	-0.0099	orbit	Orbite Objet 8 (r=75cm)
-121	-0.9308	-0.1099	orbit	Orbite Objet 8 (r=75cm)
-122	-0.8308	-0.2099	orbit	Orbite Objet 8 (r=75cm)
-123	-0.7308	-0.3099	orbit	Orbite Objet 8 (r=75cm)
-124	-0.6308	-0.4099	orbit	Orbite Objet 8 (r=75cm)
-125	-0.5308	-0.5099	orbit	Orbite Objet 8 (r=75cm)
-126	-0.5308	-0.6099	orbit	Orbite Objet 8 (r=75cm)
-127	-0.5308	-0.7099	orbit	Orbite Objet 8 (r=75cm)
-128	-0.5308	-0.8099	orbit	Orbite Objet 8 (r=75cm)
-129	-0.5308	-0.9099	orbit	Orbite Objet 8 (r=75cm)
-130	-0.6308	-1.0099	orbit	Orbite Objet 8 (r=75cm)
-131	-0.7308	-1.1099	orbit	Orbite Objet 8 (r=75cm)
-132	-0.8308	-1.2099	orbit	Orbite Objet 8 (r=75cm)
-133	-0.9308	-1.2099	orbit	Orbite Objet 8 (r=75cm)
-134	-1.0308	-1.2099	orbit	Orbite Objet 8 (r=75cm)
-135	-1.1308	-1.2099	orbit	Orbite Objet 8 (r=75cm)
-136	-1.2308	-1.2099	orbit	Orbite Objet 8 (r=75cm)
-137	-1.3308	-1.2099	orbit	Orbite Objet 8 (r=75cm)
-138	-1.4308	-1.2099	orbit	Orbite Objet 8 (r=75cm)
-139	-1.5308	-1.2099	orbit	Orbite Objet 8 (r=75cm)
-140	-1.6308	-1.1099	orbit	Orbite Objet 8 (r=75cm)
-141	-1.5308	-1.0099	orbit	Orbite Objet 8 (r=75cm)
-142	-1.4763	-0.7272	orbit	Orbite Objet 8 (r=75cm)
-143	-1.4308	-1.0099	travel	Approche Objet 4
-144	-1.3308	-1.1099	travel	Approche Objet 4
-145	-1.2308	-1.2099	travel	Approche Objet 4
-146	-1.1308	-1.2099	travel	Approche Objet 4
-147	-1.0308	-1.2099	travel	Approche Objet 4
-148	-0.9308	-1.2099	travel	Approche Objet 4
-149	-0.8308	-1.2099	travel	Approche Objet 4
-150	-0.7308	-1.1099	travel	Approche Objet 4
-151	-0.6308	-1.0099	travel	Approche Objet 4
-152	-0.5308	-0.9099	travel	Approche Objet 4
-153	-0.5308	-0.8099	travel	Approche Objet 4
-154	-0.5308	-0.7099	travel	Approche Objet 4
-155	-0.5308	-0.6099	travel	Approche Objet 4
-156	-0.5308	-0.5099	travel	Approche Objet 4
-157	-0.5308	-0.4099	travel	Approche Objet 4
-158	-0.5308	-0.3099	travel	Approche Objet 4
-159	-0.5308	-0.2099	travel	Approche Objet 4
-160	-0.5308	-0.1099	travel	Approche Objet 4
-161	-0.5308	-0.0099	travel	Approche Objet 4
-162	-0.5308	0.0901	travel	Approche Objet 4
-163	-0.5308	0.1901	travel	Approche Objet 4
-164	-0.5308	0.2901	travel	Approche Objet 4
-165	-0.5308	0.3901	travel	Approche Objet 4
-166	-0.5308	0.4901	travel	Approche Objet 4
-167	-0.5308	0.5901	travel	Approche Objet 4
-168	-0.5308	0.6901	travel	Approche Objet 4
-169	-0.5308	0.7901	travel	Approche Objet 4
-170	-0.5308	0.8901	travel	Approche Objet 4
-171	-0.5308	0.9901	travel	Approche Objet 4
-172	-0.5308	1.0901	travel	Approche Objet 4
-173	-0.5308	1.1901	travel	Approche Objet 4
-174	-0.4308	1.2901	travel	Approche Objet 4
-175	-0.4308	1.3901	travel	Approche Objet 4
-176	-0.4308	1.4901	travel	Approche Objet 4
-177	-0.3308	1.5901	travel	Approche Objet 4
-178	-0.3308	1.6901	travel	Approche Objet 4
-179	-0.2308	1.7901	travel	Approche Objet 4
-180	-0.2308	1.8901	travel	Approche Objet 4
-181	-0.1308	1.9901	travel	Approche Objet 4
-182	-0.1308	2.0901	travel	Approche Objet 4
-183	-0.0308	2.1901	travel	Approche Objet 4
-184	-0.0308	2.2901	travel	Approche Objet 4
-185	-0.0308	2.3901	travel	Approche Objet 4
-186	0.0692	2.4901	travel	Approche Objet 4
-187	0.1100	2.4838	orbit	Orbite Objet 4 (r=75cm)
-188	0.1692	2.4901	orbit	Orbite Objet 4 (r=75cm)
-189	0.2692	2.3901	orbit	Orbite Objet 4 (r=75cm)
-190	0.3692	2.3901	orbit	Orbite Objet 4 (r=75cm)
-191	0.4692	2.3901	orbit	Orbite Objet 4 (r=75cm)
-192	0.5692	2.3901	orbit	Orbite Objet 4 (r=75cm)
-193	0.6692	2.4901	orbit	Orbite Objet 4 (r=75cm)
-194	0.7692	2.5901	orbit	Orbite Objet 4 (r=75cm)
-195	0.8692	2.5901	orbit	Orbite Objet 4 (r=75cm)
-196	0.9692	2.6901	orbit	Orbite Objet 4 (r=75cm)
-197	0.9692	2.7901	orbit	Orbite Objet 4 (r=75cm)
-198	1.0692	2.8901	orbit	Orbite Objet 4 (r=75cm)
-199	1.0692	2.9901	orbit	Orbite Objet 4 (r=75cm)
-200	1.0692	3.0901	orbit	Orbite Objet 4 (r=75cm)
-201	1.1692	3.1901	orbit	Orbite Objet 4 (r=75cm)
-202	1.0692	3.2901	orbit	Orbite Objet 4 (r=75cm)
-203	1.0692	3.3901	orbit	Orbite Objet 4 (r=75cm)
-204	1.0692	3.4901	orbit	Orbite Objet 4 (r=75cm)
-205	0.9692	3.5901	orbit	Orbite Objet 4 (r=75cm)
-206	0.9692	3.6901	orbit	Orbite Objet 4 (r=75cm)
-207	0.8692	3.7901	orbit	Orbite Objet 4 (r=75cm)
-208	0.7692	3.7901	orbit	Orbite Objet 4 (r=75cm)
-209	0.6692	3.8901	orbit	Orbite Objet 4 (r=75cm)
-210	0.5692	3.8901	orbit	Orbite Objet 4 (r=75cm)
-211	0.4692	3.8901	orbit	Orbite Objet 4 (r=75cm)
-212	0.3692	3.8901	orbit	Orbite Objet 4 (r=75cm)
-213	0.2692	3.8901	orbit	Orbite Objet 4 (r=75cm)
-214	0.1692	3.8901	orbit	Orbite Objet 4 (r=75cm)
-215	0.0692	3.8901	orbit	Orbite Objet 4 (r=75cm)
-216	-0.0308	3.7901	orbit	Orbite Objet 4 (r=75cm)
-217	-0.1308	3.6901	orbit	Orbite Objet 4 (r=75cm)
-218	-0.2308	3.5901	orbit	Orbite Objet 4 (r=75cm)
-219	-0.3308	3.4901	orbit	Orbite Objet 4 (r=75cm)
-220	-0.3308	3.3901	orbit	Orbite Objet 4 (r=75cm)
-221	-0.3308	3.2901	orbit	Orbite Objet 4 (r=75cm)
-222	-0.3308	3.1901	orbit	Orbite Objet 4 (r=75cm)
-223	-0.3308	3.0901	orbit	Orbite Objet 4 (r=75cm)
-224	-0.3308	2.9901	orbit	Orbite Objet 4 (r=75cm)
-225	-0.3308	2.8901	orbit	Orbite Objet 4 (r=75cm)
-226	-0.2308	2.7901	orbit	Orbite Objet 4 (r=75cm)
-227	-0.1308	2.6901	orbit	Orbite Objet 4 (r=75cm)
-228	-0.0308	2.5901	orbit	Orbite Objet 4 (r=75cm)
-229	0.0692	2.4901	orbit	Orbite Objet 4 (r=75cm)
-230	0.1692	2.5901	travel	Approche Objet 13
-231	0.2692	2.5901	travel	Approche Objet 13
-232	0.3692	2.6901	travel	Approche Objet 13
-233	0.4692	2.7901	travel	Approche Objet 13
-234	0.5692	2.7901	travel	Approche Objet 13
-235	0.6692	2.8901	travel	Approche Objet 13
-236	0.7692	2.8901	travel	Approche Objet 13
-237	0.8692	2.9901	travel	Approche Objet 13
-238	0.9692	2.9901	travel	Approche Objet 13
-239	1.0692	2.9901	travel	Approche Objet 13
-240	1.1692	2.9901	travel	Approche Objet 13
-241	1.2692	2.9901	travel	Approche Objet 13
-242	1.3692	2.9901	travel	Approche Objet 13
-243	1.4692	2.9901	travel	Approche Objet 13
-244	1.5692	2.9901	travel	Approche Objet 13
-245	1.6692	2.9901	travel	Approche Objet 13
-246	1.7692	2.9901	travel	Approche Objet 13
-247	1.8692	3.0901	travel	Approche Objet 13
-248	1.9692	3.1901	travel	Approche Objet 13
-249	2.0692	3.2901	travel	Approche Objet 13
-250	2.1692	3.3901	travel	Approche Objet 13
-251	2.1692	3.4901	travel	Approche Objet 13
-252	2.2692	3.5901	travel	Approche Objet 13
-253	2.3018	3.5623	orbit	Orbite Objet 13 (r=75cm)
-254	2.3692	3.4901	orbit	Orbite Objet 13 (r=75cm)
-255	2.3692	3.3901	orbit	Orbite Objet 13 (r=75cm)
-256	2.4692	3.2901	orbit	Orbite Objet 13 (r=75cm)
-257	2.5692	3.1901	orbit	Orbite Objet 13 (r=75cm)
-258	2.6692	3.1901	orbit	Orbite Objet 13 (r=75cm)
-259	2.7692	3.1901	orbit	Orbite Objet 13 (r=75cm)
-260	2.8692	3.0901	orbit	Orbite Objet 13 (r=75cm)
-261	2.9692	3.0901	orbit	Orbite Objet 13 (r=75cm)
-262	3.0692	3.0901	orbit	Orbite Objet 13 (r=75cm)
-263	3.1692	3.0901	orbit	Orbite Objet 13 (r=75cm)
-264	3.2692	3.1901	orbit	Orbite Objet 13 (r=75cm)
-265	3.3692	3.1901	orbit	Orbite Objet 13 (r=75cm)
-266	3.4692	3.1901	orbit	Orbite Objet 13 (r=75cm)
-267	3.5692	3.2901	orbit	Orbite Objet 13 (r=75cm)
-268	3.5692	3.3901	orbit	Orbite Objet 13 (r=75cm)
-269	3.5692	3.4901	orbit	Orbite Objet 13 (r=75cm)
-270	3.6692	3.5901	orbit	Orbite Objet 13 (r=75cm)
-271	3.6692	3.6901	orbit	Orbite Objet 13 (r=75cm)
-272	3.6692	3.7901	orbit	Orbite Objet 13 (r=75cm)
-273	3.7692	3.8901	orbit	Orbite Objet 13 (r=75cm)
-274	3.6692	3.9901	orbit	Orbite Objet 13 (r=75cm)
-275	3.6692	4.0901	orbit	Orbite Objet 13 (r=75cm)
-276	3.6692	4.1901	orbit	Orbite Objet 13 (r=75cm)
-277	3.5692	4.2901	orbit	Orbite Objet 13 (r=75cm)
-278	3.5692	4.3901	orbit	Orbite Objet 13 (r=75cm)
-279	3.4692	4.4901	orbit	Orbite Objet 13 (r=75cm)
-280	3.3692	4.4901	orbit	Orbite Objet 13 (r=75cm)
-281	3.2692	4.5901	orbit	Orbite Objet 13 (r=75cm)
-282	3.1692	4.5901	orbit	Orbite Objet 13 (r=75cm)
-283	3.0692	4.5901	orbit	Orbite Objet 13 (r=75cm)
-284	2.9692	4.5901	orbit	Orbite Objet 13 (r=75cm)
-285	2.8692	4.5901	orbit	Orbite Objet 13 (r=75cm)
-286	2.7692	4.5901	orbit	Orbite Objet 13 (r=75cm)
-287	2.6692	4.5901	orbit	Orbite Objet 13 (r=75cm)
-288	2.5692	4.4901	orbit	Orbite Objet 13 (r=75cm)
-289	2.4692	4.3901	orbit	Orbite Objet 13 (r=75cm)
-290	2.3692	4.2901	orbit	Orbite Objet 13 (r=75cm)
-291	2.3692	4.1901	orbit	Orbite Objet 13 (r=75cm)
-292	2.2692	4.0901	orbit	Orbite Objet 13 (r=75cm)
-293	2.2692	3.9901	orbit	Orbite Objet 13 (r=75cm)
-294	2.2692	3.8901	orbit	Orbite Objet 13 (r=75cm)
-295	2.2692	3.7901	orbit	Orbite Objet 13 (r=75cm)
-296	2.2692	3.6901	orbit	Orbite Objet 13 (r=75cm)
-297	2.2692	3.5901	orbit	Orbite Objet 13 (r=75cm)
-298	2.2692	3.6901	travel	Approche Objet 12
-299	2.2692	3.7901	travel	Approche Objet 12
-300	2.2692	3.8901	travel	Approche Objet 12
-301	2.2692	3.9901	travel	Approche Objet 12
-302	2.2692	4.0901	travel	Approche Objet 12
-303	2.2692	4.1901	travel	Approche Objet 12
-304	2.3692	4.2901	travel	Approche Objet 12
-305	2.4692	4.3901	travel	Approche Objet 12
-306	2.4692	4.4901	travel	Approche Objet 12
-307	2.4692	4.5901	travel	Approche Objet 12
-308	2.4692	4.6901	travel	Approche Objet 12
-309	2.4692	4.7901	travel	Approche Objet 12
-310	2.4692	4.8901	travel	Approche Objet 12
-311	2.4692	4.9901	travel	Approche Objet 12
-312	2.4692	5.0901	travel	Approche Objet 12
-313	2.5692	5.1901	travel	Approche Objet 12
-314	2.5692	5.2901	travel	Approche Objet 12
-315	2.5242	5.3064	orbit	Orbite Objet 12 (r=75cm)
-316	2.6692	5.2901	orbit	Orbite Objet 12 (r=75cm)
-317	2.7692	5.2901	orbit	Orbite Objet 12 (r=75cm)
-318	2.8692	5.2901	orbit	Orbite Objet 12 (r=75cm)
-319	2.9692	5.2901	orbit	Orbite Objet 12 (r=75cm)
-320	3.0692	5.2901	orbit	Orbite Objet 12 (r=75cm)
-321	3.1692	5.3901	orbit	Orbite Objet 12 (r=75cm)
-322	3.2692	5.3901	orbit	Orbite Objet 12 (r=75cm)
-323	3.3692	5.4901	orbit	Orbite Objet 12 (r=75cm)
-324	3.3692	5.5901	orbit	Orbite Objet 12 (r=75cm)
-325	3.4692	5.6901	orbit	Orbite Objet 12 (r=75cm)
-326	3.4692	5.7901	orbit	Orbite Objet 12 (r=75cm)
-327	3.4692	5.8901	orbit	Orbite Objet 12 (r=75cm)
-328	3.5692	5.9901	orbit	Orbite Objet 12 (r=75cm)
-329	3.5692	6.0901	orbit	Orbite Objet 12 (r=75cm)
-330	3.4692	6.1901	orbit	Orbite Objet 12 (r=75cm)
-331	3.4692	6.2901	orbit	Orbite Objet 12 (r=75cm)
-332	3.3692	6.3901	orbit	Orbite Objet 12 (r=75cm)
-333	3.3692	6.4901	orbit	Orbite Objet 12 (r=75cm)
-334	3.2692	6.5901	orbit	Orbite Objet 12 (r=75cm)
-335	3.1692	6.5901	orbit	Orbite Objet 12 (r=75cm)
-336	3.0692	6.6901	orbit	Orbite Objet 12 (r=75cm)
-337	2.9692	6.6901	orbit	Orbite Objet 12 (r=75cm)
-338	2.8692	6.6901	orbit	Orbite Objet 12 (r=75cm)
-339	2.7692	6.7901	orbit	Orbite Objet 12 (r=75cm)
-340	2.6692	6.6901	orbit	Orbite Objet 12 (r=75cm)
-341	2.5692	6.6901	orbit	Orbite Objet 12 (r=75cm)
-342	2.4692	6.5901	orbit	Orbite Objet 12 (r=75cm)
-343	2.3692	6.5901	orbit	Orbite Objet 12 (r=75cm)
-344	2.2692	6.4901	orbit	Orbite Objet 12 (r=75cm)
-345	2.1692	6.3901	orbit	Orbite Objet 12 (r=75cm)
-346	2.0692	6.2901	orbit	Orbite Objet 12 (r=75cm)
-347	2.0692	6.1901	orbit	Orbite Objet 12 (r=75cm)
-348	2.0692	6.0901	orbit	Orbite Objet 12 (r=75cm)
-349	2.0692	5.9901	orbit	Orbite Objet 12 (r=75cm)
-350	2.0692	5.8901	orbit	Orbite Objet 12 (r=75cm)
-351	2.0692	5.7901	orbit	Orbite Objet 12 (r=75cm)
-352	2.0692	5.6901	orbit	Orbite Objet 12 (r=75cm)
-353	2.1692	5.5901	orbit	Orbite Objet 12 (r=75cm)
-354	2.2692	5.4901	orbit	Orbite Objet 12 (r=75cm)
-355	2.3692	5.3901	orbit	Orbite Objet 12 (r=75cm)
-356	2.4692	5.3901	orbit	Orbite Objet 12 (r=75cm)
-357	2.5692	5.2901	orbit	Orbite Objet 12 (r=75cm)
-358	2.4692	5.1901	return	Retour départ
-359	2.4692	5.0901	return	Retour départ
-360	2.3692	4.9901	return	Retour départ
-361	2.2692	4.8901	return	Retour départ
-362	2.1692	4.7901	return	Retour départ
-363	2.0692	4.6901	return	Retour départ
-364	2.0692	4.5901	return	Retour départ
-365	2.0692	4.4901	return	Retour départ
-366	2.0692	4.3901	return	Retour départ
-367	2.0692	4.2901	return	Retour départ
-368	2.0692	4.1901	return	Retour départ
-369	2.0692	4.0901	return	Retour départ
-370	2.0692	3.9901	return	Retour départ
-371	2.0692	3.8901	return	Retour départ
-372	2.0692	3.7901	return	Retour départ
-373	2.0692	3.6901	return	Retour départ
-374	2.0692	3.5901	return	Retour départ
-375	2.0692	3.4901	return	Retour départ
-376	2.0692	3.3901	return	Retour départ
-377	2.0692	3.2901	return	Retour départ
-378	1.9692	3.1901	return	Retour départ
-379	1.8692	3.0901	return	Retour départ
-380	1.7692	2.9901	return	Retour départ
-381	1.6692	2.8901	return	Retour départ
-382	1.5692	2.7901	return	Retour départ
-383	1.4692	2.6901	return	Retour départ
-384	1.4692	2.5901	return	Retour départ
-385	1.3692	2.4901	return	Retour départ
-386	1.2692	2.3901	return	Retour départ
-387	1.1692	2.2901	return	Retour départ
-388	1.0692	2.1901	return	Retour départ
-389	0.9692	2.0901	return	Retour départ
-390	0.8692	1.9901	return	Retour départ
-391	0.7692	1.8901	return	Retour départ
-392	0.6692	1.7901	return	Retour départ
-393	0.5692	1.6901	return	Retour départ
-394	0.4692	1.5901	return	Retour départ
-395	0.3692	1.4901	return	Retour départ
-396	0.3692	1.3901	return	Retour départ
-397	0.3692	1.2901	return	Retour départ
-398	0.3692	1.1901	return	Retour départ
-399	0.3692	1.0901	return	Retour départ
-400	0.3692	0.9901	return	Retour départ
-401	0.3692	0.8901	return	Retour départ
-402	0.3692	0.7901	return	Retour départ
-403	0.2692	0.6901	return	Retour départ
-404	0.2692	0.5901	return	Retour départ
-405	0.1692	0.4901	return	Retour départ
-406	0.1692	0.3901	return	Retour départ
-407	0.0692	0.2901	return	Retour départ
-408	0.0692	0.1901	return	Retour départ
-409	-0.0308	0.0901	return	Retour départ
-410	-0.0308	-0.0099	return	Retour départ
-411	0.0000	0.0000	arrivee	Arrivée
+1	-0.3210	-0.0570	travel	Approche Objet 4
+2	-0.4210	0.0430	travel	Approche Objet 4
+3	-0.5210	0.1430	travel	Approche Objet 4
+4	-0.6210	0.2430	travel	Approche Objet 4
+5	-0.7210	0.3430	travel	Approche Objet 4
+6	-0.7210	0.4430	travel	Approche Objet 4
+7	-0.8210	0.5430	travel	Approche Objet 4
+8	-0.8210	0.6430	travel	Approche Objet 4
+9	-0.7805	0.6051	orbit	Orbite Objet 4 (r=50cm)
+10	-0.7210	0.7430	orbit	Orbite Objet 4 (r=50cm)
+11	-0.7210	0.8430	orbit	Orbite Objet 4 (r=50cm)
+12	-0.6721	1.1500	orbit	Orbite Objet 4 (r=50cm)
+13	-0.7210	0.7430	orbit	Orbite Objet 4 (r=50cm)
+14	-0.8210	0.6430	orbit	Orbite Objet 4 (r=50cm)
+15	-0.9210	0.5430	orbit	Orbite Objet 4 (r=50cm)
+16	-1.0210	0.5430	orbit	Orbite Objet 4 (r=50cm)
+17	-1.1210	0.4430	orbit	Orbite Objet 4 (r=50cm)
+18	-1.2210	0.4430	orbit	Orbite Objet 4 (r=50cm)
+19	-1.3210	0.4430	orbit	Orbite Objet 4 (r=50cm)
+20	-1.4210	0.4430	orbit	Orbite Objet 4 (r=50cm)
+21	-1.5210	0.3430	orbit	Orbite Objet 4 (r=50cm)
+22	-1.6210	0.4430	orbit	Orbite Objet 4 (r=50cm)
+23	-1.6210	0.5430	orbit	Orbite Objet 4 (r=50cm)
+24	-1.7210	0.6430	orbit	Orbite Objet 4 (r=50cm)
+25	-1.7210	0.7430	orbit	Orbite Objet 4 (r=50cm)
+26	-1.8210	0.8430	orbit	Orbite Objet 4 (r=50cm)
+27	-1.8210	0.9430	orbit	Orbite Objet 4 (r=50cm)
+28	-1.7210	0.8430	orbit	Orbite Objet 4 (r=50cm)
+29	-1.6210	0.7430	orbit	Orbite Objet 4 (r=50cm)
+30	-1.6210	0.6430	orbit	Orbite Objet 4 (r=50cm)
+31	-1.6210	0.5430	orbit	Orbite Objet 4 (r=50cm)
+32	-1.6210	0.4430	orbit	Orbite Objet 4 (r=50cm)
+33	-1.5210	0.3430	orbit	Orbite Objet 4 (r=50cm)
+34	-1.4210	0.4430	orbit	Orbite Objet 4 (r=50cm)
+35	-1.3210	0.5430	orbit	Orbite Objet 4 (r=50cm)
+36	-1.2210	0.4430	orbit	Orbite Objet 4 (r=50cm)
+37	-1.1210	0.4430	orbit	Orbite Objet 4 (r=50cm)
+38	-1.0210	0.4430	orbit	Orbite Objet 4 (r=50cm)
+39	-0.9210	0.5430	orbit	Orbite Objet 4 (r=50cm)
+40	-0.8210	0.6430	orbit	Orbite Objet 4 (r=50cm)
+41	-0.8210	0.5430	travel	Approche Objet 12
+42	-0.8210	0.4430	travel	Approche Objet 12
+43	-0.8210	0.3430	travel	Approche Objet 12
+44	-0.8210	0.2430	travel	Approche Objet 12
+45	-0.8210	0.1430	travel	Approche Objet 12
+46	-0.8210	0.0430	travel	Approche Objet 12
+47	-0.9210	-0.0570	travel	Approche Objet 12
+48	-1.0210	-0.1570	travel	Approche Objet 12
+49	-1.0210	-0.2570	travel	Approche Objet 12
+50	-1.0210	-0.3570	travel	Approche Objet 12
+51	-1.0210	-0.4570	travel	Approche Objet 12
+52	-1.0210	-0.5570	travel	Approche Objet 12
+53	-1.0210	-0.6570	travel	Approche Objet 12
+54	-1.0210	-0.7570	travel	Approche Objet 12
+55	-1.0210	-0.8570	travel	Approche Objet 12
+56	-1.1210	-0.9570	travel	Approche Objet 12
+57	-1.1210	-1.0570	travel	Approche Objet 12
+58	-1.1210	-1.1570	travel	Approche Objet 12
+59	-1.1210	-1.2570	travel	Approche Objet 12
+60	-1.1210	-1.3570	travel	Approche Objet 12
+61	-1.1210	-1.4570	travel	Approche Objet 12
+62	-1.2210	-1.5570	travel	Approche Objet 12
+63	-1.2210	-1.6570	travel	Approche Objet 12
+64	-1.2103	-1.6515	orbit	Orbite Objet 12 (r=50cm)
+65	-1.3210	-1.6570	orbit	Orbite Objet 12 (r=50cm)
+66	-1.4210	-1.6570	orbit	Orbite Objet 12 (r=50cm)
+67	-1.5210	-1.7570	orbit	Orbite Objet 12 (r=50cm)
+68	-1.6210	-1.8570	orbit	Orbite Objet 12 (r=50cm)
+69	-1.7210	-1.9570	orbit	Orbite Objet 12 (r=50cm)
+70	-1.7210	-2.0570	orbit	Orbite Objet 12 (r=50cm)
+71	-1.7210	-2.1570	orbit	Orbite Objet 12 (r=50cm)
+72	-1.7210	-2.2570	orbit	Orbite Objet 12 (r=50cm)
+73	-1.7210	-2.3570	orbit	Orbite Objet 12 (r=50cm)
+74	-1.6210	-2.4570	orbit	Orbite Objet 12 (r=50cm)
+75	-1.5210	-2.4570	orbit	Orbite Objet 12 (r=50cm)
+76	-1.5210	-2.5570	orbit	Orbite Objet 12 (r=50cm)
+77	-1.4210	-2.6570	orbit	Orbite Objet 12 (r=50cm)
+78	-1.3210	-2.6570	orbit	Orbite Objet 12 (r=50cm)
+79	-1.2210	-2.6570	orbit	Orbite Objet 12 (r=50cm)
+80	-1.1210	-2.6570	orbit	Orbite Objet 12 (r=50cm)
+81	-1.0210	-2.6570	orbit	Orbite Objet 12 (r=50cm)
+82	-0.9210	-2.5570	orbit	Orbite Objet 12 (r=50cm)
+83	-0.8210	-2.4570	orbit	Orbite Objet 12 (r=50cm)
+84	-0.7210	-2.3570	orbit	Orbite Objet 12 (r=50cm)
+85	-0.7210	-2.2570	orbit	Orbite Objet 12 (r=50cm)
+86	-0.7210	-2.1570	orbit	Orbite Objet 12 (r=50cm)
+87	-0.7210	-2.0570	orbit	Orbite Objet 12 (r=50cm)
+88	-0.7210	-1.9570	orbit	Orbite Objet 12 (r=50cm)
+89	-0.8210	-1.8570	orbit	Orbite Objet 12 (r=50cm)
+90	-0.8210	-1.7570	orbit	Orbite Objet 12 (r=50cm)
+91	-0.9210	-1.7570	orbit	Orbite Objet 12 (r=50cm)
+92	-1.0210	-1.6570	orbit	Orbite Objet 12 (r=50cm)
+93	-1.1210	-1.6570	orbit	Orbite Objet 12 (r=50cm)
+94	-1.2210	-1.6570	orbit	Orbite Objet 12 (r=50cm)
+95	-1.1210	-1.7570	travel	Approche Objet 6
+96	-1.0210	-1.7570	travel	Approche Objet 6
+97	-0.9210	-1.8570	travel	Approche Objet 6
+98	-0.8210	-1.8570	travel	Approche Objet 6
+99	-0.7210	-1.9570	travel	Approche Objet 6
+100	-0.6210	-1.9570	travel	Approche Objet 6
+101	-0.5865	-1.9570	orbit	Orbite Objet 6 (r=50cm)
+102	-0.6210	-2.0570	orbit	Orbite Objet 6 (r=50cm)
+103	-0.6210	-2.1570	orbit	Orbite Objet 6 (r=50cm)
+104	-0.6210	-2.2570	orbit	Orbite Objet 6 (r=50cm)
+105	-0.6210	-2.3570	orbit	Orbite Objet 6 (r=50cm)
+106	-0.5210	-2.4570	orbit	Orbite Objet 6 (r=50cm)
+107	-0.4210	-2.5570	orbit	Orbite Objet 6 (r=50cm)
+108	-0.3210	-2.6570	orbit	Orbite Objet 6 (r=50cm)
+109	-0.2210	-2.6570	orbit	Orbite Objet 6 (r=50cm)
+110	-0.1210	-2.6570	orbit	Orbite Objet 6 (r=50cm)
+111	-0.0210	-2.6570	orbit	Orbite Objet 6 (r=50cm)
+112	0.0790	-2.6570	orbit	Orbite Objet 6 (r=50cm)
+113	0.1790	-2.5570	orbit	Orbite Objet 6 (r=50cm)
+114	0.2790	-2.4570	orbit	Orbite Objet 6 (r=50cm)
+115	0.3790	-2.3570	orbit	Orbite Objet 6 (r=50cm)
+116	0.3790	-2.2570	orbit	Orbite Objet 6 (r=50cm)
+117	0.3790	-2.1570	orbit	Orbite Objet 6 (r=50cm)
+118	0.3790	-2.0570	orbit	Orbite Objet 6 (r=50cm)
+119	0.3790	-1.9570	orbit	Orbite Objet 6 (r=50cm)
+120	0.2790	-1.8570	orbit	Orbite Objet 6 (r=50cm)
+121	0.2790	-1.7570	orbit	Orbite Objet 6 (r=50cm)
+122	0.1790	-1.7570	orbit	Orbite Objet 6 (r=50cm)
+123	0.0790	-1.6570	orbit	Orbite Objet 6 (r=50cm)
+124	-0.0210	-1.6570	orbit	Orbite Objet 6 (r=50cm)
+125	-0.1210	-1.6570	orbit	Orbite Objet 6 (r=50cm)
+126	-0.2210	-1.6570	orbit	Orbite Objet 6 (r=50cm)
+127	-0.3210	-1.6570	orbit	Orbite Objet 6 (r=50cm)
+128	-0.4210	-1.7570	orbit	Orbite Objet 6 (r=50cm)
+129	-0.5210	-1.7570	orbit	Orbite Objet 6 (r=50cm)
+130	-0.6210	-1.8570	orbit	Orbite Objet 6 (r=50cm)
+131	-0.6210	-1.9570	orbit	Orbite Objet 6 (r=50cm)
+132	-0.6210	-2.0570	travel	Approche Objet 0
+133	-0.6210	-2.1570	travel	Approche Objet 0
+134	-0.5210	-2.2570	travel	Approche Objet 0
+135	-0.5210	-2.3570	travel	Approche Objet 0
+136	-0.4210	-2.4570	travel	Approche Objet 0
+137	-0.3210	-2.5570	travel	Approche Objet 0
+138	-0.2210	-2.5570	travel	Approche Objet 0
+139	-0.1210	-2.6570	travel	Approche Objet 0
+140	-0.0210	-2.6570	travel	Approche Objet 0
+141	0.0790	-2.7570	travel	Approche Objet 0
+142	0.1790	-2.7570	travel	Approche Objet 0
+143	0.2790	-2.8570	travel	Approche Objet 0
+144	0.3790	-2.8570	travel	Approche Objet 0
+145	0.4251	-2.8721	orbit	Orbite Objet 0 (r=50cm)
+146	0.2790	-2.9570	orbit	Orbite Objet 0 (r=50cm)
+147	0.2790	-3.0570	orbit	Orbite Objet 0 (r=50cm)
+148	0.2790	-3.1570	orbit	Orbite Objet 0 (r=50cm)
+149	0.2790	-3.2570	orbit	Orbite Objet 0 (r=50cm)
+150	0.2790	-3.3570	orbit	Orbite Objet 0 (r=50cm)
+151	0.2790	-3.4570	orbit	Orbite Objet 0 (r=50cm)
+152	0.3790	-3.5570	orbit	Orbite Objet 0 (r=50cm)
+153	0.4790	-3.6570	orbit	Orbite Objet 0 (r=50cm)
+154	0.5790	-3.6570	orbit	Orbite Objet 0 (r=50cm)
+155	0.6790	-3.7570	orbit	Orbite Objet 0 (r=50cm)
+156	0.7790	-3.7570	orbit	Orbite Objet 0 (r=50cm)
+157	0.8790	-3.7570	orbit	Orbite Objet 0 (r=50cm)
+158	0.9790	-3.6570	orbit	Orbite Objet 0 (r=50cm)
+159	1.0790	-3.6570	orbit	Orbite Objet 0 (r=50cm)
+160	1.1790	-3.5570	orbit	Orbite Objet 0 (r=50cm)
+161	1.2790	-3.4570	orbit	Orbite Objet 0 (r=50cm)
+162	1.2790	-3.3570	orbit	Orbite Objet 0 (r=50cm)
+163	1.2790	-3.2570	orbit	Orbite Objet 0 (r=50cm)
+164	1.2790	-3.1570	orbit	Orbite Objet 0 (r=50cm)
+165	1.2790	-3.0570	orbit	Orbite Objet 0 (r=50cm)
+166	1.1790	-2.9570	orbit	Orbite Objet 0 (r=50cm)
+167	1.1790	-2.8570	orbit	Orbite Objet 0 (r=50cm)
+168	1.0790	-2.8570	orbit	Orbite Objet 0 (r=50cm)
+169	0.9790	-2.7570	orbit	Orbite Objet 0 (r=50cm)
+170	0.8790	-2.7570	orbit	Orbite Objet 0 (r=50cm)
+171	0.7790	-2.7570	orbit	Orbite Objet 0 (r=50cm)
+172	0.6790	-2.7570	orbit	Orbite Objet 0 (r=50cm)
+173	0.5790	-2.7570	orbit	Orbite Objet 0 (r=50cm)
+174	0.4790	-2.8570	orbit	Orbite Objet 0 (r=50cm)
+175	0.3790	-2.8570	orbit	Orbite Objet 0 (r=50cm)
+176	0.4790	-2.7570	travel	Approche Objet 11
+177	0.5790	-2.6570	travel	Approche Objet 11
+178	0.6790	-2.5570	travel	Approche Objet 11
+179	0.7790	-2.4570	travel	Approche Objet 11
+180	0.8790	-2.3570	travel	Approche Objet 11
+181	0.9790	-2.2570	travel	Approche Objet 11
+182	0.9913	-2.2914	orbit	Orbite Objet 11 (r=50cm)
+183	1.0790	-2.3570	orbit	Orbite Objet 11 (r=50cm)
+184	1.1790	-2.3570	orbit	Orbite Objet 11 (r=50cm)
+185	1.2790	-2.4570	orbit	Orbite Objet 11 (r=50cm)
+186	1.3790	-2.4570	orbit	Orbite Objet 11 (r=50cm)
+187	1.4790	-2.4570	orbit	Orbite Objet 11 (r=50cm)
+188	1.5790	-2.3570	orbit	Orbite Objet 11 (r=50cm)
+189	1.6790	-2.2570	orbit	Orbite Objet 11 (r=50cm)
+190	1.7790	-2.1570	orbit	Orbite Objet 11 (r=50cm)
+191	1.7790	-2.0570	orbit	Orbite Objet 11 (r=50cm)
+192	1.8790	-1.9570	orbit	Orbite Objet 11 (r=50cm)
+193	1.7790	-1.8570	orbit	Orbite Objet 11 (r=50cm)
+194	1.7790	-1.7570	orbit	Orbite Objet 11 (r=50cm)
+195	1.6790	-1.6570	orbit	Orbite Objet 11 (r=50cm)
+196	1.6790	-1.5570	orbit	Orbite Objet 11 (r=50cm)
+197	1.5790	-1.4570	orbit	Orbite Objet 11 (r=50cm)
+198	1.4790	-1.4570	orbit	Orbite Objet 11 (r=50cm)
+199	1.3790	-1.4570	orbit	Orbite Objet 11 (r=50cm)
+200	1.2790	-1.4570	orbit	Orbite Objet 11 (r=50cm)
+201	1.1790	-1.4570	orbit	Orbite Objet 11 (r=50cm)
+202	1.0790	-1.5570	orbit	Orbite Objet 11 (r=50cm)
+203	0.9790	-1.5570	orbit	Orbite Objet 11 (r=50cm)
+204	0.8790	-1.6570	orbit	Orbite Objet 11 (r=50cm)
+205	0.8790	-1.7570	orbit	Orbite Objet 11 (r=50cm)
+206	0.8790	-1.8570	orbit	Orbite Objet 11 (r=50cm)
+207	0.8790	-1.9570	orbit	Orbite Objet 11 (r=50cm)
+208	0.8790	-2.0570	orbit	Orbite Objet 11 (r=50cm)
+209	0.8790	-2.1570	orbit	Orbite Objet 11 (r=50cm)
+210	0.9790	-2.2570	orbit	Orbite Objet 11 (r=50cm)
+211	0.9790	-2.3570	travel	Approche Objet 8
+212	0.9790	-2.4570	travel	Approche Objet 8
+213	0.9790	-2.5570	travel	Approche Objet 8
+214	1.0790	-2.6570	travel	Approche Objet 8
+215	1.1790	-2.7570	travel	Approche Objet 8
+216	1.2790	-2.8570	travel	Approche Objet 8
+217	1.2790	-2.9570	travel	Approche Objet 8
+218	1.2790	-3.0570	travel	Approche Objet 8
+219	1.2790	-3.1570	travel	Approche Objet 8
+220	1.2790	-3.2570	travel	Approche Objet 8
+221	1.2790	-3.3570	travel	Approche Objet 8
+222	1.3790	-3.4570	travel	Approche Objet 8
+223	1.3790	-3.5570	travel	Approche Objet 8
+224	1.4790	-3.6570	travel	Approche Objet 8
+225	1.4790	-3.7570	travel	Approche Objet 8
+226	1.4790	-3.8570	travel	Approche Objet 8
+227	1.5790	-3.9570	travel	Approche Objet 8
+228	1.6159	-3.9614	orbit	Orbite Objet 8 (r=50cm)
+229	1.4790	-4.0570	orbit	Orbite Objet 8 (r=50cm)
+230	1.3790	-4.1570	orbit	Orbite Objet 8 (r=50cm)
+231	1.3790	-4.2570	orbit	Orbite Objet 8 (r=50cm)
+232	1.2790	-4.3570	orbit	Orbite Objet 8 (r=50cm)
+233	1.2790	-4.4570	orbit	Orbite Objet 8 (r=50cm)
+234	1.2790	-4.5570	orbit	Orbite Objet 8 (r=50cm)
+235	1.3790	-4.6570	orbit	Orbite Objet 8 (r=50cm)
+236	1.4790	-4.7570	orbit	Orbite Objet 8 (r=50cm)
+237	1.5790	-4.8570	orbit	Orbite Objet 8 (r=50cm)
+238	1.6790	-4.9570	orbit	Orbite Objet 8 (r=50cm)
+239	1.7790	-4.9570	orbit	Orbite Objet 8 (r=50cm)
+240	1.8790	-4.9570	orbit	Orbite Objet 8 (r=50cm)
+241	1.9790	-4.8570	orbit	Orbite Objet 8 (r=50cm)
+242	2.0790	-4.8570	orbit	Orbite Objet 8 (r=50cm)
+243	2.1790	-4.7570	orbit	Orbite Objet 8 (r=50cm)
+244	2.2790	-4.6570	orbit	Orbite Objet 8 (r=50cm)
+245	2.2790	-4.5570	orbit	Orbite Objet 8 (r=50cm)
+246	2.2790	-4.4570	orbit	Orbite Objet 8 (r=50cm)
+247	2.2790	-4.3570	orbit	Orbite Objet 8 (r=50cm)
+248	2.2790	-4.2570	orbit	Orbite Objet 8 (r=50cm)
+249	2.1790	-4.1570	orbit	Orbite Objet 8 (r=50cm)
+250	2.1790	-4.0570	orbit	Orbite Objet 8 (r=50cm)
+251	2.0790	-4.0570	orbit	Orbite Objet 8 (r=50cm)
+252	1.9790	-3.9570	orbit	Orbite Objet 8 (r=50cm)
+253	1.8790	-3.9570	orbit	Orbite Objet 8 (r=50cm)
+254	1.7790	-3.9570	orbit	Orbite Objet 8 (r=50cm)
+255	1.6790	-3.9570	orbit	Orbite Objet 8 (r=50cm)
+256	1.5790	-3.9570	orbit	Orbite Objet 8 (r=50cm)
+257	1.4790	-4.0570	travel	Approche Objet 1
+258	1.3790	-4.1570	travel	Approche Objet 1
+259	1.2790	-4.2570	travel	Approche Objet 1
+260	1.1790	-4.3570	travel	Approche Objet 1
+261	1.0790	-4.4570	travel	Approche Objet 1
+262	0.9790	-4.4570	travel	Approche Objet 1
+263	0.8790	-4.4570	travel	Approche Objet 1
+264	0.7790	-4.5570	travel	Approche Objet 1
+265	0.6790	-4.5570	travel	Approche Objet 1
+266	0.5790	-4.6570	travel	Approche Objet 1
+267	0.4790	-4.6570	travel	Approche Objet 1
+268	0.3790	-4.7570	travel	Approche Objet 1
+269	0.2790	-4.7570	travel	Approche Objet 1
+270	0.1790	-4.8570	travel	Approche Objet 1
+271	0.0790	-4.8570	travel	Approche Objet 1
+272	-0.0210	-4.9570	travel	Approche Objet 1
+273	-0.1210	-4.9570	travel	Approche Objet 1
+274	-0.0728	-4.9867	orbit	Orbite Objet 1 (r=50cm)
+275	-0.2210	-4.8570	orbit	Orbite Objet 1 (r=50cm)
+276	-0.3210	-4.8570	orbit	Orbite Objet 1 (r=50cm)
+277	-0.4210	-4.8570	orbit	Orbite Objet 1 (r=50cm)
+278	-0.5210	-4.8570	orbit	Orbite Objet 1 (r=50cm)
+279	-0.6210	-4.8570	orbit	Orbite Objet 1 (r=50cm)
+280	-0.7210	-4.9570	orbit	Orbite Objet 1 (r=50cm)
+281	-0.8210	-4.9570	orbit	Orbite Objet 1 (r=50cm)
+282	-0.9210	-5.0570	orbit	Orbite Objet 1 (r=50cm)
+283	-0.9210	-5.1570	orbit	Orbite Objet 1 (r=50cm)
+284	-0.9210	-5.2570	orbit	Orbite Objet 1 (r=50cm)
+285	-0.9210	-5.3570	orbit	Orbite Objet 1 (r=50cm)
+286	-0.9210	-5.4570	orbit	Orbite Objet 1 (r=50cm)
+287	-0.9210	-5.5570	orbit	Orbite Objet 1 (r=50cm)
+288	-0.8210	-5.6570	orbit	Orbite Objet 1 (r=50cm)
+289	-0.7210	-5.7570	orbit	Orbite Objet 1 (r=50cm)
+290	-0.6210	-5.7570	orbit	Orbite Objet 1 (r=50cm)
+291	-0.5210	-5.8570	orbit	Orbite Objet 1 (r=50cm)
+292	-0.4210	-5.8570	orbit	Orbite Objet 1 (r=50cm)
+293	-0.3210	-5.8570	orbit	Orbite Objet 1 (r=50cm)
+294	-0.2210	-5.7570	orbit	Orbite Objet 1 (r=50cm)
+295	-0.1210	-5.6570	orbit	Orbite Objet 1 (r=50cm)
+296	-0.0210	-5.6570	orbit	Orbite Objet 1 (r=50cm)
+297	0.0790	-5.5570	orbit	Orbite Objet 1 (r=50cm)
+298	0.0790	-5.4570	orbit	Orbite Objet 1 (r=50cm)
+299	0.0790	-5.3570	orbit	Orbite Objet 1 (r=50cm)
+300	0.0790	-5.2570	orbit	Orbite Objet 1 (r=50cm)
+301	0.0790	-5.1570	orbit	Orbite Objet 1 (r=50cm)
+302	-0.0210	-5.0570	orbit	Orbite Objet 1 (r=50cm)
+303	-0.1210	-4.9570	orbit	Orbite Objet 1 (r=50cm)
+304	-0.1210	-4.8570	return	Retour départ
+305	-0.1210	-4.7570	return	Retour départ
+306	-0.1210	-4.6570	return	Retour départ
+307	-0.1210	-4.5570	return	Retour départ
+308	-0.1210	-4.4570	return	Retour départ
+309	-0.1210	-4.3570	return	Retour départ
+310	-0.2210	-4.2570	return	Retour départ
+311	-0.3210	-4.1570	return	Retour départ
+312	-0.3210	-4.0570	return	Retour départ
+313	-0.3210	-3.9570	return	Retour départ
+314	-0.3210	-3.8570	return	Retour départ
+315	-0.3210	-3.7570	return	Retour départ
+316	-0.3210	-3.6570	return	Retour départ
+317	-0.3210	-3.5570	return	Retour départ
+318	-0.3210	-3.4570	return	Retour départ
+319	-0.4210	-3.3570	return	Retour départ
+320	-0.4210	-3.2570	return	Retour départ
+321	-0.4210	-3.1570	return	Retour départ
+322	-0.4210	-3.0570	return	Retour départ
+323	-0.4210	-2.9570	return	Retour départ
+324	-0.4210	-2.8570	return	Retour départ
+325	-0.4210	-2.7570	return	Retour départ
+326	-0.4210	-2.6570	return	Retour départ
+327	-0.4210	-2.5570	return	Retour départ
+328	-0.4210	-2.4570	return	Retour départ
+329	-0.5210	-2.3570	return	Retour départ
+330	-0.5210	-2.2570	return	Retour départ
+331	-0.6210	-2.1570	return	Retour départ
+332	-0.6210	-2.0570	return	Retour départ
+333	-0.6210	-1.9570	return	Retour départ
+334	-0.6210	-1.8570	return	Retour départ
+335	-0.6210	-1.7570	return	Retour départ
+336	-0.6210	-1.6570	return	Retour départ
+337	-0.6210	-1.5570	return	Retour départ
+338	-0.6210	-1.4570	return	Retour départ
+339	-0.6210	-1.3570	return	Retour départ
+340	-0.6210	-1.2570	return	Retour départ
+341	-0.6210	-1.1570	return	Retour départ
+342	-0.6210	-1.0570	return	Retour départ
+343	-0.6210	-0.9570	return	Retour départ
+344	-0.5210	-0.8570	return	Retour départ
+345	-0.5210	-0.7570	return	Retour départ
+346	-0.4210	-0.6570	return	Retour départ
+347	-0.4210	-0.5570	return	Retour départ
+348	-0.3210	-0.4570	return	Retour départ
+349	-0.3210	-0.3570	return	Retour départ
+350	-0.3210	-0.2570	return	Retour départ
+351	-0.2210	-0.1570	return	Retour départ
+352	0.0000	0.0000	arrivee	Arrivée

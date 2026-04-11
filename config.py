@@ -51,5 +51,5 @@ ARDUINO_BAUDRATE = 9600
 ARDUINO_TIMEOUT  = 5
 
 # Fichiers
-NOM_FICHIER = "Test_reel1.csv"
+NOM_FICHIER = "Test_reel2.csv"
 
