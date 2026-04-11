@@ -3,5 +3,6 @@ pyransac3d
 scikit-learn
 scipy
 matplotlib
-pyserial 
+pyserial
 pygame
+psutil
