@@ -5,10 +5,12 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from config import (
     ASTAR_RESOLUTION, ASTAR_RAYON_ROVER, ASTAR_RAYON_INFLATION,
     ASTAR_SCAN_DISTANCE, ORBIT_RADIUS, ORBIT_N_POINTS, ORBIT_VITESSE_ROVER,
+    ORBIT_EXCLUSION_RADIUS,
 )
 
 
 def construire_grille(points_navmesh, navigable, tous_les_objets,
+                      objets_interet=None,
                       resolution=ASTAR_RESOLUTION,
                       rayon_inflation=ASTAR_RAYON_INFLATION):
     assert rayon_inflation >= ASTAR_RAYON_ROVER, \
@@ -45,6 +47,18 @@ def construire_grille(points_navmesh, navigable, tous_les_objets,
                     gx, gy = ix_obj + dx, iy_obj + dy
                     if 0 <= gx < nx and 0 <= gy < ny:
                         grille[gx, gy] = 1
+
+    if objets_interet:
+        cellules_exclusion = int(np.ceil(ORBIT_EXCLUSION_RADIUS / resolution))
+        for obj in objets_interet:
+            ix_obj = int((obj.centroide[0] - x_min) / resolution)
+            iy_obj = int((obj.centroide[1] - y_min) / resolution)
+            for dx in range(-cellules_exclusion, cellules_exclusion + 1):
+                for dy in range(-cellules_exclusion, cellules_exclusion + 1):
+                    if np.sqrt(dx**2 + dy**2) * resolution <= ORBIT_EXCLUSION_RADIUS:
+                        gx, gy = ix_obj + dx, iy_obj + dy
+                        if 0 <= gx < nx and 0 <= gy < ny:
+                            grille[gx, gy] = 1
 
     grille = _boucher_trous_horscarte(grille)
     return grille, (x_min, y_min), resolution
