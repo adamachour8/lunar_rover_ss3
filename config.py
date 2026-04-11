@@ -1,13 +1,13 @@
 # config.py — Mission lunaire SS3
 
 # RANSAC
-RANSAC_THRESHOLD     = 0.06
-RANSAC_BOSSEE_MAX    = 0.035
+RANSAC_THRESHOLD     = 0.08
+RANSAC_BOSSEE_MAX    = 0.05
 RANSAC_SEED          = 42
 
 # DBSCAN
 DBSCAN_EPS           = 0.25
-DBSCAN_MIN_SAMPLES   = 15
+DBSCAN_MIN_SAMPLES   = 8
 
 # Filtration
 FILTRE_HAUTEUR_MIN   = 0.05
@@ -52,5 +52,5 @@ ARDUINO_BAUDRATE = 9600
 ARDUINO_TIMEOUT  = 5
 
 # Fichiers
-NOM_FICHIER = "Test_reel2.csv"
+NOM_FICHIER = "Test_reel1.csv"
 
