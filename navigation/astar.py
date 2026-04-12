@@ -7,7 +7,7 @@ from config import (
     ASTAR_SCAN_DISTANCE, ORBIT_RADIUS, ORBIT_N_POINTS, ORBIT_VITESSE_ROVER,
     ORBIT_EXCLUSION_RADIUS,
 )
-
+from communication.envoyer_roche import envoyer_roche
 
 def construire_grille(points_navmesh, navigable, tous_les_objets,
                       objets_interet=None,
@@ -278,16 +278,13 @@ def _estimer_duree_orbite(pts_orbite, vitesse=ORBIT_VITESSE_ROVER):
 def planifier_mission(grille, origine_xy, resolution,
                       objets_interet, position_depart=(0.0, 0.0),
                       envoyer_signal_ss2=True):
-    if envoyer_signal_ss2:
-        from communication.envoyer_roche import envoyer_roche, attendre_fin_photo
-    else:
+    if not envoyer_signal_ss2:
         def envoyer_roche(objet, position_xy, duree_orbite_s):
             print(f"  [SIM] Signal SS2 -- roche {objet.label} "
                   f"({objet.hauteur*100:.1f}cm) orbite {duree_orbite_s:.1f}s")
             return True
-        def attendre_fin_photo(label):
-            print(f"  [SIM] Attente fin photo roche {label} -- ignoree en simulation")
-            return True
+    else:
+        from communication.envoyer_roche import envoyer_roche
 
     ordre           = ordre_visite_glouton(position_depart, objets_interet)
     chemins         = []
@@ -357,7 +354,6 @@ def planifier_mission(grille, origine_xy, resolution,
                     "type": "scan", "label": f"Scan Objet {obj.label} (fallback)",
                 })
 
-        attendre_fin_photo(obj.label)
 
     d_cell = cellule_libre_proche(grille, *monde_vers_grille(*pos,             origine_xy, resolution))
     f_cell = cellule_libre_proche(grille, *monde_vers_grille(*position_depart, origine_xy, resolution))

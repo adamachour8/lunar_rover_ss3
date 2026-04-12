@@ -24,7 +24,7 @@ from config import (
 )
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-from communication.envoyer_roche import envoyer_roche, attendre_fin_photo
+from communication.envoyer_roche import envoyer_roche
 from simulation.terrain_generator import generer_terrain
 from perception.ransac             import ransac
 from perception.DBSCAN             import dbscan
@@ -280,8 +280,7 @@ if not SIMULATION_MODE:
             executer_chemin(coords, arduino)
             pos_courante = (orbite_wps[-1]["x"], orbite_wps[-1]["y"])
 
-        # 4. Attendre confirmation fin de photos SS2
-        attendre_fin_photo(label)
+
 
     # 5. Retour au point de départ
     retour_wps = [wp for wp in waypoints_monde if wp["type"] == "return"]
