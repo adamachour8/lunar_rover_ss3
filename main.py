@@ -1,6 +1,5 @@
 import os
 import sys
-NOM_PORT = "COM3" if sys.platform == "win32" else "/dev/ttyACM0"
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 import time

@@ -47,7 +47,8 @@ SS2_PORT = 5005
 SS2_TIMEOUT = 120  # 30 photos × ~2s = ~60s, marge à 120s
 
 # Communication Arduino
-NOM_PORT         = "COM3"      #"/dev/ttyACM0"
+import sys
+NOM_PORT = "COM3" if sys.platform == "win32" else "/dev/ttyUSB0"
 ARDUINO_BAUDRATE = 9600
 ARDUINO_TIMEOUT  = 5
 
