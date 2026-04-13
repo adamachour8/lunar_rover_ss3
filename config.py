@@ -1,4 +1,4 @@
-# config.py — Mission lunaire SS3
+import sys
 
 # RANSAC
 RANSAC_THRESHOLD     = 0.08
@@ -30,29 +30,35 @@ ASTAR_SCAN_DISTANCE  = 0.60
 ASTAR_Z_SOL          = 3.10
 
 # Orbite
-ORBIT_RADIUS         = 0.60
+ORBIT_RADIUS         = 0.50
 ORBIT_N_POINTS       = 16
-ORBIT_VITESSE_ROVER  = 0.06
+ORBIT_VITESSE_ROVER  = 0.10
 ORBIT_EXCLUSION_RADIUS = ORBIT_RADIUS - ASTAR_RESOLUTION  # zone bloquée autour des objets d'intérêt
 
 # Grille
 ASTAR_TAILLE_MAX_ILOT = 10
 
-# Photogrammétrie
-PHOTO_NB_PHOTOS      = 30
-
-# Communication SS2
-SS2_IP   = "10.0.0.3"   # IP du RPI SS2 sur le réseau Ethernet direct
-SS2_PORT = 5005
-SS2_TIMEOUT = 60  # 30 photos × ~2s = ~60s
-
 # Communication Arduino
-import sys
-NOM_PORT_MOTEUR = "COM3" if sys.platform == "win32" else "/dev/ttyUSB0"
-NOM_PORT_CAM = "COM4" if sys.platform == "win32" else "/dev/"
 ARDUINO_BAUDRATE = 9600
 ARDUINO_TIMEOUT  = 5
 
+# Auto-detection : on PINGue chaque port candidat et on identifie par la reponse
+if sys.platform == "win32":
+    PORTS_CANDIDATS = ["COM3", "COM4", "COM5", "COM6"]
+else:
+    # ttyACM* = Arduino officiel (Uno, Mega), ttyUSB* = clones CH340
+    PORTS_CANDIDATS = [
+        "/dev/ttyACM0", "/dev/ttyACM1", "/dev/ttyACM2",
+        "/dev/ttyUSB0", "/dev/ttyUSB1", "/dev/ttyUSB2",
+    ]
+
+# Reponses au PING (a coder cote firmware Arduino)
+PONG_MOTEUR = "PONG_MOTEUR"
+PONG_CAM    = "PONG_CAM"
+
+# Conserves pour retrocompat si du vieux code y refere encore
+NOM_PORT_MOTEUR = PORTS_CANDIDATS[0]
+NOM_PORT_CAM    = PORTS_CANDIDATS[1] if len(PORTS_CANDIDATS) > 1 else PORTS_CANDIDATS[0]
 # Fichiers
 NOM_FICHIER = "Test_reel2.csv"
 

@@ -4,7 +4,6 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 import time
 import psutil
-import serial
 import numpy as np
 
 _perf_data = {}
@@ -18,12 +17,13 @@ def _log_perf(t0, etape):
 
 from config import (
     NOM_FICHIER, RANSAC_THRESHOLD,
-    DBSCAN_EPS, DBSCAN_MIN_SAMPLES, NOM_PORT_MOTEUR, NOM_PORT_CAM,
-    ARDUINO_BAUDRATE, ARDUINO_TIMEOUT, ORBIT_VITESSE_ROVER,
+    DBSCAN_EPS, DBSCAN_MIN_SAMPLES,
+    ORBIT_VITESSE_ROVER,
 )
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-from communication.envoyer_roche import envoyer_roche, envoyer_roche_arduino
+from communication.envoyer_roche import envoyer_roche_arduino
+from interfaces.serial_utils     import detecter_arduinos
 from simulation.terrain_generator import generer_terrain
 from perception.ransac             import ransac
 from perception.DBSCAN             import dbscan
@@ -78,7 +78,7 @@ grille, origine_xy, res = construire_grille(
 )
 
 # Forcer la zone autour du départ navigable (angle mort du capteur LiDAR)
-_rayon_depart = 0.30  # 30cm autour de (0,0)
+_rayon_depart = 0.30
 _ix0 = int((0.0 - origine_xy[0]) / res)
 _iy0 = int((0.0 - origine_xy[1]) / res)
 _r_cells = int(np.ceil(_rayon_depart / res))
@@ -104,7 +104,7 @@ chemins, waypoints_monde, ordre, stats = planifier_mission(
     grille, origine_xy, res,
     objets_interet,
     position_depart=(0.0, 0.0),
-    envoyer_signal_ss2=False,  # SS2 appelé pendant l'exécution Arduino, pas ici
+    envoyer_signal_ss2=False,
 )
 
 print(f"\n{'='*60}")
@@ -123,7 +123,7 @@ temps_total = time.perf_counter() - t_total
 # --- Rapport de performance ---
 from config import (
     ASTAR_RAYON_ROVER, ORBIT_RADIUS, ORBIT_N_POINTS,
-    DBSCAN_EPS, DBSCAN_MIN_SAMPLES, RANSAC_THRESHOLD, FILTRE_COMPACITE_MAX
+    FILTRE_COMPACITE_MAX
 )
 
 orbit_completion = {}
@@ -185,11 +185,11 @@ with open(rapport_path, "w", encoding="utf-8") as f:
 
     f.write("[ TEMPS D'EXECUTION PAR ETAPE ]\n")
     noms = {
-        "chargement":        "Chargement nuage de points",
-        "ransac":            "RANSAC segmentation",
-        "dbscan":            "DBSCAN clustering",
-        "filtration":        "Filtration classification",
-        "navmesh_grille":    "NavMesh + Grille A*",
+        "chargement":          "Chargement nuage de points",
+        "ransac":              "RANSAC segmentation",
+        "dbscan":              "DBSCAN clustering",
+        "filtration":          "Filtration classification",
+        "navmesh_grille":      "NavMesh + Grille A*",
         "astar_planification": "Planification A*",
     }
     for cle, nom in noms.items():
@@ -226,59 +226,18 @@ if not SIMULATION_MODE:
         print("Aucun objet d'intérêt détecté — mission terminée")
         sys.exit(0)
 
-    for port in [NOM_PORT_MOTEUR, NOM_PORT_CAM]:
-        ser = serial.Serial(port, baudrate=ARDUINO_BAUDRATE, timeout=ARDUINO_TIMEOUT)
-        print("Connexion...")
-        time.sleep(2)
-        ser.reset_input_buffer()
+    arduino_moteur, arduino_cam = detecter_arduinos()
 
-        ser.write(b"PING\n")
-        reponse = ser.readline().decode('utf-8').strip()
-        if reponse == "PONG_MOTEUR":
-            arduino_moteur = ser
-            print("Connexion à l'Arduino moteur effectuée!")
-            arduino_moteur.close()
-            sys.exit(1)
-            print("Moteurs prêts!\n")
-        elif reponse == "PONG_CAM":
-            arduino_cam = ser
-            print("Connexion à l'Arduino caméra effectuée!")
-            arduino_cam.close()
-            sys.exit(1)
-            print("Caméra prête!\n")
-        else:
-            print("ERREUR - vérifier les connexions USB")
+    if arduino_moteur is None:
+        print("ERREUR : Arduino moteur introuvable. Mission annulee.")
+        sys.exit(1)
+    if arduino_cam is None:
+        print("ATTENTION : Arduino SS2 cam introuvable. Mission continue sans camera.")
 
-    # # arduino_moteur = serial.Serial(NOM_PORT_MOTEUR, baudrate=ARDUINO_BAUDRATE, timeout=ARDUINO_TIMEOUT)
-    # print("Connexion Arduino moteur...")
-    # time.sleep(2)
-    # arduino_moteur.reset_input_buffer()
+    print("\nArduinos prets. Demarrage de la mission.\n")
 
-    # arduino_moteur.write(b"PING\n")
-    # reponse_ping_moteur = arduino_moteur.readline().decode('utf-8').strip()
-    # print(f"Connexion Arduino moteur : {reponse_ping_moteur}")
-    # if reponse_ping_moteur != "PONG":
-    #     print("Arduino moteur non disponible — vérifier la connexion USB")
-    #     arduino_moteur.close()
-    #     sys.exit(1)
-    # print("Moteurs prêts\n")
-
-    # # arduino_cam = serial.Serial(NOM_PORT_CAM, beaudrate=ARDUINO_BAUDRATE, timeout=ARDUINO_TIMEOUT)
-    # print("Connexion Arduino caméra...")
-    # time.sleep(2)
-    # arduino_cam.reset_input_buffer()
-
-    # arduino_cam.write(b"PING\n")
-    # reponse_ping_cam = arduino_cam.readline().decode('utf-8').strip()
-    # print(f"Connexion Arduino moteur : {reponse_ping_cam}")
-    # if reponse_ping_cam != "PONG":
-    #     print("Arduino caméra non disponible — vérifier la connexion USB")
-    #     arduino_cam.close()
-    #     sys.exit(1)
-    # print("Cam prête\n")
-
-    pos_courante   = (0.0, 0.0)
-    succes_global  = True
+    pos_courante  = (0.0, 0.0)
+    succes_global = True
 
     for obj in ordre:
         label = obj.label
@@ -288,59 +247,41 @@ if not SIMULATION_MODE:
         orbite_wps   = [wp for wp in waypoints_monde
                         if wp["type"] == "orbit"  and f"Objet {label}" in wp.get("label", "")]
 
-        # 1. Déplacement vers le point d'entrée de l'orbite
+        # 1. Approche
         if approche_wps:
             coords = [pos_courante] + [(wp["x"], wp["y"]) for wp in approche_wps]
-            print(f"→ Approche Objet {label} ({len(coords)-1} waypoints)")
+            print(f"-> Approche Objet {label} ({len(coords)-1} waypoints)")
             if not executer_chemin(coords, arduino_moteur):
-                print(f"Échec approche Objet {label} — mission arrêtée")
+                print(f"Echec approche Objet {label} - mission arretee")
                 succes_global = False
                 break
             pos_courante = (approche_wps[-1]["x"], approche_wps[-1]["y"])
 
-        # 2. Rover devant la roche — signal SS2
-        # if len(orbite_wps) > 1:
-        #     duree_orbite_s = sum(
-        #         np.linalg.norm(np.array([orbite_wps[i+1]["x"] - orbite_wps[i]["x"],
-        #                                  orbite_wps[i+1]["y"] - orbite_wps[i]["y"]]))
-        #         for i in range(len(orbite_wps) - 1)
-        #     ) / ORBIT_VITESSE_ROVER
-        # else:
-        #     duree_orbite_s = (2 * np.pi * 0.75) / ORBIT_VITESSE_ROVER
-        # envoyer_roche(obj, pos_courante, duree_orbite_s)
-        if len(orbite_wps) > 1:
-            duree_orbite_s = sum(
-                np.linalg.norm(np.array([orbite_wps[i+1]["x"] - orbite_wps[i]["x"],
-                                         orbite_wps[i+1]["y"] - orbite_wps[i]["y"]]))
-                for i in range(len(orbite_wps) - 1)
-            ) / ORBIT_VITESSE_ROVER
-        else:
-            duree_orbite_s = (2 * np.pi * 0.75) / ORBIT_VITESSE_ROVER
+        # 2. Positionnement camera SS2 (rover immobile devant la roche)
+        if arduino_cam is not None:
+            envoyer_roche_arduino(obj, pos_courante, arduino_cam)
 
-        # 2. Rover devant la roche - signal SS2
-        envoyer_roche_arduino(obj, pos_courante, duree_orbite_s, arduino_cam)
-
-        # 3. Orbite autour de la roche
+        # 3. Orbite (humain prend les photos au telephone pendant ce temps)
         if orbite_wps:
             coords = [pos_courante] + [(wp["x"], wp["y"]) for wp in orbite_wps]
-            print(f"→ Orbite Objet {label} ({len(coords)-1} waypoints)")
+            print(f"-> Orbite Objet {label} ({len(coords)-1} waypoints)")
             executer_chemin(coords, arduino_moteur)
             pos_courante = (orbite_wps[-1]["x"], orbite_wps[-1]["y"])
 
-
-
-    # 5. Retour au point de départ
+    # 4. Retour au depart
     retour_wps = [wp for wp in waypoints_monde if wp["type"] == "return"]
     if retour_wps and succes_global:
         coords = [pos_courante] + [(wp["x"], wp["y"]) for wp in retour_wps]
-        print(f"→ Retour départ ({len(coords)-1} waypoints)")
+        print(f"-> Retour depart ({len(coords)-1} waypoints)")
         executer_chemin(coords, arduino_moteur)
 
     print(f"\n{'='*60}")
-    print(f"  Mission : {'SUCCÈS' if succes_global else 'ÉCHEC'}")
+    print(f"  Mission : {'SUCCES' if succes_global else 'ECHEC'}")
     print(f"{'='*60}")
 
     arduino_moteur.close()
+    if arduino_cam is not None:
+        arduino_cam.close()
 
 else:
     print("Mode simulation — aucun déplacement physique effectué")
