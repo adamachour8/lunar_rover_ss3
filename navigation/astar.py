@@ -7,7 +7,7 @@ from config import (
     ASTAR_SCAN_DISTANCE, ORBIT_RADIUS, ORBIT_N_POINTS, ORBIT_VITESSE_ROVER,
     ORBIT_EXCLUSION_RADIUS,
 )
-from communication.envoyer_roche import envoyer_roche
+from communication.envoyer_roche import envoyer_roche_arduino
 
 def construire_grille(points_navmesh, navigable, tous_les_objets,
                       objets_interet=None,
@@ -279,12 +279,12 @@ def planifier_mission(grille, origine_xy, resolution,
                       objets_interet, position_depart=(0.0, 0.0),
                       envoyer_signal_ss2=True):
     if not envoyer_signal_ss2:
-        def envoyer_roche(objet, position_xy, duree_orbite_s):
+        def envoyer_roche_arduino(objet, position_xy, duree_orbite_s):
             print(f"  [SIM] Signal SS2 -- roche {objet.label} "
                   f"({objet.hauteur*100:.1f}cm) orbite {duree_orbite_s:.1f}s")
             return True
     else:
-        from communication.envoyer_roche import envoyer_roche
+        from communication.envoyer_roche import envoyer_roche_arduino
 
     ordre           = ordre_visite_glouton(position_depart, objets_interet)
     chemins         = []
@@ -332,7 +332,7 @@ def planifier_mission(grille, origine_xy, resolution,
         )
 
         duree_orbite_s = _estimer_duree_orbite(pts_orbite) if chemins_orbite else (2 * np.pi * ORBIT_RADIUS) / ORBIT_VITESSE_ROVER
-        envoyer_roche(obj, pos, duree_orbite_s)
+        envoyer_roche_arduino(obj, pos, duree_orbite_s)
 
         if chemins_orbite:
             chemins.extend(chemins_orbite)

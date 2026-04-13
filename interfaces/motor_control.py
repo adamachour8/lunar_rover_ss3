@@ -5,7 +5,7 @@ import numpy as np
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from interfaces.serial_utils import envoyer_commande, detecter_arduinos
-
+from communication.envoyer_roche import envoyer_roche_arduino, fin_orbite_arduino
 
 def angle_entre_points(p1, p2):
     dx = p2[0] - p1[0]
@@ -17,7 +17,7 @@ def distance_entre_points(p1, p2):
     return math.sqrt((p2[0]-p1[0])**2 + (p2[1]-p1[1])**2)
 
 
-def executer_chemin(waypoints, arduino):
+def executer_chemin(waypoints, arduino, arduino_cam=None, objet=None, est_orbite=False):
     angle_actuel = 0.0  # rover pointe vers l'Est (0 deg) au depart
 
     for i in range(1, len(waypoints)):
@@ -37,9 +37,17 @@ def executer_chemin(waypoints, arduino):
         if reponse == "D":
             angle_actuel = angle_vise
             print("Succes.")
+
+            # Mettre à jour SS2 avec la nouvelle position du rover
+            if est_orbite and arduino_cam is not None and objet is not None:
+                envoyer_roche_arduino(objet, p_cible, arduino_cam)
         else:
             print("Erreur ou timeout de l'Arduino moteur !")
             return False
+        
+    # Signal fin d'orbite
+    if est_orbite and arduino_cam is not None:
+        fin_orbite_arduino(arduino_cam)
     return True
 
 

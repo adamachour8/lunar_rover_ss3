@@ -257,18 +257,17 @@ if not SIMULATION_MODE:
                 break
             pos_courante = (approche_wps[-1]["x"], approche_wps[-1]["y"])
 
-        # 2. Positionnement camera SS2 (rover immobile devant la roche)
-        if arduino_cam is not None:
-            envoyer_roche_arduino(obj, pos_courante, arduino_cam)
-
-        # 3. Orbite (humain prend les photos au telephone pendant ce temps)
+        # 2. Orbite (humain prend les photos au telephone pendant ce temps)
         if orbite_wps:
             coords = [pos_courante] + [(wp["x"], wp["y"]) for wp in orbite_wps]
             print(f"-> Orbite Objet {label} ({len(coords)-1} waypoints)")
-            executer_chemin(coords, arduino_moteur)
+            executer_chemin(coords, arduino_moteur,
+                    arduino_cam=arduino_cam,
+                    objet=obj,
+                    est_orbite=True)
             pos_courante = (orbite_wps[-1]["x"], orbite_wps[-1]["y"])
 
-    # 4. Retour au depart
+    # 3. Retour au depart
     retour_wps = [wp for wp in waypoints_monde if wp["type"] == "return"]
     if retour_wps and succes_global:
         coords = [pos_courante] + [(wp["x"], wp["y"]) for wp in retour_wps]
