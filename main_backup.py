@@ -10,7 +10,7 @@ import serial
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
-from config import NOM_PORT, ARDUINO_BAUDRATE, ARDUINO_TIMEOUT, PHOTO_NB_PHOTOS, ORBIT_RADIUS
+from config import NOM_PORT_MOTEUR, ARDUINO_BAUDRATE, ARDUINO_TIMEOUT, PHOTO_NB_PHOTOS, ORBIT_RADIUS
 from interfaces.motor_control    import envoyer_commande_test
 from interfaces.manette_control  import (
     init_manette, lire_etat, etat_vers_commande, fermer_manette
@@ -54,9 +54,9 @@ def main():
         sys.exit(1)
 
     # --- Init Arduino ---
-    print(f"\nConnexion Arduino sur {NOM_PORT}...")
+    print(f"\nConnexion Arduino sur {NOM_PORT_MOTEUR}...")
     try:
-        arduino = serial.Serial(NOM_PORT, baudrate=ARDUINO_BAUDRATE, timeout=ARDUINO_TIMEOUT)
+        arduino = serial.Serial(NOM_PORT_MOTEUR, baudrate=ARDUINO_BAUDRATE, timeout=ARDUINO_TIMEOUT)
     except serial.SerialException as e:
         print(f"ERREUR Arduino : {e}")
         fermer_manette()

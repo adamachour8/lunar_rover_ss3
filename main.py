@@ -18,12 +18,12 @@ def _log_perf(t0, etape):
 
 from config import (
     NOM_FICHIER, RANSAC_THRESHOLD,
-    DBSCAN_EPS, DBSCAN_MIN_SAMPLES, NOM_PORT,
+    DBSCAN_EPS, DBSCAN_MIN_SAMPLES, NOM_PORT_MOTEUR, NOM_PORT_CAM,
     ARDUINO_BAUDRATE, ARDUINO_TIMEOUT, ORBIT_VITESSE_ROVER,
 )
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-from communication.envoyer_roche import envoyer_roche
+from communication.envoyer_roche import envoyer_roche, envoyer_roche_arduino
 from simulation.terrain_generator import generer_terrain
 from perception.ransac             import ransac
 from perception.DBSCAN             import dbscan
@@ -226,19 +226,56 @@ if not SIMULATION_MODE:
         print("Aucun objet d'intérêt détecté — mission terminée")
         sys.exit(0)
 
-    arduino = serial.Serial(NOM_PORT, baudrate=ARDUINO_BAUDRATE, timeout=ARDUINO_TIMEOUT)
-    print("Connexion Arduino...")
-    time.sleep(2)
-    arduino.reset_input_buffer()
+    for port in [NOM_PORT_MOTEUR, NOM_PORT_CAM]:
+        ser = serial.Serial(port, baudrate=ARDUINO_BAUDRATE, timeout=ARDUINO_TIMEOUT)
+        print("Connexion...")
+        time.sleep(2)
+        ser.reset_input_buffer()
 
-    arduino.write(b"PING\n")
-    reponse_ping = arduino.readline().decode('utf-8').strip()
-    print(f"Connexion ELEGOO : {reponse_ping}")
-    if reponse_ping != "PONG":
-        print("ELEGOO non disponible — vérifier la connexion USB")
-        arduino.close()
-        sys.exit(1)
-    print("Prêt\n")
+        ser.write(b"PING\n")
+        reponse = ser.readline().decode('utf-8').strip()
+        if reponse == "PONG_MOTEUR":
+            arduino_moteur = ser
+            print("Connexion à l'Arduino moteur effectuée!")
+            arduino_moteur.close()
+            sys.exit(1)
+            print("Moteurs prêts!\n")
+        elif reponse == "PONG_CAM":
+            arduino_cam = ser
+            print("Connexion à l'Arduino caméra effectuée!")
+            arduino_cam.close()
+            sys.exit(1)
+            print("Caméra prête!\n")
+        else:
+            print("ERREUR - vérifier les connexions USB")
+
+    # # arduino_moteur = serial.Serial(NOM_PORT_MOTEUR, baudrate=ARDUINO_BAUDRATE, timeout=ARDUINO_TIMEOUT)
+    # print("Connexion Arduino moteur...")
+    # time.sleep(2)
+    # arduino_moteur.reset_input_buffer()
+
+    # arduino_moteur.write(b"PING\n")
+    # reponse_ping_moteur = arduino_moteur.readline().decode('utf-8').strip()
+    # print(f"Connexion Arduino moteur : {reponse_ping_moteur}")
+    # if reponse_ping_moteur != "PONG":
+    #     print("Arduino moteur non disponible — vérifier la connexion USB")
+    #     arduino_moteur.close()
+    #     sys.exit(1)
+    # print("Moteurs prêts\n")
+
+    # # arduino_cam = serial.Serial(NOM_PORT_CAM, beaudrate=ARDUINO_BAUDRATE, timeout=ARDUINO_TIMEOUT)
+    # print("Connexion Arduino caméra...")
+    # time.sleep(2)
+    # arduino_cam.reset_input_buffer()
+
+    # arduino_cam.write(b"PING\n")
+    # reponse_ping_cam = arduino_cam.readline().decode('utf-8').strip()
+    # print(f"Connexion Arduino moteur : {reponse_ping_cam}")
+    # if reponse_ping_cam != "PONG":
+    #     print("Arduino caméra non disponible — vérifier la connexion USB")
+    #     arduino_cam.close()
+    #     sys.exit(1)
+    # print("Cam prête\n")
 
     pos_courante   = (0.0, 0.0)
     succes_global  = True
@@ -255,13 +292,22 @@ if not SIMULATION_MODE:
         if approche_wps:
             coords = [pos_courante] + [(wp["x"], wp["y"]) for wp in approche_wps]
             print(f"→ Approche Objet {label} ({len(coords)-1} waypoints)")
-            if not executer_chemin(coords, arduino):
+            if not executer_chemin(coords, arduino_moteur):
                 print(f"Échec approche Objet {label} — mission arrêtée")
                 succes_global = False
                 break
             pos_courante = (approche_wps[-1]["x"], approche_wps[-1]["y"])
 
         # 2. Rover devant la roche — signal SS2
+        # if len(orbite_wps) > 1:
+        #     duree_orbite_s = sum(
+        #         np.linalg.norm(np.array([orbite_wps[i+1]["x"] - orbite_wps[i]["x"],
+        #                                  orbite_wps[i+1]["y"] - orbite_wps[i]["y"]]))
+        #         for i in range(len(orbite_wps) - 1)
+        #     ) / ORBIT_VITESSE_ROVER
+        # else:
+        #     duree_orbite_s = (2 * np.pi * 0.75) / ORBIT_VITESSE_ROVER
+        # envoyer_roche(obj, pos_courante, duree_orbite_s)
         if len(orbite_wps) > 1:
             duree_orbite_s = sum(
                 np.linalg.norm(np.array([orbite_wps[i+1]["x"] - orbite_wps[i]["x"],
@@ -270,13 +316,15 @@ if not SIMULATION_MODE:
             ) / ORBIT_VITESSE_ROVER
         else:
             duree_orbite_s = (2 * np.pi * 0.75) / ORBIT_VITESSE_ROVER
-        envoyer_roche(obj, pos_courante, duree_orbite_s)
+
+        # 2. Rover devant la roche - signal SS2
+        envoyer_roche_arduino(obj, pos_courante, duree_orbite_s, arduino_cam)
 
         # 3. Orbite autour de la roche
         if orbite_wps:
             coords = [pos_courante] + [(wp["x"], wp["y"]) for wp in orbite_wps]
             print(f"→ Orbite Objet {label} ({len(coords)-1} waypoints)")
-            executer_chemin(coords, arduino)
+            executer_chemin(coords, arduino_moteur)
             pos_courante = (orbite_wps[-1]["x"], orbite_wps[-1]["y"])
 
 
@@ -286,13 +334,13 @@ if not SIMULATION_MODE:
     if retour_wps and succes_global:
         coords = [pos_courante] + [(wp["x"], wp["y"]) for wp in retour_wps]
         print(f"→ Retour départ ({len(coords)-1} waypoints)")
-        executer_chemin(coords, arduino)
+        executer_chemin(coords, arduino_moteur)
 
     print(f"\n{'='*60}")
     print(f"  Mission : {'SUCCÈS' if succes_global else 'ÉCHEC'}")
     print(f"{'='*60}")
 
-    arduino.close()
+    arduino_moteur.close()
 
 else:
     print("Mode simulation — aucun déplacement physique effectué")

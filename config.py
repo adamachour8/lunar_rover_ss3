@@ -30,7 +30,7 @@ ASTAR_SCAN_DISTANCE  = 0.60
 ASTAR_Z_SOL          = 3.10
 
 # Orbite
-ORBIT_RADIUS         = 0.50
+ORBIT_RADIUS         = 0.60
 ORBIT_N_POINTS       = 16
 ORBIT_VITESSE_ROVER  = 0.06
 ORBIT_EXCLUSION_RADIUS = ORBIT_RADIUS - ASTAR_RESOLUTION  # zone bloquée autour des objets d'intérêt
@@ -48,7 +48,8 @@ SS2_TIMEOUT = 60  # 30 photos × ~2s = ~60s
 
 # Communication Arduino
 import sys
-NOM_PORT = "COM3" if sys.platform == "win32" else "/dev/ttyUSB0"
+NOM_PORT_MOTEUR = "COM3" if sys.platform == "win32" else "/dev/ttyUSB0"
+NOM_PORT_CAM = "COM4" if sys.platform == "win32" else "/dev/"
 ARDUINO_BAUDRATE = 9600
 ARDUINO_TIMEOUT  = 5
 
