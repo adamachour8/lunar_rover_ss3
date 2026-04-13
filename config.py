@@ -40,7 +40,7 @@ ASTAR_TAILLE_MAX_ILOT = 10
 
 # Communication Arduino
 ARDUINO_BAUDRATE = 9600
-ARDUINO_TIMEOUT  = 5
+ARDUINO_TIMEOUT  = 20
 
 # Auto-detection : on PINGue chaque port candidat et on identifie par la reponse
 if sys.platform == "win32":
