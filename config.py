@@ -32,7 +32,7 @@ ASTAR_Z_SOL          = 3.10
 # Orbite
 ORBIT_RADIUS         = 0.50
 ORBIT_N_POINTS       = 16
-ORBIT_VITESSE_ROVER  = 0.10
+ORBIT_VITESSE_ROVER  = 0.06
 ORBIT_EXCLUSION_RADIUS = ORBIT_RADIUS - ASTAR_RESOLUTION  # zone bloquée autour des objets d'intérêt
 
 # Grille
@@ -44,7 +44,7 @@ PHOTO_NB_PHOTOS      = 30
 # Communication SS2
 SS2_IP   = "10.0.0.3"   # IP du RPI SS2 sur le réseau Ethernet direct
 SS2_PORT = 5005
-SS2_TIMEOUT = 120  # 30 photos × ~2s = ~60s, marge à 120s
+SS2_TIMEOUT = 60  # 30 photos × ~2s = ~60s
 
 # Communication Arduino
 import sys
