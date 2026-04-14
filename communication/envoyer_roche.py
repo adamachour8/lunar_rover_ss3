@@ -23,7 +23,7 @@ def envoyer_roche_arduino(objet, position_xy, arduino_cam):
     cent_y      = round(float(objet.centroide[1]), 4)
     rayon_m     = round(ORBIT_RADIUS, 3)
 
-    commande = f"{largeur_max}|{hauteur}|{rover_x}|{rover_y}|{cent_x}|{cent_y}|{rayon_m}"
+    commande = f"{largeur_max}|{hauteur}|{rover_x}|{rover_y}|{cent_x}|{cent_y}|{rayon_m}|"
     print(f"[SS2] Roche {objet.label} ({hauteur}m) -> {commande}")
 
     reponse = envoyer_commande(arduino_cam, commande)
