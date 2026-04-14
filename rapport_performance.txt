@@ -1,67 +1,69 @@
 ============================================================
   RAPPORT DE PERFORMANCE — Mission lunaire SS3
   Fichier scan : Test_reel2.csv
-  Date         : 2026-04-12 15:52:43
+  Date         : 2026-04-13 22:42:31
 ============================================================
 
 [ PERCEPTION ]
   Points bruts traites         : 473,036
-  Points sol (RANSAC)          : 446,415  (94.4%)
-  Points obstacles (RANSAC)    : 26,621  (5.6%)
-  Clusters detectes (DBSCAN)   : 13
-  Objets d'interet classes     : 4
+  Points sol (RANSAC)          : 442,959  (93.6%)
+  Points obstacles (RANSAC)    : 30,077  (6.4%)
+  Clusters detectes (DBSCAN)   : 10
+  Objets d'interet classes     : 5
   Obstacles classes            : 4
 
 [ DETAILS OBJETS D'INTERET ]
-  Cluster 0 | H: 19.6cm | L: 60.5cm | l: 70.2cm | Dist: 3.32m | XYZ: (0.779, -3.226, -0.054)
-  Cluster 1 | H: 42.5cm | L: 96.7cm | l: 85.8cm | Dist: 5.36m | XYZ: (-0.426, -5.340, 0.041)
-  Cluster 4 | H: 36.3cm | L: 61.4cm | l: 22.1cm | Dist: 1.49m | XYZ: (-1.134, 0.959, -0.053)
-  Cluster 8 | H: 25.2cm | L: 13.6cm | l: 23.9cm | Dist: 4.78m | XYZ: (1.807, -4.423, -0.150)
+  Cluster 0 | H: 36.2cm | L: 98.8cm | l: 85.8cm | Dist: 3.32m | XYZ: (0.780, -3.226, -0.061)
+  Cluster 1 | H: 46.3cm | L: 142.1cm | l: 141.5cm | Dist: 5.36m | XYZ: (-0.425, -5.340, 0.033)
+  Cluster 2 | H: 15.9cm | L: 49.4cm | l: 53.8cm | Dist: 4.50m | XYZ: (-1.397, -4.270, -0.211)
+  Cluster 5 | H: 13.4cm | L: 53.9cm | l: 43.0cm | Dist: 2.08m | XYZ: (-1.936, 0.723, -0.270)
+  Cluster 7 | H: 25.6cm | L: 32.1cm | l: 23.9cm | Dist: 4.77m | XYZ: (1.781, -4.417, -0.170)
 
 [ DETAILS OBSTACLES ]
-  Cluster 2 | H: 106.2cm | L: 70.3cm | l: 137.8cm | Dist: 2.92m | XYZ: (-2.894, 0.332, 0.188)
-  Cluster 3 | H: 123.9cm | L: 373.9cm | l: 294.4cm | Dist: 0.26m | XYZ: (0.189, 0.104, 0.138)
-  Cluster 5 | H: 103.8cm | L: 65.1cm | l: 335.2cm | Dist: 5.62m | XYZ: (3.593, -4.318, 0.142)
-  Cluster 10 | H: 63.3cm | L: 98.7cm | l: 47.4cm | Dist: 7.54m | XYZ: (-1.032, -7.469, 0.098)
+  Cluster 3 | H: 121.1cm | L: 70.3cm | l: 137.8cm | Dist: 2.92m | XYZ: (-2.894, 0.329, 0.175)
+  Cluster 4 | H: 123.9cm | L: 414.4cm | l: 376.2cm | Dist: 0.17m | XYZ: (0.163, -0.022, 0.053)
+  Cluster 6 | H: 116.4cm | L: 65.1cm | l: 335.2cm | Dist: 5.62m | XYZ: (3.594, -4.324, 0.121)
+  Cluster 9 | H: 65.5cm | L: 98.7cm | l: 47.4cm | Dist: 7.54m | XYZ: (-1.032, -7.468, 0.093)
 
 [ NAVIGATION ]
-  Grille                       : 81x93 cellules (0.1m/cell)
-  Cellules navigables          : 3835
-  Objets visites               : 4
-  Total waypoints              : 246
-  Distance totale planifiee    : 28.69 m
-  Temps mission estime         : 4min 46.9s
+  Grille                       : 87x90 cellules (0.1m/cell)
+  Cellules navigables          : 3522
+  Objets visites               : 5
+  Total waypoints              : 269
+  Distance totale planifiee    : 32.00 m
+  Temps mission estime         : 5min 20.0s
   Vitesse rover                : 0.1 m/s
   Rayon securite obstacles     : 40 cm
   Rayon orbite objets          : 50 cm
 
 [ COMPLETION DES ORBITES ]
-  Objet 4 : 32/16 segments (200.0%)
+  Objet 5 : 23/16 segments (143.8%)
   Objet 0 : 31/16 segments (193.8%)
-  Objet 8 : 29/16 segments (181.2%)
-  Objet 1 : 30/16 segments (187.5%)
+  Objet 7 : 30/16 segments (187.5%)
+  Objet 1 : 29/16 segments (181.2%)
+  Objet 2 : 29/16 segments (181.2%)
 
 [ TEMPS D'EXECUTION PAR ETAPE ]
-  Chargement nuage de points     : 0.64s
-  RANSAC segmentation            : 42.44s
-  DBSCAN clustering              : 7.46s
-  Filtration classification      : 0.01s
-  NavMesh + Grille A*            : 13.09s
-  Planification A*               : 0.13s
-  Temps total pipeline           : 63.77s
+  Chargement nuage de points     : 0.34s
+  RANSAC segmentation            : 13.67s
+  DBSCAN clustering              : 2.06s
+  Filtration classification      : 0.00s
+  NavMesh + Grille A*            : 3.14s
+  Planification A*               : 0.03s
+  Temps total pipeline           : 19.24s
 
 [ MEMOIRE PAR ETAPE ]
-  Chargement nuage de points     : 164.9 MB
-  RANSAC segmentation            : 184.1 MB
-  DBSCAN clustering              : 738.0 MB
-  Filtration classification      : 738.5 MB
-  NavMesh + Grille A*            : 741.2 MB
-  Planification A*               : 741.5 MB
+  Chargement nuage de points     : 162.3 MB
+  RANSAC segmentation            : 172.6 MB
+  DBSCAN clustering              : 175.1 MB
+  Filtration classification      : 175.1 MB
+  NavMesh + Grille A*            : 190.6 MB
+  Planification A*               : 190.7 MB
 
 [ PARAMETRES UTILISES ]
-  RANSAC_THRESHOLD             : 0.08
+  RANSAC_THRESHOLD             : 0.06
   DBSCAN_EPS                   : 0.25
-  DBSCAN_MIN_SAMPLES           : 8
+  DBSCAN_MIN_SAMPLES           : 10
   FILTRE_COMPACITE_MAX         : 5.0
   ORBIT_N_POINTS               : 16
 ============================================================

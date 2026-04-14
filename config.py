@@ -1,13 +1,13 @@
 import sys
 
 # RANSAC
-RANSAC_THRESHOLD     = 0.08
-RANSAC_BOSSEE_MAX    = 0.05
+RANSAC_THRESHOLD     = 0.06 # avant 0.08
+RANSAC_BOSSEE_MAX    = 0.03 # avant 0.05
 RANSAC_SEED          = 42
 
 # DBSCAN
 DBSCAN_EPS           = 0.25
-DBSCAN_MIN_SAMPLES   = 8
+DBSCAN_MIN_SAMPLES   = 10 # avant 8
 
 # Filtration
 FILTRE_HAUTEUR_MIN   = 0.05
@@ -60,5 +60,5 @@ PONG_CAM    = "PONG_CAM"
 NOM_PORT_MOTEUR = PORTS_CANDIDATS[0]
 NOM_PORT_CAM    = PORTS_CANDIDATS[1] if len(PORTS_CANDIDATS) > 1 else PORTS_CANDIDATS[0]
 # Fichiers
-NOM_FICHIER = "Test_reel3.csv"
+NOM_FICHIER = "Test_reel2.csv"
 
