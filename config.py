@@ -1,8 +1,8 @@
 import sys
 
 # RANSAC
-RANSAC_THRESHOLD     = 0.06 # avant 0.08
-RANSAC_BOSSEE_MAX    = 0.03 # avant 0.05
+RANSAC_THRESHOLD     = 0.05 # avant 0.08 --> 0.05 rn
+RANSAC_BOSSEE_MAX    = 0.02 # avant 0.05 --> 0.02 rn
 RANSAC_SEED          = 42
 
 # DBSCAN
@@ -11,7 +11,7 @@ DBSCAN_MIN_SAMPLES   = 10 # avant 8
 
 # Filtration
 FILTRE_HAUTEUR_MIN   = 0.05
-FILTRE_HAUTEUR_MAX   = 0.50
+FILTRE_HAUTEUR_MAX   = 0.70
 FILTRE_DISTANCE_MAX  = 8.0
 FILTRE_COMPACITE_MAX = 5.0   # ratio max(longueur, largeur) / hauteur — filtre les cretes de terrain
 
@@ -60,5 +60,5 @@ PONG_CAM    = "PONG_CAM"
 NOM_PORT_MOTEUR = PORTS_CANDIDATS[0]
 NOM_PORT_CAM    = PORTS_CANDIDATS[1] if len(PORTS_CANDIDATS) > 1 else PORTS_CANDIDATS[0]
 # Fichiers
-NOM_FICHIER = "Test_reel6.csv"
+NOM_FICHIER = "Test_officiel2.csv"
 
