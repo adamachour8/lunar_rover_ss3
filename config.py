@@ -40,7 +40,7 @@ ASTAR_TAILLE_MAX_ILOT = 10
 
 # Communication Arduino
 ARDUINO_BAUDRATE = 9600
-ARDUINO_TIMEOUT  = 20
+ARDUINO_TIMEOUT  = 60
 
 # Auto-detection : on PINGue chaque port candidat et on identifie par la reponse
 if sys.platform == "win32":
@@ -60,5 +60,5 @@ PONG_CAM    = "PONG_CAM"
 NOM_PORT_MOTEUR = PORTS_CANDIDATS[0]
 NOM_PORT_CAM    = PORTS_CANDIDATS[1] if len(PORTS_CANDIDATS) > 1 else PORTS_CANDIDATS[0]
 # Fichiers
-NOM_FICHIER = "Test_reel4.csv"
+NOM_FICHIER = "Test_reel6.csv"
 
