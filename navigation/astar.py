@@ -176,6 +176,51 @@ def cellule_libre_proche(grille, ix, iy):
     return None
 
 
+def simplifier_chemin(points, tolerance=0.03):
+    """
+    Simplification Douglas-Peucker d'une liste de points 2D.
+    Retire les waypoints intermediaires qui sont sur (ou proches de) la ligne
+    droite entre deux autres points. Preserve debut et fin.
+
+    points    : liste de tuples (x, y)
+    tolerance : distance max (m) qu'un point peut avoir par rapport au segment
+                pour etre considere comme 'sur la ligne' et donc supprime
+    """
+    if len(points) < 3:
+        return list(points)
+
+    pts = np.array(points, dtype=float)
+
+    def _dp(debut, fin):
+        if fin - debut < 2:
+            return []
+        a = pts[debut]
+        b = pts[fin]
+        ab = b - a
+        norme_ab = np.linalg.norm(ab)
+
+        dist_max = 0.0
+        idx_max  = -1
+        for i in range(debut + 1, fin):
+            if norme_ab < 1e-9:
+                d = np.linalg.norm(pts[i] - a)
+            else:
+                # distance perpendiculaire point-segment
+                d = abs(np.cross(ab, pts[i] - a)) / norme_ab
+            if d > dist_max:
+                dist_max = d
+                idx_max  = i
+
+        if dist_max > tolerance:
+            gauche = _dp(debut, idx_max)
+            droite = _dp(idx_max, fin)
+            return gauche + [idx_max] + droite
+        return []
+
+    indices_gardes = [0] + _dp(0, len(pts) - 1) + [len(pts) - 1]
+    return [tuple(pts[i]) for i in indices_gardes]
+
+
 def generer_points_orbite(centroide_xy, rayon=ORBIT_RADIUS, n_points=ORBIT_N_POINTS):
     cx, cy = centroide_xy
     angles = np.linspace(0, 2 * np.pi, n_points, endpoint=False)

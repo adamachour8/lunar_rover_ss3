@@ -1,7 +1,7 @@
 ============================================================
   RAPPORT DE PERFORMANCE — Mission lunaire SS3
   Fichier scan : Test_reel6.csv
-  Date         : 2026-04-14 11:43:17
+  Date         : 2026-04-14 11:46:16
 ============================================================
 
 [ PERCEPTION ]
@@ -32,21 +32,21 @@
   Objet 2 : 31/16 segments (193.8%)
 
 [ TEMPS D'EXECUTION PAR ETAPE ]
-  Chargement nuage de points     : 0.30s
-  RANSAC segmentation            : 12.05s
-  DBSCAN clustering              : 0.29s
+  Chargement nuage de points     : 0.66s
+  RANSAC segmentation            : 42.30s
+  DBSCAN clustering              : 1.49s
   Filtration classification      : 0.00s
-  NavMesh + Grille A*            : 1.83s
-  Planification A*               : 0.01s
-  Temps total pipeline           : 14.49s
+  NavMesh + Grille A*            : 11.36s
+  Planification A*               : 0.05s
+  Temps total pipeline           : 55.86s
 
 [ MEMOIRE PAR ETAPE ]
-  Chargement nuage de points     : 163.1 MB
-  RANSAC segmentation            : 175.8 MB
-  DBSCAN clustering              : 177.1 MB
-  Filtration classification      : 177.1 MB
-  NavMesh + Grille A*            : 193.1 MB
-  Planification A*               : 193.1 MB
+  Chargement nuage de points     : 166.6 MB
+  RANSAC segmentation            : 186.6 MB
+  DBSCAN clustering              : 361.0 MB
+  Filtration classification      : 361.0 MB
+  NavMesh + Grille A*            : 361.7 MB
+  Planification A*               : 361.7 MB
 
 [ PARAMETRES UTILISES ]
   RANSAC_THRESHOLD             : 0.06

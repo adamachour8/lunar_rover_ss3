@@ -31,13 +31,15 @@ from perception.filtration         import filtrer
 from navigation.triangulation      import perform_triangulation
 from navigation.astar              import (
     construire_grille, planifier_mission,
-    plot_astar, exporter_waypoints, waypoints_pour_rover
+    plot_astar, exporter_waypoints, waypoints_pour_rover,
+    simplifier_chemin,
 )
 from interfaces.motor_control import executer_chemin
 
-SIMULATION_MODE    = False
-AFFICHER_GRAPHES   = True
-EXPORTER_WAYPOINTS = True
+SIMULATION_MODE          = False
+AFFICHER_GRAPHES         = True
+EXPORTER_WAYPOINTS       = True
+TOLERANCE_SIMPLIFICATION = 0.03  # 3 cm -- simplification Douglas-Peucker des trajets rectilignes
 
 print("=" * 60)
 print("  Mission lunaire SS3 — Démarrage")
@@ -209,6 +211,7 @@ with open(rapport_path, "w", encoding="utf-8") as f:
     f.write(f"  DBSCAN_MIN_SAMPLES           : {DBSCAN_MIN_SAMPLES}\n")
     f.write(f"  FILTRE_COMPACITE_MAX         : {FILTRE_COMPACITE_MAX}\n")
     f.write(f"  ORBIT_N_POINTS               : {ORBIT_N_POINTS}\n")
+    f.write(f"  TOLERANCE_SIMPLIFICATION     : {TOLERANCE_SIMPLIFICATION}\n")
     f.write("=" * 60 + "\n")
 
 print(f"[Rapport] Performance sauvegardee -> rapport_performance.txt")
@@ -247,17 +250,18 @@ if not SIMULATION_MODE:
         orbite_wps   = [wp for wp in waypoints_monde
                         if wp["type"] == "orbit"  and f"Objet {label}" in wp.get("label", "")]
 
-        # 1. Approche
+        # 1. Approche -- SIMPLIFIEE (lignes droites fusionnees pour supprimer le jitter)
         if approche_wps:
-            coords = [pos_courante] + [(wp["x"], wp["y"]) for wp in approche_wps]
-            print(f"-> Approche Objet {label} ({len(coords)-1} waypoints)")
+            coords_brutes = [pos_courante] + [(wp["x"], wp["y"]) for wp in approche_wps]
+            coords        = simplifier_chemin(coords_brutes, TOLERANCE_SIMPLIFICATION)
+            print(f"-> Approche Objet {label} ({len(coords_brutes)-1} wps bruts -> {len(coords)-1} segments)")
             if not executer_chemin(coords, arduino_moteur):
                 print(f"Echec approche Objet {label} - mission arretee")
                 succes_global = False
                 break
-            pos_courante = (approche_wps[-1]["x"], approche_wps[-1]["y"])
+            pos_courante = coords[-1]
 
-        # 2. Orbite (humain prend les photos au telephone pendant ce temps)
+        # 2. Orbite -- PAS SIMPLIFIEE (c'est une courbe, chaque point compte)
         if orbite_wps:
             coords = [pos_courante] + [(wp["x"], wp["y"]) for wp in orbite_wps]
             print(f"-> Orbite Objet {label} ({len(coords)-1} waypoints)")
@@ -267,11 +271,12 @@ if not SIMULATION_MODE:
                     est_orbite=True)
             pos_courante = (orbite_wps[-1]["x"], orbite_wps[-1]["y"])
 
-    # 3. Retour au depart
+    # 3. Retour au depart -- SIMPLIFIE aussi
     retour_wps = [wp for wp in waypoints_monde if wp["type"] == "return"]
     if retour_wps and succes_global:
-        coords = [pos_courante] + [(wp["x"], wp["y"]) for wp in retour_wps]
-        print(f"-> Retour depart ({len(coords)-1} waypoints)")
+        coords_brutes = [pos_courante] + [(wp["x"], wp["y"]) for wp in retour_wps]
+        coords        = simplifier_chemin(coords_brutes, TOLERANCE_SIMPLIFICATION)
+        print(f"-> Retour depart ({len(coords_brutes)-1} wps bruts -> {len(coords)-1} segments)")
         executer_chemin(coords, arduino_moteur)
 
     print(f"\n{'='*60}")
