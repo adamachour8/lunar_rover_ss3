@@ -1,64 +1,55 @@
 ============================================================
   RAPPORT DE PERFORMANCE — Mission lunaire SS3
-  Fichier scan : Test_reel2.csv
-  Date         : 2026-04-13 22:42:31
+  Fichier scan : Test_reel4.csv
+  Date         : 2026-04-14 01:12:49
 ============================================================
 
 [ PERCEPTION ]
-  Points bruts traites         : 473,036
-  Points sol (RANSAC)          : 442,959  (93.6%)
-  Points obstacles (RANSAC)    : 30,077  (6.4%)
-  Clusters detectes (DBSCAN)   : 10
-  Objets d'interet classes     : 5
-  Obstacles classes            : 4
+  Points bruts traites         : 406,977
+  Points sol (RANSAC)          : 402,844  (99.0%)
+  Points obstacles (RANSAC)    : 4,133  (1.0%)
+  Clusters detectes (DBSCAN)   : 6
+  Objets d'interet classes     : 2
+  Obstacles classes            : 1
 
 [ DETAILS OBJETS D'INTERET ]
-  Cluster 0 | H: 36.2cm | L: 98.8cm | l: 85.8cm | Dist: 3.32m | XYZ: (0.780, -3.226, -0.061)
-  Cluster 1 | H: 46.3cm | L: 142.1cm | l: 141.5cm | Dist: 5.36m | XYZ: (-0.425, -5.340, 0.033)
-  Cluster 2 | H: 15.9cm | L: 49.4cm | l: 53.8cm | Dist: 4.50m | XYZ: (-1.397, -4.270, -0.211)
-  Cluster 5 | H: 13.4cm | L: 53.9cm | l: 43.0cm | Dist: 2.08m | XYZ: (-1.936, 0.723, -0.270)
-  Cluster 7 | H: 25.6cm | L: 32.1cm | l: 23.9cm | Dist: 4.77m | XYZ: (1.781, -4.417, -0.170)
+  Cluster 0 | H: 46.8cm | L: 64.8cm | l: 72.9cm | Dist: 3.60m | XYZ: (-2.162, -2.880, 0.056)
+  Cluster 2 | H: 46.7cm | L: 56.9cm | l: 55.7cm | Dist: 6.83m | XYZ: (-4.796, -4.856, 0.153)
 
 [ DETAILS OBSTACLES ]
-  Cluster 3 | H: 121.1cm | L: 70.3cm | l: 137.8cm | Dist: 2.92m | XYZ: (-2.894, 0.329, 0.175)
-  Cluster 4 | H: 123.9cm | L: 414.4cm | l: 376.2cm | Dist: 0.17m | XYZ: (0.163, -0.022, 0.053)
-  Cluster 6 | H: 116.4cm | L: 65.1cm | l: 335.2cm | Dist: 5.62m | XYZ: (3.594, -4.324, 0.121)
-  Cluster 9 | H: 65.5cm | L: 98.7cm | l: 47.4cm | Dist: 7.54m | XYZ: (-1.032, -7.468, 0.093)
+  Cluster 1 | H: 64.9cm | L: 128.8cm | l: 210.1cm | Dist: 5.75m | XYZ: (0.272, -5.747, 0.090)
 
 [ NAVIGATION ]
-  Grille                       : 87x90 cellules (0.1m/cell)
-  Cellules navigables          : 3522
-  Objets visites               : 5
-  Total waypoints              : 269
-  Distance totale planifiee    : 32.00 m
-  Temps mission estime         : 5min 20.0s
+  Grille                       : 85x96 cellules (0.1m/cell)
+  Cellules navigables          : 4038
+  Objets visites               : 2
+  Total waypoints              : 153
+  Distance totale planifiee    : 20.14 m
+  Temps mission estime         : 3min 21.4s
   Vitesse rover                : 0.1 m/s
   Rayon securite obstacles     : 40 cm
   Rayon orbite objets          : 50 cm
 
 [ COMPLETION DES ORBITES ]
-  Objet 5 : 23/16 segments (143.8%)
-  Objet 0 : 31/16 segments (193.8%)
-  Objet 7 : 30/16 segments (187.5%)
-  Objet 1 : 29/16 segments (181.2%)
-  Objet 2 : 29/16 segments (181.2%)
+  Objet 0 : 29/16 segments (181.2%)
+  Objet 2 : 26/16 segments (162.5%)
 
 [ TEMPS D'EXECUTION PAR ETAPE ]
-  Chargement nuage de points     : 0.34s
-  RANSAC segmentation            : 13.67s
-  DBSCAN clustering              : 2.06s
+  Chargement nuage de points     : 0.26s
+  RANSAC segmentation            : 11.23s
+  DBSCAN clustering              : 0.20s
   Filtration classification      : 0.00s
-  NavMesh + Grille A*            : 3.14s
-  Planification A*               : 0.03s
-  Temps total pipeline           : 19.24s
+  NavMesh + Grille A*            : 1.63s
+  Planification A*               : 0.01s
+  Temps total pipeline           : 13.33s
 
 [ MEMOIRE PAR ETAPE ]
-  Chargement nuage de points     : 162.3 MB
-  RANSAC segmentation            : 172.6 MB
-  DBSCAN clustering              : 175.1 MB
-  Filtration classification      : 175.1 MB
-  NavMesh + Grille A*            : 190.6 MB
-  Planification A*               : 190.7 MB
+  Chargement nuage de points     : 158.3 MB
+  RANSAC segmentation            : 168.6 MB
+  DBSCAN clustering              : 168.2 MB
+  Filtration classification      : 168.2 MB
+  NavMesh + Grille A*            : 181.6 MB
+  Planification A*               : 181.7 MB
 
 [ PARAMETRES UTILISES ]
   RANSAC_THRESHOLD             : 0.06
