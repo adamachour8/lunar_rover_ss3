@@ -6,10 +6,10 @@ Aucune connexion Arduino ici -- c'est juste de la logique pure.
 import pygame
 import time
 
-# Indices typiques pour DualSense sur Linux/pygame -- verifies dans les tests
-# (peuvent varier, on a un mode debug dans main_backup.py pour les remapper)
+# Indices DualSense sur Linux (Bluetooth ou USB)
+# Axe 2 = L2 trigger (PAS le stick droit !), c'est pour ca qu'on utilise 3
 AXE_GAUCHE_Y  = 1   # joystick gauche, axe vertical (avancer/reculer)
-AXE_DROIT_X   = 2   # joystick droit, axe horizontal (tourner)
+AXE_DROIT_X   = 3   # joystick droit, axe horizontal (tourner)
 
 BTN_CROIX     = 0   # X -- envoyer signal SS2
 BTN_ROND      = 1   # O -- stop d'urgence
@@ -18,7 +18,7 @@ BTN_TRIANGLE  = 3   # triangle -- quit propre
 BTN_L1        = 9   # L1 -- diviser vitesse par 2
 BTN_R1        = 10  # R1 -- doubler vitesse
 
-DEAD_ZONE = 0.25    # ignore les petits mouvements parasites du joystick
+DEAD_ZONE = 0.15    # ignore les petits mouvements parasites du joystick
 
 
 def init_manette():
